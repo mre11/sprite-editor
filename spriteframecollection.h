@@ -11,6 +11,7 @@ class SpriteFrameCollection : public QObject
     Q_OBJECT
 public:
     explicit SpriteFrameCollection(int width, int height, QObject *parent = 0);
+    ~SpriteFrameCollection();
 
     void addFrame();
     void deleteFrame(int index);
