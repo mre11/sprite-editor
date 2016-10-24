@@ -12,25 +12,30 @@ SpriteFrame::SpriteFrame(int width, int height, QObject *parent)
 
 void SpriteFrame::darken(int x, int y)
 {
+    auto color = image.pixelColor(x, y);
+    modifyAlpha(25, color);
+    changeColor(x, y, color);
+}
 
+void SpriteFrame::lighten(int x, int y)
+{
+    auto color = image.pixelColor(x, y);
+    modifyAlpha(-25, color);
+    changeColor(x, y, color);
 }
 
 void SpriteFrame::erase(int x, int y)
 {
+    changeColor(x, y, QColor(0,0,0,0));
 
 }
 
-void SpriteFrame::changeColor(int x, int y, QRgb color)
+void SpriteFrame::changeColor(int x, int y, QColor color)
 {
-
+    image.setPixelColor(x, y, color);
 }
 
-void SpriteFrame::fillColor(int x, int y, QRgb replacementColor)
-{
-
-}
-
-void SpriteFrame::lighten(int x, int y)
+void SpriteFrame::fillColor(int x, int y, QColor replacementColor)
 {
 
 }
@@ -38,4 +43,18 @@ void SpriteFrame::lighten(int x, int y)
 const QImage *SpriteFrame::getImage()
 {
     return &image;
+}
+
+void SpriteFrame::modifyAlpha(int amount, QColor &color)
+{
+    color = image.pixelColor(x, y);
+    int currentAlpha = color.alpha();
+    int newAlpha = currentAlpha + amount;
+
+    if (newAlpha < 0)
+        newAlpha = 0;
+    else if (newAlpha > 255)
+        newAlpha = 255;
+
+    color.setAlpha(newAlpha);
 }

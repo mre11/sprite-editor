@@ -15,10 +15,10 @@ public:
     explicit SpriteFrame(int width, int height, QObject *parent = 0);
 
     void darken(int x, int y);
-    void erase(int x, int y);
-    void changeColor(int x, int y, QRgb color);
-    void fillColor(int x, int y, QRgb replacementColor);
     void lighten(int x, int y);
+    void erase(int x, int y);
+    void changeColor(int x, int y, QColor color);
+    void fillColor(int x, int y, QColor replacementColor);
 
     const QImage *getImage();
 
@@ -28,6 +28,8 @@ signals:
 public slots:
 private:
     QImage image;
+
+    void modifyAlpha(int amount, QColor &color);
 };
 
 #endif // SPRITEFRAME_H
