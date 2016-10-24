@@ -10,14 +10,9 @@ SpriteFrameCollection::SpriteFrameCollection(int width, int height, QObject *par
      addFrame(); // start out with one frame
 }
 
-SpriteFrameCollection::~SpriteFrameCollection()
-{
-    // delete pointers
-}
-
 void SpriteFrameCollection::addFrame()
 {
-    frames.push_back(new SpriteFrame(frameWidth, frameHeight, this->parent()));
+    frames.append(QSharedPointer<SpriteFrame>(new SpriteFrame(frameWidth, frameHeight, this)));
 }
 
 void SpriteFrameCollection::deleteFrame(int index)

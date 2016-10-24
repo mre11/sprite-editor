@@ -26,7 +26,7 @@ public slots:
 
 private:
     Ui::MainWindow *ui;
-    SpriteFrameCollection frames;
+    //SpriteFrameCollection frames;
     QTimer animationTimer;
 
     void toggleGridDisplay();

@@ -7,7 +7,7 @@
 
 #include <QObject>
 #include <QVector>
-#include <memory>
+#include <QSharedPointer>
 #include "spriteframe.h"
 
 class SpriteFrameCollection : public QObject
@@ -15,7 +15,6 @@ class SpriteFrameCollection : public QObject
     Q_OBJECT
 public:
     explicit SpriteFrameCollection(int width, int height, QObject *parent = 0);
-    ~SpriteFrameCollection();
 
     void addFrame();
     void deleteFrame(int index);
@@ -28,7 +27,7 @@ public slots:
 private:
     int frameHeight;
     int frameWidth;
-    QVector<SpriteFrame *> frames;
+    QVector<QSharedPointer<SpriteFrame>> frames;
 };
 
 #endif // SPRITEFRAMECOLLECTION_H

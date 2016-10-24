@@ -47,7 +47,6 @@ const QImage *SpriteFrame::getImage()
 
 void SpriteFrame::modifyAlpha(int amount, QColor &color)
 {
-    color = image.pixelColor(x, y);
     int currentAlpha = color.alpha();
     int newAlpha = currentAlpha + amount;
 
