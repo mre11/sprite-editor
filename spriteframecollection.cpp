@@ -4,6 +4,10 @@
 
 #include "spriteframecollection.h"
 
+#include <fstream>
+
+using namespace std;
+
 SpriteFrameCollection::SpriteFrameCollection(int width, int height, QObject *parent)
     : QObject(parent), frameWidth(width), frameHeight(height), frames(1)
 {
@@ -25,7 +29,14 @@ void SpriteFrameCollection::load()
 
 }
 
-void SpriteFrameCollection::save()
+void SpriteFrameCollection::save(string filePath)
 {
+    ofstream outFile;
+    outFile.open(filePath);
 
+    outfile << frameHeight << " " << frameWidth << '\n';
+    outfile << frames.size() << '\n';
+
+    for (auto frame : frames)
+        frame.save(outFile);
 }

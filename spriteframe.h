@@ -7,6 +7,7 @@
 
 #include <QObject>
 #include <QImage>
+#include <fstream>
 
 class SpriteFrame : public QObject
 {
@@ -22,6 +23,8 @@ public:
 
     const QImage *getImage();
 
+    void save(std::ofstream &outputFile);
+
 signals:
     void frameWasUpdated(const QImage *image);
 
@@ -30,6 +33,7 @@ private:
     QImage image;
 
     void modifyAlpha(int amount, QColor &color);
+    void saveRow(int rowNum, fstream &outputFile);
 };
 
 #endif // SPRITEFRAME_H

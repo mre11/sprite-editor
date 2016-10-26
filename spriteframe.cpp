@@ -4,6 +4,8 @@
 
 #include "spriteframe.h"
 
+using namespace std;
+
 SpriteFrame::SpriteFrame(int width, int height, QObject *parent)
     : QObject(parent), image(width, height, QImage::Format_ARGB32)
 {
@@ -45,6 +47,14 @@ const QImage *SpriteFrame::getImage()
     return &image;
 }
 
+void SpriteFrame::save(ofstream &outputFile)
+{
+    for (int i = 0; i < image.height(); i++)
+    {
+        saveRow(i, outputFile);
+    }
+}
+
 void SpriteFrame::modifyAlpha(int amount, QColor &color)
 {
     int currentAlpha = color.alpha();
@@ -56,4 +66,15 @@ void SpriteFrame::modifyAlpha(int amount, QColor &color)
         newAlpha = 255;
 
     color.setAlpha(newAlpha);
+}
+
+void SpriteFrame::saveRow(int rowNum, fstream &outputFile)
+{
+    // loop across the row, writing each pixel to the file
+    for (int i = 0; i < image.width(); i++)
+    {
+        QColor pixel = image.pixelColor(i, rowNum);
+        outputFile << pixel.red() << " " << pixel.green() << " " << pixel.blue() << " " << pixel.alpha() << " ";
+    }
+    outputFile << '\n'; // end the row with a newline
 }

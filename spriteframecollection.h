@@ -8,6 +8,7 @@
 #include <QObject>
 #include <QVector>
 #include <QSharedPointer>
+#include <string>
 #include "spriteframe.h"
 
 class SpriteFrameCollection : public QObject
@@ -19,7 +20,7 @@ public:
     void addFrame();
     void deleteFrame(int index);
     void load();
-    void save();
+    void save(std::string filePath);
 
 signals:
 
