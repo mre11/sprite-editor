@@ -15,10 +15,12 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     spriteframe.cpp \
-    spriteframecollection.cpp
+    spriteframecollection.cpp \
+    spritecanvas.cpp
 
 HEADERS  += mainwindow.h \
     spriteframe.h \
-    spriteframecollection.h
+    spriteframecollection.h \
+    spritecanvas.h
 
 FORMS    += mainwindow.ui
