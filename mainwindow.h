@@ -7,7 +7,7 @@
 
 #include <QMainWindow>
 #include <QTimer>
-#include <spriteframecollection.h>
+#include "spriteframecollection.h"
 
 namespace Ui {
 class MainWindow;

@@ -31,7 +31,7 @@
       <rect>
        <x>10</x>
        <y>20</y>
-       <width>195</width>
+       <width>228</width>
        <height>221</height>
       </rect>
      </property>
@@ -231,6 +231,19 @@
      </property>
     </widget>
    </widget>
+   <widget class="SpriteCanvas" name="canvas">
+    <property name="geometry">
+     <rect>
+      <x>260</x>
+      <y>30</y>
+      <width>131</width>
+      <height>91</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
@@ -238,7 +251,7 @@
      <x>0</x>
      <y>0</y>
      <width>1268</width>
-     <height>26</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -289,6 +302,13 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>SpriteCanvas</class>
+   <extends>QLabel</extends>
+   <header>spritecanvas.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

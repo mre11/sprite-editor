@@ -18,9 +18,13 @@ MainWindow::MainWindow(QWidget *parent)
     colorSelector->setWindowFlags(Qt::Widget);
     colorSelector->setOptions(QColorDialog::DontUseNativeDialog | QColorDialog::NoButtons);
 
-    QImage *image = new QImage();
+    QImage image(50, 50, QImage::Format_ARGB32);
+    image.fill(QColor(255, 0, 0, 255));
+
     ui->widget_2->setWindowFlags(Qt::Widget);
     ui->scrollArea->setWidget(colorSelector);
+
+    ui->canvas->setPixmap(QPixmap::fromImage(image));
 }
 
 MainWindow::~MainWindow()
