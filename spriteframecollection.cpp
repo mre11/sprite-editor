@@ -34,9 +34,9 @@ void SpriteFrameCollection::save(string filePath)
     ofstream outFile;
     outFile.open(filePath);
 
-    outfile << frameHeight << " " << frameWidth << '\n';
-    outfile << frames.size() << '\n';
+    outFile << frameHeight << " " << frameWidth << '\n';
+    outFile << frames.size() << '\n';
 
     for (auto frame : frames)
-        frame.save(outFile);
+        frame->save(outFile);
 }

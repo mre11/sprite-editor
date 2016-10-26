@@ -68,7 +68,7 @@ void SpriteFrame::modifyAlpha(int amount, QColor &color)
     color.setAlpha(newAlpha);
 }
 
-void SpriteFrame::saveRow(int rowNum, fstream &outputFile)
+void SpriteFrame::saveRow(int rowNum, ofstream &outputFile)
 {
     // loop across the row, writing each pixel to the file
     for (int i = 0; i < image.width(); i++)

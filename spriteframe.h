@@ -33,7 +33,7 @@ private:
     QImage image;
 
     void modifyAlpha(int amount, QColor &color);
-    void saveRow(int rowNum, fstream &outputFile);
+    void saveRow(int rowNum, std::ofstream &outputFile);
 };
 
 #endif // SPRITEFRAME_H
