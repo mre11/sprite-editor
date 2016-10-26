@@ -3,6 +3,7 @@
 // Braden Klunker, Michael Swisher, Morgan Empey, Naoki Tominaga, Ryan Williams
 
 #include "spriteframe.h"
+#include <QQueue>
 
 using namespace std;
 
@@ -39,6 +40,13 @@ void SpriteFrame::changeColor(int x, int y, QColor color)
 
 void SpriteFrame::fillColor(int x, int y, QColor replacementColor)
 {
+    QQueue<QColor> *queue = new QQueue<QColor>();
+    QColor targetColor = image.pixelColor(x, y);
+    queue->enqueue(targetColor);
+    if(targetColor == replacementColor)
+        return;
+
+
 
 }
 
