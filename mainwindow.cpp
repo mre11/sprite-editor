@@ -18,7 +18,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    currentFrame = frames.getFrame(1); // TODO fix this (want it to be at 0, we are adding frame to qvector wrong or something
+    currentFrame = frames.getFrame(0);
     ui->canvas->setPixmap(QPixmap::fromImage(*(currentFrame->getImage())));
 
     //QListIterator h(list);
@@ -38,9 +38,6 @@ MainWindow::MainWindow(QWidget *parent)
     //QColorDialog *colorSelector = new QColorDialog(ui->widget);
     //colorSelector->setWindowFlags(Qt::Widget);
     //colorSelector->setOptions(QColorDialog::DontUseNativeDialog | QColorDialog::NoButtons);
-
-    //QImage image(50, 50, QImage::Format_ARGB32);
-    //image.fill(QColor(255, 0, 0, 255));
 
     //ui->widget_2->setWindowFlags(Qt::Widget);
     //ui->scrollArea->setWidget(colorSelector);

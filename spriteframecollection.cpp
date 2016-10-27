@@ -9,7 +9,7 @@
 using namespace std;
 
 SpriteFrameCollection::SpriteFrameCollection(int width, int height, QObject *parent)
-    : QObject(parent), frameWidth(width), frameHeight(height), frames(1)
+    : QObject(parent), frameWidth(width), frameHeight(height)
 {
      addFrame(); // start out with one frame
 }
