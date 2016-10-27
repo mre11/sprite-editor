@@ -16,13 +16,24 @@ class MainWindow;
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
-
+    Q_ENUMS(ToolBrush)
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+    enum ToolBrush
+    {
+        Darken,
+        Lighten,
+        Brush,
+        Eraser,
+        EyeDrop,
+        Bucket
+    };
+    ToolBrush brush;
 
 public slots:
     void updateAnimation();
+    void toolBrushClicked();
 
 private:
     Ui::MainWindow *ui;
