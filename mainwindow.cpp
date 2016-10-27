@@ -12,14 +12,13 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
       ui(new Ui::MainWindow),
-      frames(271, 281, this)
+      frames(271, 281, this),
+      brush(ToolBrush::Brush),
+      currentColor(0, 0, 0)
 {
     ui->setupUi(this);
 
-    currentFrame = frames.at(1); // TODO fix this (want it to be at 0, we are adding frame to qvector wrong or something
-    currentColor = QColor::black;
-    brush = ToolBrush::Brush;
-
+    currentFrame = frames.getFrame(1); // TODO fix this (want it to be at 0, we are adding frame to qvector wrong or something
     ui->canvas->setPixmap(QPixmap::fromImage(*(currentFrame->getImage())));
 
     //QListIterator h(list);
@@ -46,6 +45,7 @@ MainWindow::MainWindow(QWidget *parent)
     //ui->widget_2->setWindowFlags(Qt::Widget);
     //ui->scrollArea->setWidget(colorSelector);
 
+    // Create connections
     connect(ui->canvas, &SpriteCanvas::mouseClicked,
             this, &MainWindow::processMouseClick);
     connect(currentFrame, &SpriteFrame::frameWasUpdated,

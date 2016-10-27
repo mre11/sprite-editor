@@ -29,7 +29,7 @@ public:
         EyeDrop,
         Bucket
     };
-    ToolBrush brush;
+
 
 public slots:
     void updateAnimation();
@@ -42,7 +42,8 @@ private:
     SpriteFrameCollection frames;
     QTimer animationTimer;
     SpriteFrame *currentFrame;
-    QColor currentColor;
+    ToolBrush brush;
+    QColor currentColor;    
 
     void toggleGridDisplay();
 };

@@ -41,7 +41,7 @@ void SpriteFrameCollection::save(string filePath)
         frame->save(outFile);
 }
 
-SpriteFrame *SpriteFrameCollection::at(int index)
+SpriteFrame *SpriteFrameCollection::getFrame(int index)
 {
     return frames.at(index).data();
 }
