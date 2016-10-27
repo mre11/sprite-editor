@@ -19,7 +19,7 @@ MainWindow::MainWindow(QWidget *parent)
     colorSelector->setOptions(QColorDialog::DontUseNativeDialog | QColorDialog::NoButtons);
 
     QImage image(50, 50, QImage::Format_ARGB32);
-    image.fill(QColor(255, 0, 0, 255));
+    image.fill(QColor(255, 255, 255, 255));
 
     ui->widget_2->setWindowFlags(Qt::Widget);
     ui->scrollArea->setWidget(colorSelector);
