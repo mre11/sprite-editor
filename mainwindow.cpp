@@ -4,6 +4,7 @@
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+
 #include <QColorDialog>
 #include <QImage>
 #include <QMessageBox>
@@ -14,16 +15,13 @@ MainWindow::MainWindow(QWidget *parent)
       frames(271, 281, this)
 {
     ui->setupUi(this);
-    //QObjectList list = ui->gridLayout->findChildren<QPushButton*>();
 
-    connect(ui->pushButton_1, &QPushButton::clicked, this, &MainWindow::toolBrushClicked);
-    connect(ui->pushButton_2, &QPushButton::clicked, this, &MainWindow::toolBrushClicked);
-    connect(ui->pushButton_3, &QPushButton::clicked, this, &MainWindow::toolBrushClicked);
-    connect(ui->pushButton_4, &QPushButton::clicked, this, &MainWindow::toolBrushClicked);
-    connect(ui->pushButton_5, &QPushButton::clicked, this, &MainWindow::toolBrushClicked);
-    connect(ui->pushButton_6, &QPushButton::clicked, this, &MainWindow::toolBrushClicked);
-
+    currentFrame = frames.at(1); // TODO fix this (want it to be at 0, we are adding frame to qvector wrong or something
+    currentColor = QColor::black;
     brush = ToolBrush::Brush;
+
+    ui->canvas->setPixmap(QPixmap::fromImage(*(currentFrame->getImage())));
+
     //QListIterator h(list);
     //while(h->hasNext())
     //{
@@ -48,14 +46,18 @@ MainWindow::MainWindow(QWidget *parent)
     //ui->widget_2->setWindowFlags(Qt::Widget);
     //ui->scrollArea->setWidget(colorSelector);
 
-    currentFrame = frames.at(1);
-
-    ui->canvas->setPixmap(QPixmap::fromImage(*(currentFrame->getImage())));
-
     connect(ui->canvas, &SpriteCanvas::mouseClicked,
             this, &MainWindow::processMouseClick);
     connect(currentFrame, &SpriteFrame::frameWasUpdated,
             this, &MainWindow::updateCanvas);
+
+    //QObjectList list = ui->gridLayout->findChildren<QPushButton*>();
+    connect(ui->pushButton_1, &QPushButton::clicked, this, &MainWindow::toolBrushClicked);
+    connect(ui->pushButton_2, &QPushButton::clicked, this, &MainWindow::toolBrushClicked);
+    connect(ui->pushButton_3, &QPushButton::clicked, this, &MainWindow::toolBrushClicked);
+    connect(ui->pushButton_4, &QPushButton::clicked, this, &MainWindow::toolBrushClicked);
+    connect(ui->pushButton_5, &QPushButton::clicked, this, &MainWindow::toolBrushClicked);
+    connect(ui->pushButton_6, &QPushButton::clicked, this, &MainWindow::toolBrushClicked);
 }
 
 MainWindow::~MainWindow()
@@ -86,8 +88,7 @@ void MainWindow::toolBrushClicked()
 
 void MainWindow::processMouseClick(QPoint pt)
 {
-    auto color = QColor(0, 0, 0, 255);
-    currentFrame->changeColor(pt.x(), pt.y(), color);
+    currentFrame->changeColor(pt.x(), pt.y(), currentColor);
 }
 
 void MainWindow::updateCanvas()

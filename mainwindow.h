@@ -42,6 +42,7 @@ private:
     SpriteFrameCollection frames;
     QTimer animationTimer;
     SpriteFrame *currentFrame;
+    QColor currentColor;
 
     void toggleGridDisplay();
 };
