@@ -20,6 +20,7 @@ public:
     void erase(int x, int y);
     void changeColor(int x, int y, QColor color);
     void fillColor(int x, int y, QColor replacementColor);
+    QColor eyeDrop(int x, int y);
 
     const QImage *getImage();
 

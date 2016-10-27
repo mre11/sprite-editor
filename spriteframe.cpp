@@ -51,6 +51,11 @@ void SpriteFrame::fillColor(int x, int y, QColor replacementColor)
 
 }
 
+QColor SpriteFrame::eyeDrop(int x, int y)
+{
+    return image.pixelColor(x, y);
+}
+
 const QImage *SpriteFrame::getImage()
 {
     return &image;

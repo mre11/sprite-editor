@@ -67,11 +67,6 @@ void MainWindow::updateAnimation()
 
 }
 
-void MainWindow::toggleGridDisplay()
-{
-
-}
-
 void MainWindow::toolBrushClicked()
 {
     QObject *s = sender();
@@ -85,7 +80,30 @@ void MainWindow::toolBrushClicked()
 
 void MainWindow::processMouseClick(QPoint pt)
 {
-    currentFrame->changeColor(pt.x(), pt.y(), currentColor);
+    int x = pt.x();
+    int y = pt.y();
+
+    switch (brush)
+    {
+        case ToolBrush::Darken:
+            currentFrame->darken(x, y);
+            break;
+        case ToolBrush::Lighten:
+            currentFrame->lighten(x, y);
+            break;
+        case ToolBrush::Brush:
+            currentFrame->changeColor(x, y, currentColor);
+            break;
+        case ToolBrush::Eraser:
+            currentFrame->erase(x, y);
+            break;
+        case ToolBrush::EyeDrop:
+            currentFrame->eyeDrop(x, y);
+            break;
+        case ToolBrush::Bucket:
+            currentFrame->fillColor(x, y, currentColor);
+            break;
+    }
 }
 
 void MainWindow::updateCanvas()
@@ -94,4 +112,9 @@ void MainWindow::updateCanvas()
     image->scaled(271, 281, Qt::KeepAspectRatio);
     ui->canvas->setPixmap(QPixmap::fromImage(*image));
     ui->canvas->update();
+}
+
+void MainWindow::toggleGridDisplay()
+{
+
 }

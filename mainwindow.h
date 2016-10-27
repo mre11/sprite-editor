@@ -36,6 +36,7 @@ public slots:
     void toolBrushClicked();
     void processMouseClick(QPoint pt);
     void updateCanvas();
+    void toggleGridDisplay();
 
 private:
     Ui::MainWindow *ui;
@@ -43,9 +44,7 @@ private:
     QTimer animationTimer;
     SpriteFrame *currentFrame;
     ToolBrush brush;
-    QColor currentColor;    
-
-    void toggleGridDisplay();
+    QColor currentColor;
 };
 
 #endif // MAINWINDOW_H
