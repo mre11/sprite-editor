@@ -10,7 +10,7 @@ using namespace std;
 SpriteFrame::SpriteFrame(int width, int height, QObject *parent)
     : QObject(parent), image(width, height, QImage::Format_ARGB32)
 {
-    image.fill(QColor(0, 0, 0, 0));
+    image.fill(QColor(255, 0, 0, 255));
 }
 
 void SpriteFrame::darken(int x, int y)
@@ -36,6 +36,7 @@ void SpriteFrame::erase(int x, int y)
 void SpriteFrame::changeColor(int x, int y, QColor color)
 {
     image.setPixelColor(x, y, color);
+    emit frameWasUpdated(&image);
 }
 
 void SpriteFrame::fillColor(int x, int y, QColor replacementColor)

@@ -23,11 +23,14 @@ public:
 
 public slots:
     void updateAnimation();
+    void processMouseClick(QPoint pt);
+    void updateCanvas();
 
 private:
     Ui::MainWindow *ui;
-    //SpriteFrameCollection frames;
+    SpriteFrameCollection frames;
     QTimer animationTimer;
+    SpriteFrame *currentFrame;
 
     void toggleGridDisplay();
 };

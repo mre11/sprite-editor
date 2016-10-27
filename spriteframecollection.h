@@ -21,6 +21,7 @@ public:
     void deleteFrame(int index);
     void load();
     void save(std::string filePath);
+    SpriteFrame *at(int index);
 
 signals:
 

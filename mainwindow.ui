@@ -86,16 +86,6 @@
       </item>
      </layout>
     </widget>
-    <widget class="QWidget" name="widget" native="true">
-     <property name="geometry">
-      <rect>
-       <x>-600</x>
-       <y>150</y>
-       <width>951</width>
-       <height>601</height>
-      </rect>
-     </property>
-    </widget>
    </widget>
    <widget class="QGroupBox" name="groupBox_2">
     <property name="geometry">
@@ -236,8 +226,8 @@
      <rect>
       <x>260</x>
       <y>30</y>
-      <width>131</width>
-      <height>91</height>
+      <width>271</width>
+      <height>281</height>
      </rect>
     </property>
     <property name="text">

@@ -40,3 +40,8 @@ void SpriteFrameCollection::save(string filePath)
     for (auto frame : frames)
         frame->save(outFile);
 }
+
+SpriteFrame *SpriteFrameCollection::at(int index)
+{
+    return frames.at(index).data();
+}
