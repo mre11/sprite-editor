@@ -45,6 +45,9 @@ private:
     SpriteFrame *currentFrame;
     ToolBrush brush;
     QColor currentColor;
+
+    int canvasWidth;
+    int canvasHeight;
 };
 
 #endif // MAINWINDOW_H

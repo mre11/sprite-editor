@@ -12,14 +12,19 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
       ui(new Ui::MainWindow),
-      frames(271, 281, this),
+      frames(30, 25, this),
       brush(ToolBrush::Brush),
       currentColor(0, 0, 0)
 {
     ui->setupUi(this);
 
+    canvasWidth = ui->canvas->width();
+    canvasHeight = ui->canvas->height();
+
     currentFrame = frames.getFrame(0);
     ui->canvas->setPixmap(QPixmap::fromImage(*(currentFrame->getImage())));
+    ui->canvas->setStyleSheet("border: 3px solid black");
+    updateCanvas();
 
     //QListIterator h(list);
     //while(h->hasNext())
@@ -80,8 +85,8 @@ void MainWindow::toolBrushClicked()
 
 void MainWindow::processMouseClick(QPoint pt)
 {
-    int x = pt.x();
-    int y = pt.y();
+    int x = pt.x() * frames.getWidth() / canvasWidth;
+    int y = pt.y() * frames.getHeight() / canvasHeight;
 
     switch (brush)
     {
@@ -109,8 +114,8 @@ void MainWindow::processMouseClick(QPoint pt)
 void MainWindow::updateCanvas()
 {
     auto image = currentFrame->getImage();
-    image->scaled(271, 281, Qt::KeepAspectRatio);
-    ui->canvas->setPixmap(QPixmap::fromImage(*image));
+    QImage scaledImage = image->scaled(canvasWidth, canvasHeight, Qt::KeepAspectRatio);
+    ui->canvas->setPixmap(QPixmap::fromImage(scaledImage));
     ui->canvas->update();
 }
 

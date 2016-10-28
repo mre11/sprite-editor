@@ -24,6 +24,16 @@ void SpriteFrameCollection::deleteFrame(int index)
     frames.remove(index);
 }
 
+int SpriteFrameCollection::getWidth()
+{
+    return frameWidth;
+}
+
+int SpriteFrameCollection::getHeight()
+{
+    return frameHeight;
+}
+
 void SpriteFrameCollection::load()
 {
 
