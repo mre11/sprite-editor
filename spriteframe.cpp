@@ -15,6 +15,8 @@ SpriteFrame::SpriteFrame(int width, int height, QObject *parent)
 
 void SpriteFrame::darken(int x, int y)
 {
+    if (outOfRange(x, y)) return;
+
     auto color = image.pixelColor(x, y);
     modifyAlpha(25, color);
     changeColor(x, y, color);
@@ -22,6 +24,8 @@ void SpriteFrame::darken(int x, int y)
 
 void SpriteFrame::lighten(int x, int y)
 {
+    if (outOfRange(x, y)) return;
+
     auto color = image.pixelColor(x, y);
     modifyAlpha(-25, color);
     changeColor(x, y, color);
@@ -35,15 +39,16 @@ void SpriteFrame::erase(int x, int y)
 
 void SpriteFrame::changeColor(int x, int y, QColor color)
 {
-    if (x >= 0 && y >= 0 && x < image.width() && y < image.height())
-    {
-        image.setPixelColor(x, y, color);
-        emit frameWasUpdated(&image);
-    }
+    if (outOfRange(x, y)) return;
+
+    image.setPixelColor(x, y, color);
+    emit frameWasUpdated(&image);
 }
 
 void SpriteFrame::fillColor(int x, int y, QColor replacementColor)
 {
+    if (outOfRange(x, y)) return;
+
     QQueue<QColor> *queue = new QQueue<QColor>();
     QColor targetColor = image.pixelColor(x, y);
     queue->enqueue(targetColor);
@@ -94,4 +99,9 @@ void SpriteFrame::saveRow(int rowNum, ofstream &outputFile)
         outputFile << pixel.red() << " " << pixel.green() << " " << pixel.blue() << " " << pixel.alpha() << " ";
     }
     outputFile << '\n'; // end the row with a newline
+}
+
+bool SpriteFrame::outOfRange(int x, int y)
+{
+    return x < 0 || y < 0 || x >= image.width() || y >= image.height();
 }

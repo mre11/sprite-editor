@@ -35,6 +35,7 @@ private:
 
     void modifyAlpha(int amount, QColor &color);
     void saveRow(int rowNum, std::ofstream &outputFile);
+    bool outOfRange(int x, int y);
 };
 
 #endif // SPRITEFRAME_H
