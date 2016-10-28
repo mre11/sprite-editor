@@ -23,7 +23,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     currentFrame = frames.getFrame(0);
     ui->canvas->setPixmap(QPixmap::fromImage(*(currentFrame->getImage())));
-    ui->canvas->setStyleSheet("border: 3px solid black");
+    ui->canvas->setStyleSheet("border: 2px solid black");
     updateCanvas();
 
     //QListIterator h(list);
