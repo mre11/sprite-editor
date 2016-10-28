@@ -21,6 +21,7 @@ signals:
 
 protected:
     //virtual void paintEvent(QPaintEvent *) override;
+    virtual void mousePressEvent(QMouseEvent *event);
     virtual void mouseMoveEvent(QMouseEvent *event);
 };
 

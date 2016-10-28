@@ -11,7 +11,12 @@ SpriteCanvas::SpriteCanvas(QWidget *parent)
 
 }
 
-void SpriteCanvas::mouseMoveEvent(QMouseEvent *event)
+void SpriteCanvas::mousePressEvent(QMouseEvent *event)
 {
     emit mouseClicked(event->pos());
+}
+
+void SpriteCanvas::mouseMoveEvent(QMouseEvent *event)
+{
+    mousePressEvent(event);
 }
