@@ -16,11 +16,13 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     spriteframe.cpp \
     spriteframecollection.cpp \
-    spritecanvas.cpp
+    spritecanvas.cpp \
+    gifexporter.cpp
 
 HEADERS  += mainwindow.h \
     spriteframe.h \
     spriteframecollection.h \
-    spritecanvas.h
+    spritecanvas.h \
+    gifexporter.h
 
 FORMS    += mainwindow.ui

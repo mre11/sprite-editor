@@ -6,6 +6,7 @@
 #define SPRITECANVAS_H
 
 #include <QLabel>
+#include <QMouseEvent>
 
 class SpriteCanvas : public QLabel
 {
@@ -14,9 +15,14 @@ class SpriteCanvas : public QLabel
 public:
     explicit SpriteCanvas(QWidget *parent = 0);
 
-protected slots:
+signals:
+    void mouseClicked(QPoint pt);
+
+
+protected:
     //virtual void paintEvent(QPaintEvent *) override;
-    //virtual void mousePressEvent(QMouseEvent *ev) override;
+    virtual void mousePressEvent(QMouseEvent *event);
+    virtual void mouseMoveEvent(QMouseEvent *event);
 };
 
 #endif // SPRITECANVAS_H

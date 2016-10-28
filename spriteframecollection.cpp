@@ -9,7 +9,7 @@
 using namespace std;
 
 SpriteFrameCollection::SpriteFrameCollection(int width, int height, QObject *parent)
-    : QObject(parent), frameWidth(width), frameHeight(height), frames(1)
+    : QObject(parent), frameWidth(width), frameHeight(height)
 {
      addFrame(); // start out with one frame
 }
@@ -22,6 +22,16 @@ void SpriteFrameCollection::addFrame()
 void SpriteFrameCollection::deleteFrame(int index)
 {
     frames.remove(index);
+}
+
+int SpriteFrameCollection::getWidth()
+{
+    return frameWidth;
+}
+
+int SpriteFrameCollection::getHeight()
+{
+    return frameHeight;
 }
 
 void SpriteFrameCollection::load()
@@ -39,4 +49,9 @@ void SpriteFrameCollection::save(string filePath)
 
     for (auto frame : frames)
         frame->save(outFile);
+}
+
+SpriteFrame *SpriteFrameCollection::getFrame(int index)
+{
+    return frames.at(index).data();
 }

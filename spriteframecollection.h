@@ -19,8 +19,11 @@ public:
 
     void addFrame();
     void deleteFrame(int index);
+    int getWidth();
+    int getHeight();
     void load();
     void save(std::string filePath);
+    SpriteFrame *getFrame(int index);
 
 signals:
 

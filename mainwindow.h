@@ -16,20 +16,38 @@ class MainWindow;
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
-
+    Q_ENUMS(ToolBrush)
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+    enum ToolBrush
+    {
+        Darken,
+        Lighten,
+        Brush,
+        Eraser,
+        EyeDrop,
+        Bucket
+    };
+
 public slots:
     void updateAnimation();
+    void toolBrushClicked();
+    void processMouseClick(QPoint pt);
+    void updateCanvas();
+    void toggleGridDisplay();
 
 private:
     Ui::MainWindow *ui;
-    //SpriteFrameCollection frames;
+    SpriteFrameCollection frames;
     QTimer animationTimer;
+    SpriteFrame *currentFrame;
+    ToolBrush brush;
+    QColor currentColor;
 
-    void toggleGridDisplay();
+    int canvasWidth;
+    int canvasHeight;
 };
 
 #endif // MAINWINDOW_H
