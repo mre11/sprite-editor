@@ -36,8 +36,25 @@
       </rect>
      </property>
      <layout class="QGridLayout" name="gridLayout">
-      <item row="2" column="0">
-       <widget class="QPushButton" name="pushButton_5">
+      <item row="0" column="1">
+       <widget class="QPushButton" name="gridButton">
+        <property name="text">
+         <string>Grid</string>
+        </property>
+        <property name="autoDefault">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QPushButton" name="lightenButton">
+        <property name="text">
+         <string>Lighten</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QPushButton" name="brushButton">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
           <horstretch>0</horstretch>
@@ -49,41 +66,24 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="1">
-       <widget class="QPushButton" name="pushButton_6">
+      <item row="2" column="0">
+       <widget class="QPushButton" name="eyeDropButton">
         <property name="text">
          <string>Eye Drop</string>
         </property>
        </widget>
       </item>
-      <item row="1" column="0">
-       <widget class="QPushButton" name="pushButton_3">
-        <property name="text">
-         <string>Lighten</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0">
-       <widget class="QPushButton" name="pushButton_2">
-        <property name="text">
-         <string>Darken</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QPushButton" name="pushButton_4">
+      <item row="2" column="1">
+       <widget class="QPushButton" name="eraserButton">
         <property name="text">
          <string>Eraser</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="1">
-       <widget class="QPushButton" name="pushButton_1">
+      <item row="1" column="1">
+       <widget class="QPushButton" name="darkenButton">
         <property name="text">
-         <string>Grid</string>
-        </property>
-        <property name="autoDefault">
-         <bool>false</bool>
+         <string>Darken</string>
         </property>
        </widget>
       </item>

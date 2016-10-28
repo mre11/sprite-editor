@@ -54,12 +54,12 @@ MainWindow::MainWindow(QWidget *parent)
             this, &MainWindow::updateCanvas);
 
     //QObjectList list = ui->gridLayout->findChildren<QPushButton*>();
-    connect(ui->pushButton_1, &QPushButton::clicked, this, &MainWindow::toolBrushClicked);
-    connect(ui->pushButton_2, &QPushButton::clicked, this, &MainWindow::toolBrushClicked);
-    connect(ui->pushButton_3, &QPushButton::clicked, this, &MainWindow::toolBrushClicked);
-    connect(ui->pushButton_4, &QPushButton::clicked, this, &MainWindow::toolBrushClicked);
-    connect(ui->pushButton_5, &QPushButton::clicked, this, &MainWindow::toolBrushClicked);
-    connect(ui->pushButton_6, &QPushButton::clicked, this, &MainWindow::toolBrushClicked);
+    connect(ui->brushButton, &QPushButton::clicked, this, &MainWindow::toolBrushClicked);
+    connect(ui->lightenButton, &QPushButton::clicked, this, &MainWindow::toolBrushClicked);
+    connect(ui->darkenButton, &QPushButton::clicked, this, &MainWindow::toolBrushClicked);
+    connect(ui->gridButton, &QPushButton::clicked, this, &MainWindow::toolBrushClicked);
+    connect(ui->eyeDropButton, &QPushButton::clicked, this, &MainWindow::toolBrushClicked);
+    connect(ui->eraserButton, &QPushButton::clicked, this, &MainWindow::toolBrushClicked);
 }
 
 MainWindow::~MainWindow()
@@ -74,13 +74,21 @@ void MainWindow::updateAnimation()
 
 void MainWindow::toolBrushClicked()
 {
-    QObject *s = sender();
-    QString y = s->objectName();
+    QString buttonName = sender()->objectName();
 
-    QMessageBox h;
-    h.setText(y);
-    h.exec();
-    h.show();
+    if (buttonName == "brushButton")
+        brush = ToolBrush::Brush;
+    else if (buttonName == "lightenButton")
+        brush = ToolBrush::Lighten;
+    else if (buttonName == "darkenButton")
+        brush = ToolBrush::Darken;
+    else if (buttonName == "gridButton")
+        toggleGridDisplay();
+    else if (buttonName == "eyeDropButton")
+        brush = ToolBrush::EyeDrop;
+    else if (buttonName == "eraserButton")
+        brush = ToolBrush::Eraser;
+    // TODO need bucket button and hookups
 }
 
 void MainWindow::processMouseClick(QPoint pt)
@@ -108,6 +116,8 @@ void MainWindow::processMouseClick(QPoint pt)
         case ToolBrush::Bucket:
             currentFrame->fillColor(x, y, currentColor);
             break;
+        default:
+            currentFrame->changeColor(x, y, currentColor);
     }
 }
 
