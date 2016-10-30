@@ -47,13 +47,57 @@ void SpriteFrame::changeColor(int x, int y, QColor color)
 
 void SpriteFrame::fillColor(int x, int y, QColor replacementColor)
 {
-    if (outOfRange(x, y)) return;
+    QPoint first(x, y);
+    QColor targetColor = this->image.pixelColor(first);
 
-    QQueue<QColor> *queue = new QQueue<QColor>();
-    QColor targetColor = image.pixelColor(x, y);
-    queue->enqueue(targetColor);
+    //if (outOfRange(x, y)) return;
     if(targetColor == replacementColor)
         return;
+
+    //if(firstColor != targetColor)
+     //   return;
+
+    QQueue<QPoint> *queue = new QQueue<QPoint>();
+
+    queue->enqueue(first);
+
+    while(!queue->isEmpty())
+    {
+        QPoint n = queue->dequeue();
+        QColor nColor = this->image.pixelColor(n);
+
+        this->image.setPixelColor(n, replacementColor);
+
+        // West
+        QPoint west(n.x() - 1, n.y());
+        if((west.x() > 0 && west.x() < this->image.width()) && this->image.pixelColor(n.x() - 1, n.y()) == targetColor)
+        {
+            queue->enqueue(west);
+        }
+
+        // East
+        QPoint east(n.x() + 1, n.y());
+        if(east.x() >0 && east.x() < this->image.width() && this->image.pixelColor(n.x() + 1, n.y()) == targetColor)
+        {
+            queue->enqueue(east);
+        }
+
+        // North
+        QPoint north(n.x(), n.y() - 1);
+        if(north.y() > 0  && north.y() < this->image.height() && this->image.pixelColor(n.x(), n.y() - 1) == targetColor)
+        {
+            queue->enqueue(north);
+        }
+
+        // South
+        QPoint south(n.x(), n.y() + 1);
+        if(south.y() > 0 && south.y() < this->image.height() &&  this->image.pixelColor(n.x(), n.y() + 1) == targetColor)
+        {
+            queue->enqueue(south);
+        }
+
+    }
+
 
 
 

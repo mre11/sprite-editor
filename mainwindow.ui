@@ -32,10 +32,13 @@
        <x>10</x>
        <y>20</y>
        <width>228</width>
-       <height>221</height>
+       <height>291</height>
       </rect>
      </property>
      <layout class="QGridLayout" name="gridLayout">
+      <property name="spacing">
+       <number>0</number>
+      </property>
       <item row="0" column="1">
        <widget class="QPushButton" name="gridButton">
         <property name="text">
@@ -43,13 +46,6 @@
         </property>
         <property name="autoDefault">
          <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QPushButton" name="lightenButton">
-        <property name="text">
-         <string>Lighten</string>
         </property>
        </widget>
       </item>
@@ -66,13 +62,6 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="0">
-       <widget class="QPushButton" name="eyeDropButton">
-        <property name="text">
-         <string>Eye Drop</string>
-        </property>
-       </widget>
-      </item>
       <item row="2" column="1">
        <widget class="QPushButton" name="eraserButton">
         <property name="text">
@@ -84,6 +73,27 @@
        <widget class="QPushButton" name="darkenButton">
         <property name="text">
          <string>Darken</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QPushButton" name="lightenButton">
+        <property name="text">
+         <string>Lighten</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QPushButton" name="eyeDropButton">
+        <property name="text">
+         <string>Eye Drop</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QPushButton" name="fillButton">
+        <property name="text">
+         <string>Bucket</string>
         </property>
        </widget>
       </item>
@@ -217,7 +227,7 @@
      <x>0</x>
      <y>0</y>
      <width>1268</width>
-     <height>20</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

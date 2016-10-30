@@ -8,6 +8,7 @@
 #include <QColorDialog>
 #include <QImage>
 #include <QMessageBox>
+#include <QSignalMapper>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
@@ -60,6 +61,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->gridButton, &QPushButton::clicked, this, &MainWindow::toolBrushClicked);
     connect(ui->eyeDropButton, &QPushButton::clicked, this, &MainWindow::toolBrushClicked);
     connect(ui->eraserButton, &QPushButton::clicked, this, &MainWindow::toolBrushClicked);
+    connect(ui->fillButton, &QPushButton::clicked, this, &MainWindow::toolBrushClicked);
 }
 
 MainWindow::~MainWindow()
@@ -88,6 +90,8 @@ void MainWindow::toolBrushClicked()
         brush = ToolBrush::EyeDrop;
     else if (buttonName == "eraserButton")
         brush = ToolBrush::Eraser;
+    else if (buttonName == "fillButton")
+        brush = ToolBrush::Bucket;
     // TODO need bucket button and hookups
 }
 
@@ -114,7 +118,7 @@ void MainWindow::processMouseClick(QPoint pt)
             currentFrame->eyeDrop(x, y);
             break;
         case ToolBrush::Bucket:
-            currentFrame->fillColor(x, y, currentColor);
+            currentFrame->fillColor(x, y, QColor(230, 212, 150));
             break;
         default:
             currentFrame->changeColor(x, y, currentColor);
