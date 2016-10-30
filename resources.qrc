@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/Sprite">
+        <file>bucket.ico</file>
+    </qresource>
+</RCC>

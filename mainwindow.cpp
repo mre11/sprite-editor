@@ -8,6 +8,7 @@
 #include <QColorDialog>
 #include <QImage>
 #include <QMessageBox>
+#include <QSignalMapper>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
@@ -24,6 +25,9 @@ MainWindow::MainWindow(QWidget *parent)
     currentFrame = frames.getFrame(0);
     ui->canvas->setPixmap(QPixmap::fromImage(*(currentFrame->getImage())));
     ui->canvas->setStyleSheet("border: 2px solid black");
+    //ui->primaryColor->setGeometry(0, 0, 100, 100);
+    //ui->primaryColor->setStyleSheet("background-color:black;");
+    ui->primaryColorButton->setStyleSheet("background-color:" + currentColor.name() + ";");
     updateCanvas();
 
     //QListIterator h(list);
@@ -53,6 +57,7 @@ MainWindow::MainWindow(QWidget *parent)
             this, &MainWindow::processMouseClick);
     connect(currentFrame, &SpriteFrame::frameWasUpdated,
             this, &MainWindow::updateCanvas);
+    connect(ui->primaryColorButton, &QPushButton::clicked, this, &MainWindow::primaryColorClicked);
 
     //QObjectList list = ui->gridLayout->findChildren<QPushButton*>();
     connect(ui->brushButton, &QPushButton::clicked, this, &MainWindow::toolBrushClicked);
@@ -61,11 +66,19 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->gridButton, &QPushButton::clicked, this, &MainWindow::toolBrushClicked);
     connect(ui->eyeDropButton, &QPushButton::clicked, this, &MainWindow::toolBrushClicked);
     connect(ui->eraserButton, &QPushButton::clicked, this, &MainWindow::toolBrushClicked);
+    connect(ui->fillButton, &QPushButton::clicked, this, &MainWindow::toolBrushClicked);
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::primaryColorClicked()
+{
+    QColor color = QColorDialog::getColor(Qt::white, this);
+    ui->primaryColorButton->setStyleSheet("background-color:" + color.name() + ";");
+    currentColor = color;
 }
 
 void MainWindow::updateAnimation()
@@ -89,6 +102,8 @@ void MainWindow::toolBrushClicked()
         brush = ToolBrush::EyeDrop;
     else if (buttonName == "eraserButton")
         brush = ToolBrush::Eraser;
+    else if (buttonName == "fillButton")
+        brush = ToolBrush::Bucket;
     // TODO need bucket button and hookups
 }
 
