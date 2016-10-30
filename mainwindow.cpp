@@ -25,6 +25,9 @@ MainWindow::MainWindow(QWidget *parent)
     currentFrame = frames.getFrame(0);
     ui->canvas->setPixmap(QPixmap::fromImage(*(currentFrame->getImage())));
     ui->canvas->setStyleSheet("border: 2px solid black");
+    //ui->primaryColor->setGeometry(0, 0, 100, 100);
+    //ui->primaryColor->setStyleSheet("background-color:black;");
+    ui->primaryColorButton->setStyleSheet("background-color:" + currentColor.name() + ";");
     updateCanvas();
 
     //QListIterator h(list);
@@ -53,6 +56,7 @@ MainWindow::MainWindow(QWidget *parent)
             this, &MainWindow::processMouseClick);
     connect(currentFrame, &SpriteFrame::frameWasUpdated,
             this, &MainWindow::updateCanvas);
+    connect(ui->primaryColorButton, &QPushButton::clicked, this, &MainWindow::primaryColorClicked);
 
     //QObjectList list = ui->gridLayout->findChildren<QPushButton*>();
     connect(ui->brushButton, &QPushButton::clicked, this, &MainWindow::toolBrushClicked);
@@ -67,6 +71,13 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::primaryColorClicked()
+{
+    QColor color = QColorDialog::getColor(Qt::white, this);
+    ui->primaryColorButton->setStyleSheet("background-color:" + color.name() + ";");
+    currentColor = color;
 }
 
 void MainWindow::updateAnimation()
@@ -118,7 +129,7 @@ void MainWindow::processMouseClick(QPoint pt)
             currentFrame->eyeDrop(x, y);
             break;
         case ToolBrush::Bucket:
-            currentFrame->fillColor(x, y, QColor(230, 212, 150));
+            currentFrame->fillColor(x, y, currentColor);
             break;
         default:
             currentFrame->changeColor(x, y, currentColor);

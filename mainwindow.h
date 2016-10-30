@@ -37,6 +37,7 @@ public slots:
     void processMouseClick(QPoint pt);
     void updateCanvas();
     void toggleGridDisplay();
+    void primaryColorClicked();
 
 private:
     Ui::MainWindow *ui;
