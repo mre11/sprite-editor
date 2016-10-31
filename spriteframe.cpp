@@ -15,6 +15,7 @@ SpriteFrame::SpriteFrame(int width, int height, QObject *parent)
 
 void SpriteFrame::darken(int x, int y)
 {
+    // TODO: Doesn't darken properly. Once alpha hits 100, the color doesn't get any darker.
     if (outOfRange(x, y)) return;
 
     auto color = image.pixelColor(x, y);
