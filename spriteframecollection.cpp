@@ -55,3 +55,8 @@ SpriteFrame *SpriteFrameCollection::getFrame(int index)
 {
     return frames.at(index).data();
 }
+
+int SpriteFrameCollection::getNumbFrames()
+{
+    return frames.count();
+}

@@ -24,6 +24,7 @@ public:
     void load();
     void save(std::string filePath);
     SpriteFrame *getFrame(int index);
+    int getNumbFrames();
 
 signals:
 
