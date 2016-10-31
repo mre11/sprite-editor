@@ -8,7 +8,9 @@
 #include <QColorDialog>
 #include <QImage>
 #include <QMessageBox>
-#include <QSignalMapper>
+#include <QFileDialog>
+#include <QInputDialog>
+#include <QFormLayout>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
@@ -25,11 +27,11 @@ MainWindow::MainWindow(QWidget *parent)
     currentFrame = frames.getFrame(0);
     ui->canvas->setPixmap(QPixmap::fromImage(*(currentFrame->getImage())));
     ui->canvas->setStyleSheet("border: 2px solid black");
-    //ui->primaryColor->setGeometry(0, 0, 100, 100);
-    //ui->primaryColor->setStyleSheet("background-color:black;");
+
     ui->primaryColorButton->setStyleSheet("background-color:" + currentColor.name() + ";");
     updateCanvas();
 
+<<<<<<< HEAD
     //QListIterator h(list);
     //while(h->hasNext())
     //{
@@ -52,14 +54,14 @@ MainWindow::MainWindow(QWidget *parent)
     //ui->widget_2->setWindowFlags(Qt::Widget);
     //ui->scrollArea->setWidget(colorSelector);
 
+=======
+>>>>>>> bc9a4a82097e5d52394744fc9420ff2f79003451
     // Create connections
-    connect(ui->canvas, &SpriteCanvas::mouseClicked,
-            this, &MainWindow::processMouseClick);
-    connect(currentFrame, &SpriteFrame::frameWasUpdated,
-            this, &MainWindow::updateCanvas);
+    connect(ui->canvas, &SpriteCanvas::mouseClicked, this, &MainWindow::processMouseClick);
+    connect(currentFrame, &SpriteFrame::frameWasUpdated, this, &MainWindow::updateCanvas);
     connect(ui->primaryColorButton, &QPushButton::clicked, this, &MainWindow::primaryColorClicked);
 
-    //QObjectList list = ui->gridLayout->findChildren<QPushButton*>();
+    // Connect brush tools.
     connect(ui->brushButton, &QPushButton::clicked, this, &MainWindow::toolBrushClicked);
     connect(ui->lightenButton, &QPushButton::clicked, this, &MainWindow::toolBrushClicked);
     connect(ui->darkenButton, &QPushButton::clicked, this, &MainWindow::toolBrushClicked);
@@ -67,6 +69,13 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->eyeDropButton, &QPushButton::clicked, this, &MainWindow::toolBrushClicked);
     connect(ui->eraserButton, &QPushButton::clicked, this, &MainWindow::toolBrushClicked);
     connect(ui->fillButton, &QPushButton::clicked, this, &MainWindow::toolBrushClicked);
+
+    // File Menu Item connections
+    connect(ui->actionNew, &QAction::triggered, this, &MainWindow::fileMenuItemClicked);
+    connect(ui->actionOpen, &QAction::triggered, this, &MainWindow::fileMenuItemClicked);
+    connect(ui->actionSave, &QAction::triggered, this, &MainWindow::fileMenuItemClicked);
+    connect(ui->actionExit, &QAction::triggered, this, &MainWindow::fileMenuItemClicked);
+    connect(ui->actionSave_As, &QAction::triggered, this, &MainWindow::fileMenuItemClicked);
 }
 
 MainWindow::~MainWindow()
@@ -134,6 +143,51 @@ void MainWindow::processMouseClick(QPoint pt)
             break;
         default:
             currentFrame->changeColor(x, y, currentColor);
+    }
+}
+
+void MainWindow::fileMenuItemClicked()
+{
+    QString fileMenuItem = sender()->objectName();
+    QString fileName;
+    // TODO: Create QFileDialog first and apply all filters to the dialog before using.
+    if(fileMenuItem == "actionOpen")
+    {
+        fileName = QFileDialog::getOpenFileName(this, "Open File", QDir::homePath());
+        //frames.open(fileName.toStdString()); // Not working for some reason
+    }
+    else if(fileMenuItem == "actionNew")
+    {
+//        QDialog newDialog(this);
+//        QFormLayout newForm(&newDialog);
+
+//        QLineEdit *w = new QLineEdit(&newDialog);
+//        inputDialog->ad
+//        inputDialog->setOptions(QInputDialog::NoButtons);
+//        bool ok;
+//        QString wh = inputDialog->getText(NULL, "New Canvas", "Width", QLineEdit::Normal, QDir::home().dirName(), &ok);
+        // TODO: Make New Dialog Form.
+    }
+    else if(fileMenuItem == "actionSave")
+    {
+        // TODO: Call SpriteFrameCollect Save Method.
+        // TODO: Just have save_as? Or keep current location in spriteframecollection and save there.
+    }
+    else if(fileMenuItem == "actionSave_As")
+    {
+        fileName = QFileDialog::getSaveFileName(this, "Save As", QDir::homePath());
+        //frames.save(fileName.toStdString());
+    }
+    else if(fileMenuItem == "actionExit")
+    {
+        // TODO: Ask if anything needs to be saved.
+        QMessageBox::StandardButton response;
+        response = QMessageBox::question(this, "Exit", "Are you sure you want to exit?", QMessageBox::Yes|QMessageBox::No);
+
+        if(response == QMessageBox::Yes)
+        {
+            close();
+        }
     }
 }
 

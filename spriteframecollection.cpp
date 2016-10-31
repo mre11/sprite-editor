@@ -39,7 +39,7 @@ void SpriteFrameCollection::load()
 
 }
 
-void SpriteFrameCollection::save(string filePath)
+void SpriteFrameCollection::save(std::string filePath)
 {
     ofstream outFile;
     outFile.open(filePath);

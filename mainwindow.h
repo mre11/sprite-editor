@@ -39,6 +39,9 @@ public slots:
     void toggleGridDisplay();
     void primaryColorClicked();
 
+    // Process when the user clicks new, open, save, or exit.
+    void fileMenuItemClicked();
+
 private:
     Ui::MainWindow *ui;
     SpriteFrameCollection frames;
