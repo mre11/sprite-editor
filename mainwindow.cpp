@@ -54,7 +54,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->actionSave_As, &QAction::triggered, this, &MainWindow::fileMenuItemClicked);
 
     // Export Menu Item Connections
-    connect(ui->actionAs_Gif, &QAction::triggered, this, &MainWindow::exportMenuItemClicked);
+    connect(ui->menuExport, &QMenu::triggered, this, &MainWindow::exportMenuItemClicked);
 }
 
 MainWindow::~MainWindow()
