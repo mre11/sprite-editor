@@ -71,6 +71,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::primaryColorClicked()
 {
+    // TODO: For some reason if you have multiple frames, this method is called multiple times.
     QColor color = QColorDialog::getColor(Qt::white, this);
     ui->primaryColorButton->setStyleSheet("background-color:" + color.name() + ";");
     currentColor = color;
@@ -196,31 +197,69 @@ void MainWindow::exportMenuItemClicked()
     exporter.exportGif(fileName.toStdString(), frames);
 }
 
+/// Adds a new frame to the list view and the sprite frame collection.
 void MainWindow::on_addFrameButton_clicked()
 {
+    // Add a new frame to the last row.
     int lastRow = frameModel->rowCount();
 
+    //update ui and allow the user to edit the current frames name.
     frameModel->insertRows(lastRow, 1);
-
-
     ui->listView->setCurrentIndex(frameModel->index(lastRow));
     ui->listView->edit(frameModel->index(lastRow));
-    this->frames.addFrame();
-    currentFrame = this->frames.getFrame(lastRow);
+
+    // Add a new frame to the spriteframecollection and update the canvas.
+    frames.addFrame();
+    currentFrame = frames.getFrame(lastRow);
     ui->canvas->setPixmap(QPixmap::fromImage(*(currentFrame->getImage())));
     ui->canvas->setStyleSheet("border: 2px solid black");
     updateCanvas();
+
+    // Initialize current frames connections.
     connect(ui->canvas, &SpriteCanvas::mouseClicked, this, &MainWindow::processMouseClick);
     connect(currentFrame, &SpriteFrame::frameWasUpdated, this, &MainWindow::updateCanvas);
     connect(ui->primaryColorButton, &QPushButton::clicked, this, &MainWindow::primaryColorClicked);
 }
 
+/// Resets the current frame.
 void MainWindow::on_restFrameButton_clicked()
 {
     currentFrame->resetFrame();
 }
 
+/// Deletes the selected item in the list view.
 void MainWindow::on_deleteFrameButton_clicked()
 {
+    if(frames.getNumbFrames() > 1)
+    {
+        // Delete Sprite frame from the collection.
+        frames.deleteFrame(ui->listView->currentIndex().row());
 
+        // Delete the list view item from the model.
+        frameModel->removeRows(ui->listView->currentIndex().row(), 1);
+
+        // set the current frame to the first frame.
+        currentFrame = frames.getFrame(0);
+
+        // select the first list view item.
+        ui->listView->setCurrentIndex(frameModel->index(0, 0));
+
+        // update the canvas to the new current frame.
+        updateCanvas();
+    }
+    else
+    {
+        QMessageBox message;
+        message.setText("Cannot delete last frame!");
+        message.exec();
+    }
+}
+
+/// Method is called when the selection on the list view changes.
+/// Updates the canvas to the current frame.
+void MainWindow::on_listView_clicked(const QModelIndex &index)
+{
+    int selectedRow = index.row();
+    currentFrame = frames.getFrame(selectedRow);
+    updateCanvas();
 }

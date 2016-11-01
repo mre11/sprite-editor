@@ -53,6 +53,8 @@ private slots:
 
     void on_deleteFrameButton_clicked();
 
+    void on_listView_clicked(const QModelIndex &index);
+
 private:
     Ui::MainWindow *ui;
     SpriteFrameCollection frames;
