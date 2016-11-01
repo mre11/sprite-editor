@@ -15,14 +15,22 @@ class SpriteCanvas : public QLabel
 public:
     explicit SpriteCanvas(QWidget *parent = 0);
 
+    void toggleGridDisplay();
+    void setSpriteHeight(int height);
+    void setSpriteWidth(int width);
+
 signals:
     void mouseClicked(QPoint pt);
 
 
 protected:
-    //virtual void paintEvent(QPaintEvent *) override;
+    virtual void paintEvent(QPaintEvent *event) override;
     virtual void mousePressEvent(QMouseEvent *event);
     virtual void mouseMoveEvent(QMouseEvent *event);
+
+    bool gridOn;
+    int spriteHeight;
+    int spriteWidth;
 };
 
 #endif // SPRITECANVAS_H

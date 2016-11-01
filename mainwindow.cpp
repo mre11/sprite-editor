@@ -16,7 +16,7 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
       ui(new Ui::MainWindow),
-      frames(30, 25, this),
+      frames(20, 20, this),
       brush(ToolBrush::Brush),
       currentColor(0, 0, 0)
 {
@@ -26,7 +26,7 @@ MainWindow::MainWindow(QWidget *parent)
     canvasHeight = ui->canvas->height();
 
     currentFrame = frames.getFrame(0);
-    ui->canvas->setPixmap(QPixmap::fromImage(*(currentFrame->getImage())));
+    //ui->canvas->setPixmap(QPixmap::fromImage(*(currentFrame->getImage())));
     ui->canvas->setStyleSheet("border: 2px solid black");
 
     ui->primaryColorButton->setStyleSheet("background-color:" + currentColor.name() + ";");
@@ -174,8 +174,13 @@ void MainWindow::fileMenuItemClicked()
     }
     else if(fileMenuItem == "actionSave_As")
     {
+<<<<<<< HEAD
         fileName = QFileDialog::getSaveFileName(this, "Save As", QDir::homePath());
         frames.save(fileName.toStdString());
+=======
+        fileName = QFileDialog::getSaveFileName(this, "Save As", QDir::homePath(), "Sprite Sheet Project (*.ssp)");
+        frames.save(fileName);
+>>>>>>> 34eb73a986840e629c051aa4f253555584b0ee41
     }
     else if(fileMenuItem == "actionExit")
     {
@@ -196,12 +201,15 @@ void MainWindow::updateCanvas()
     auto image = currentFrame->getImage();
     QImage scaledImage = image->scaled(canvasWidth, canvasHeight, Qt::KeepAspectRatio);
     ui->canvas->setPixmap(QPixmap::fromImage(scaledImage));
+    ui->canvas->setSpriteHeight(image->height());
+    ui->canvas->setSpriteWidth(image->width());
     ui->canvas->update();
 }
 
 void MainWindow::toggleGridDisplay()
 {
-
+    ui->canvas->toggleGridDisplay();
+    ui->canvas->update();
 }
 
 void MainWindow::exportMenuItemClicked()
