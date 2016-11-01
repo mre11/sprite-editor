@@ -39,6 +39,11 @@ void SpriteFrameCollection::load()
 
 }
 
+void SpriteFrameCollection::open(string filePath)
+{
+    // TODO: Implement
+}
+
 void SpriteFrameCollection::save(std::string filePath)
 {
     ofstream outFile;

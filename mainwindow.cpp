@@ -69,11 +69,16 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+/// Changes the current color being used.
 void MainWindow::primaryColorClicked()
 {
-    // TODO: For some reason if you have multiple frames, this method is called multiple times.
-    QColor color = QColorDialog::getColor(Qt::white, this);
+    // Open the QColorDialog and display the current color.
+    QColor color = QColorDialog::getColor(currentColor, this);
+
+    // Update the button color to the selected color.
     ui->primaryColorButton->setStyleSheet("background-color:" + color.name() + ";");
+
+    // Set the current color to the new color.
     currentColor = color;
 }
 
@@ -82,6 +87,7 @@ void MainWindow::updateAnimation()
 
 }
 
+/// Handles updating the current sprite tool.
 void MainWindow::toolBrushClicked()
 {
     QString buttonName = sender()->objectName();
@@ -100,9 +106,13 @@ void MainWindow::toolBrushClicked()
         brush = ToolBrush::Eraser;
     else if (buttonName == "fillButton")
         brush = ToolBrush::Bucket;
-    // TODO need bucket button and hookups
+// Optional:
+//    QPushButton *tempButton = (QPushButton*)sender();
+//    tempButton->setStyleSheet("background-color:yellow");
 }
 
+
+/// Applys the current brush tool to the x,y location that was clicked.
 void MainWindow::processMouseClick(QPoint pt)
 {
     int x = pt.x() * frames.getWidth() / canvasWidth;
@@ -133,15 +143,17 @@ void MainWindow::processMouseClick(QPoint pt)
     }
 }
 
+/// Handles the filemenuitem events.
 void MainWindow::fileMenuItemClicked()
 {
     QString fileMenuItem = sender()->objectName();
     QString fileName;
+
     // TODO: Create QFileDialog first and apply all filters to the dialog before using.
     if(fileMenuItem == "actionOpen")
     {
         fileName = QFileDialog::getOpenFileName(this, "Open File", QDir::homePath());
-        //frames.open(fileName.toStdString()); // Not working for some reason
+        frames.open(fileName.toStdString());
     }
     else if(fileMenuItem == "actionNew")
     {
@@ -163,7 +175,7 @@ void MainWindow::fileMenuItemClicked()
     else if(fileMenuItem == "actionSave_As")
     {
         fileName = QFileDialog::getSaveFileName(this, "Save As", QDir::homePath());
-        //frames.save(fileName.toStdString());
+        frames.save(fileName.toStdString());
     }
     else if(fileMenuItem == "actionExit")
     {
@@ -178,6 +190,7 @@ void MainWindow::fileMenuItemClicked()
     }
 }
 
+/// Updates the canvas to display the new scaled image.
 void MainWindow::updateCanvas()
 {
     auto image = currentFrame->getImage();
@@ -218,7 +231,6 @@ void MainWindow::on_addFrameButton_clicked()
     // Initialize current frames connections.
     connect(ui->canvas, &SpriteCanvas::mouseClicked, this, &MainWindow::processMouseClick);
     connect(currentFrame, &SpriteFrame::frameWasUpdated, this, &MainWindow::updateCanvas);
-    connect(ui->primaryColorButton, &QPushButton::clicked, this, &MainWindow::primaryColorClicked);
 }
 
 /// Resets the current frame.
