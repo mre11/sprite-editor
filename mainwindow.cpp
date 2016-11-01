@@ -11,6 +11,7 @@
 #include <QFileDialog>
 #include <QInputDialog>
 #include <QFormLayout>
+#include <QStringListModel>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
@@ -31,6 +32,12 @@ MainWindow::MainWindow(QWidget *parent)
     ui->primaryColorButton->setStyleSheet("background-color:" + currentColor.name() + ";");
     updateCanvas();
 
+    // Create first frame in the listview.
+    frameModel = new QStringListModel(this);
+    QStringList frameOne;
+    frameOne << "frame1";
+    frameModel->setStringList(frameOne);
+    ui->listView->setModel(frameModel);
 
     // Create connections
     connect(ui->canvas, &SpriteCanvas::mouseClicked, this, &MainWindow::processMouseClick);
@@ -187,4 +194,33 @@ void MainWindow::exportMenuItemClicked()
 {
     QString fileName = QFileDialog::getSaveFileName(this, "Save As", QDir::homePath());
     exporter.exportGif(fileName.toStdString(), frames);
+}
+
+void MainWindow::on_addFrameButton_clicked()
+{
+    int lastRow = frameModel->rowCount();
+
+    frameModel->insertRows(lastRow, 1);
+
+
+    ui->listView->setCurrentIndex(frameModel->index(lastRow));
+    ui->listView->edit(frameModel->index(lastRow));
+    this->frames.addFrame();
+    currentFrame = this->frames.getFrame(lastRow);
+    ui->canvas->setPixmap(QPixmap::fromImage(*(currentFrame->getImage())));
+    ui->canvas->setStyleSheet("border: 2px solid black");
+    updateCanvas();
+    connect(ui->canvas, &SpriteCanvas::mouseClicked, this, &MainWindow::processMouseClick);
+    connect(currentFrame, &SpriteFrame::frameWasUpdated, this, &MainWindow::updateCanvas);
+    connect(ui->primaryColorButton, &QPushButton::clicked, this, &MainWindow::primaryColorClicked);
+}
+
+void MainWindow::on_restFrameButton_clicked()
+{
+    currentFrame->resetFrame();
+}
+
+void MainWindow::on_deleteFrameButton_clicked()
+{
+
 }

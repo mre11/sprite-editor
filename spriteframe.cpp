@@ -140,3 +140,9 @@ bool SpriteFrame::outOfRange(int x, int y)
 {
     return x < 0 || y < 0 || x >= image.width() || y >= image.height();
 }
+
+void SpriteFrame::resetFrame()
+{
+    image.fill(QColor(0, 0, 0, 0));
+    emit frameWasUpdated(&image);
+}
