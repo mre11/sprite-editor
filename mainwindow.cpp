@@ -31,31 +31,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->primaryColorButton->setStyleSheet("background-color:" + currentColor.name() + ";");
     updateCanvas();
 
-<<<<<<< HEAD
-    //QListIterator h(list);
-    //while(h->hasNext())
-    //{
-    //    QPushButton *tempbutton = h.next();
-    //    connect(tempbutton, &QPushButton::clicked, this, &MainWindow::toolBrushClicked);
-    //}
 
-   // for(int i = 1; i <= 6; i++)
-    //{
-    //   QPushButton *button = ui->gridLayout->findChild<QPushButton*>("pushButton_" + i);
-     //  connect(button, &QPushButton::clicked, this, &MainWindow::toolBrushClicked);
-    //}
-
-    // TODO: Try to move to the group box.
-    //QColorDialog *colorSelector = new QColorDialog(ui->widget);
-    //colorSelector->setWindowFlags(Qt::Widget);
-    //colorSelector->setOptions(QColorDialog::DontUseNativeDialog | QColorDialog::NoButtons);
-
-
-    //ui->widget_2->setWindowFlags(Qt::Widget);
-    //ui->scrollArea->setWidget(colorSelector);
-
-=======
->>>>>>> bc9a4a82097e5d52394744fc9420ff2f79003451
     // Create connections
     connect(ui->canvas, &SpriteCanvas::mouseClicked, this, &MainWindow::processMouseClick);
     connect(currentFrame, &SpriteFrame::frameWasUpdated, this, &MainWindow::updateCanvas);
@@ -76,6 +52,9 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->actionSave, &QAction::triggered, this, &MainWindow::fileMenuItemClicked);
     connect(ui->actionExit, &QAction::triggered, this, &MainWindow::fileMenuItemClicked);
     connect(ui->actionSave_As, &QAction::triggered, this, &MainWindow::fileMenuItemClicked);
+
+    // Export Menu Item Connections
+    connect(ui->actionAs_Gif, &QAction::triggered, this, &MainWindow::exportMenuItemClicked);
 }
 
 MainWindow::~MainWindow()
@@ -202,4 +181,10 @@ void MainWindow::updateCanvas()
 void MainWindow::toggleGridDisplay()
 {
 
+}
+
+void MainWindow::exportMenuItemClicked()
+{
+    QString fileName = QFileDialog::getSaveFileName(this, "Save As", QDir::homePath());
+    exporter.exportGif(fileName.toStdString(), frames);
 }

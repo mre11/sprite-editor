@@ -8,6 +8,7 @@
 #include <QMainWindow>
 #include <QTimer>
 #include "spriteframecollection.h"
+#include "gifexporter.h"
 
 namespace Ui {
 class MainWindow;
@@ -42,6 +43,8 @@ public slots:
     // Process when the user clicks new, open, save, or exit.
     void fileMenuItemClicked();
 
+    void exportMenuItemClicked();
+
 private:
     Ui::MainWindow *ui;
     SpriteFrameCollection frames;
@@ -49,6 +52,7 @@ private:
     SpriteFrame *currentFrame;
     ToolBrush brush;
     QColor currentColor;
+    GifExporter exporter;
 
     int canvasWidth;
     int canvasHeight;
