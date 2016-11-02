@@ -18,7 +18,8 @@ MainWindow::MainWindow(QWidget *parent)
       ui(new Ui::MainWindow),
       frames(20, 20, this),
       brush(ToolBrush::Brush),
-      currentColor(0, 0, 0)
+      currentColor(0, 0, 0),
+      frameModel(this)
 {
     ui->setupUi(this);
 
@@ -27,18 +28,16 @@ MainWindow::MainWindow(QWidget *parent)
 
     currentFrame = frames.getFrame(0);
     ui->canvas->setStyleSheet("border: 2px solid black");
-
-    ui->primaryColorButton->setStyleSheet("background-color:" + currentColor.name() + ";");
     updateCanvas();
 
-    // Create first frame in the listview.
-    frameModel = new QStringListModel(this);
-    QStringList frameOne;
-    frameOne << "frame1";
-    frameModel->setStringList(frameOne);
-    ui->listView->setModel(frameModel);
+    ui->primaryColorButton->setStyleSheet("background-color:" + currentColor.name() + ";");    
 
-    // Create connections
+    // Create first frame in the listview.
+    QStringList stringList;
+    stringList << "frame1";
+    frameModel.setStringList(stringList);
+    ui->listView->setModel(&frameModel);
+
     connect(ui->canvas, &SpriteCanvas::mouseClicked, this, &MainWindow::processMouseClick);
     connect(currentFrame, &SpriteFrame::frameWasUpdated, this, &MainWindow::updateCanvas);
     connect(ui->primaryColorButton, &QPushButton::clicked, this, &MainWindow::primaryColorClicked);
@@ -208,7 +207,8 @@ void MainWindow::toggleGridDisplay()
 
 void MainWindow::exportMenuItemClicked()
 {
-    QString fileName = QFileDialog::getSaveFileName(this, "Save As", QDir::homePath());
+    QString fileName = QFileDialog::getSaveFileName(this, "Export", QDir::homePath(), "Image (*.gif)");
+    GifExporter exporter;
     exporter.exportGif(fileName, frames);
 }
 
@@ -216,22 +216,19 @@ void MainWindow::exportMenuItemClicked()
 void MainWindow::on_addFrameButton_clicked()
 {
     // Add a new frame to the last row.
-    int lastRow = frameModel->rowCount();
+    int lastRow = frameModel.rowCount();
 
     //update ui and allow the user to edit the current frames name.
-    frameModel->insertRows(lastRow, 1);
-    ui->listView->setCurrentIndex(frameModel->index(lastRow));
-    ui->listView->edit(frameModel->index(lastRow));
+    frameModel.insertRows(lastRow, 1);
+    ui->listView->setCurrentIndex(frameModel.index(lastRow));
+    ui->listView->edit(frameModel.index(lastRow));
 
     // Add a new frame to the spriteframecollection and update the canvas.
     frames.addFrame();
     currentFrame = frames.getFrame(lastRow);
-    ui->canvas->setPixmap(QPixmap::fromImage(*(currentFrame->getImage())));
-    ui->canvas->setStyleSheet("border: 2px solid black");
     updateCanvas();
 
     // Initialize current frames connections.
-    connect(ui->canvas, &SpriteCanvas::mouseClicked, this, &MainWindow::processMouseClick);
     connect(currentFrame, &SpriteFrame::frameWasUpdated, this, &MainWindow::updateCanvas);
 }
 
@@ -244,19 +241,19 @@ void MainWindow::on_restFrameButton_clicked()
 /// Deletes the selected item in the list view.
 void MainWindow::on_deleteFrameButton_clicked()
 {
-    if(frames.getNumbFrames() > 1)
+    if(frames.count() > 1)
     {
         // Delete Sprite frame from the collection.
         frames.deleteFrame(ui->listView->currentIndex().row());
 
         // Delete the list view item from the model.
-        frameModel->removeRows(ui->listView->currentIndex().row(), 1);
+        frameModel.removeRows(ui->listView->currentIndex().row(), 1);
 
         // set the current frame to the first frame.
         currentFrame = frames.getFrame(0);
 
         // select the first list view item.
-        ui->listView->setCurrentIndex(frameModel->index(0, 0));
+        ui->listView->setCurrentIndex(frameModel.index(0, 0));
 
         // update the canvas to the new current frame.
         updateCanvas();

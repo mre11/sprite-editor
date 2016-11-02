@@ -24,7 +24,7 @@ public:
     void open(QString filePath);
     void save(QString filePath);
     SpriteFrame *getFrame(int index);
-    int getNumbFrames();
+    int count();
 
 signals:
 

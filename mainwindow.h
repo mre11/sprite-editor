@@ -48,11 +48,8 @@ public slots:
 
 private slots:
     void on_addFrameButton_clicked();
-
     void on_restFrameButton_clicked();
-
     void on_deleteFrameButton_clicked();
-
     void on_listView_clicked(const QModelIndex &index);
 
 private:
@@ -62,8 +59,7 @@ private:
     SpriteFrame *currentFrame;
     ToolBrush brush;
     QColor currentColor;
-    GifExporter exporter;
-    QStringListModel *frameModel;
+    QStringListModel frameModel;
 
     int canvasWidth;
     int canvasHeight;
