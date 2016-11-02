@@ -13,38 +13,46 @@
 #include <QFormLayout>
 #include <QStringListModel>
 
+#include "gifexporter.h"
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
       ui(new Ui::MainWindow),
       frames(20, 20, this),
       brush(ToolBrush::Brush),
-      currentColor(0, 0, 0)
+      currentColor(0, 0, 0),
+      frameModel(this),
+      currentFileName(""),
+      animationTimer(this),
+      animationFrameIndex(0)
 {
     ui->setupUi(this);
 
+    currentFrame = frames.getFrame(0);
+
+    // Set up canvas
     canvasWidth = ui->canvas->width();
     canvasHeight = ui->canvas->height();
-
-    currentFrame = frames.getFrame(0);
-    //ui->canvas->setPixmap(QPixmap::fromImage(*(currentFrame->getImage())));
-    ui->canvas->setStyleSheet("border: 2px solid black");
-
-    ui->primaryColorButton->setStyleSheet("background-color:" + currentColor.name() + ";");
     updateCanvas();
 
-    // Create first frame in the listview.
-    frameModel = new QStringListModel(this);
-    QStringList frameOne;
-    frameOne << "frame1";
-    frameModel->setStringList(frameOne);
-    ui->listView->setModel(frameModel);
+    ui->primaryColorButton->setStyleSheet("background-color:" + currentColor.name() + ";");    
 
-    // Create connections
+    // Create first frame in the listview.
+    QStringList stringList;
+    stringList << "frame1";
+    frameModel.setStringList(stringList);
+    ui->listView->setModel(&frameModel);
+
+    ui->animationFpsDisplayLabel->setNum(ui->animationFpsSlider->value());
+    ui->animationDisplay->setPixmap(QPixmap::fromImage(*(currentFrame->getImage())));
+    setAnimationTimerInterval(ui->animationFpsSlider->value());
+    animationTimer.start();
+
     connect(ui->canvas, &SpriteCanvas::mouseClicked, this, &MainWindow::processMouseClick);
     connect(currentFrame, &SpriteFrame::frameWasUpdated, this, &MainWindow::updateCanvas);
     connect(ui->primaryColorButton, &QPushButton::clicked, this, &MainWindow::primaryColorClicked);
 
-    // Connect brush tools.
+    // Tools connections
     connect(ui->brushButton, &QPushButton::clicked, this, &MainWindow::toolBrushClicked);
     connect(ui->lightenButton, &QPushButton::clicked, this, &MainWindow::toolBrushClicked);
     connect(ui->darkenButton, &QPushButton::clicked, this, &MainWindow::toolBrushClicked);
@@ -52,6 +60,11 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->eyeDropButton, &QPushButton::clicked, this, &MainWindow::toolBrushClicked);
     connect(ui->eraserButton, &QPushButton::clicked, this, &MainWindow::toolBrushClicked);
     connect(ui->fillButton, &QPushButton::clicked, this, &MainWindow::toolBrushClicked);
+
+    // Animation display connections
+    connect(ui->animationFpsSlider, SIGNAL(valueChanged(int)), ui->animationFpsDisplayLabel, SLOT(setNum(int)));
+    connect(ui->animationFpsSlider, &QSlider::valueChanged, this, &MainWindow::setAnimationTimerInterval);
+    connect(&animationTimer, &QTimer::timeout, this, &MainWindow::updateAnimation);
 
     // File Menu Item connections
     connect(ui->actionNew, &QAction::triggered, this, &MainWindow::fileMenuItemClicked);
@@ -61,7 +74,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->actionSave_As, &QAction::triggered, this, &MainWindow::fileMenuItemClicked);
 
     // Export Menu Item Connections
-    connect(ui->menuExport, &QMenu::triggered, this, &MainWindow::exportMenuItemClicked);
+    connect(ui->actionExport_GIF, &QAction::triggered, this, &MainWindow::exportMenuItemClicked);
 }
 
 MainWindow::~MainWindow()
@@ -84,7 +97,32 @@ void MainWindow::primaryColorClicked()
 
 void MainWindow::updateAnimation()
 {
+    if (frames.count() > 1)
+    {
+        if (++animationFrameIndex >= frames.count())
+            animationFrameIndex = 0;
 
+        SpriteFrame *frame = frames.getFrame(animationFrameIndex);
+        const QImage *actualImage = frame->getImage();
+        if (ui->animationScaledButton->isChecked())
+        {
+            int scaledWidth = ui->animationDisplay->width();
+            int scaledHeight = ui->animationDisplay->height();
+            QImage scaledImage = actualImage->scaled(scaledWidth, scaledHeight, Qt::KeepAspectRatio);
+            ui->animationDisplay->setPixmap(QPixmap::fromImage(scaledImage));
+        }
+        else
+        {
+            ui->animationDisplay->setPixmap(QPixmap::fromImage(*actualImage));
+        }
+
+        ui->animationDisplay->update();
+    }
+}
+
+void MainWindow::setAnimationTimerInterval(int fps)
+{
+    animationTimer.setInterval(1000 / fps); // convert fps to milliseconds
 }
 
 /// Handles updating the current sprite tool.
@@ -147,13 +185,12 @@ void MainWindow::processMouseClick(QPoint pt)
 void MainWindow::fileMenuItemClicked()
 {
     QString fileMenuItem = sender()->objectName();
-    QString fileName;
 
     // TODO: Create QFileDialog first and apply all filters to the dialog before using.
     if(fileMenuItem == "actionOpen")
     {
-        fileName = QFileDialog::getOpenFileName(this, "Open File", QDir::homePath());
-        frames.open(fileName.toStdString());
+        currentFileName = QFileDialog::getOpenFileName(this, "Open", QDir::homePath(), "Sprite Sheet Project (*.ssp)");
+        frames.open(currentFileName);
     }
     else if(fileMenuItem == "actionNew")
     {
@@ -169,13 +206,18 @@ void MainWindow::fileMenuItemClicked()
     }
     else if(fileMenuItem == "actionSave")
     {
-        // TODO: Call SpriteFrameCollect Save Method.
-        // TODO: Just have save_as? Or keep current location in spriteframecollection and save there.
+        // TODO get rid of code duplication between save and save as
+        if (currentFileName.isEmpty())
+        {
+            currentFileName = QFileDialog::getSaveFileName(this, "Save As", QDir::homePath(), "Sprite Sheet Project (*.ssp)");
+        }
+
+        frames.save(currentFileName);
     }
     else if(fileMenuItem == "actionSave_As")
     {
-        fileName = QFileDialog::getSaveFileName(this, "Save As", QDir::homePath(), "Sprite Sheet Project (*.ssp)");
-        frames.save(fileName.toStdString());
+        currentFileName = QFileDialog::getSaveFileName(this, "Save As", QDir::homePath(), "Sprite Sheet Project (*.ssp)");
+        frames.save(currentFileName);
     }
     else if(fileMenuItem == "actionExit")
     {
@@ -209,31 +251,29 @@ void MainWindow::toggleGridDisplay()
 
 void MainWindow::exportMenuItemClicked()
 {
-    QString fileName = QFileDialog::getSaveFileName(this, "Save As", QDir::homePath());
-    exporter.exportGif(fileName.toStdString(), frames);
+    QString fileName = QFileDialog::getSaveFileName(this, "Export", QDir::homePath(), "Image (*.gif)");
+    GifExporter exporter;
+    exporter.exportGif(fileName, frames);
 }
 
 /// Adds a new frame to the list view and the sprite frame collection.
 void MainWindow::on_addFrameButton_clicked()
 {
     // Add a new frame to the last row.
-    int lastRow = frameModel->rowCount();
+    int lastRow = frameModel.rowCount();
 
     //update ui and allow the user to edit the current frames name.
-    frameModel->insertRows(lastRow, 1);
-    ui->listView->setCurrentIndex(frameModel->index(lastRow));
-    ui->listView->edit(frameModel->index(lastRow));
+    frameModel.insertRows(lastRow, 1);
+    ui->listView->setCurrentIndex(frameModel.index(lastRow));
+    ui->listView->edit(frameModel.index(lastRow));
 
     // Add a new frame to the spriteframecollection and update the canvas.
     frames.addFrame();
     currentFrame = frames.getFrame(lastRow);
-    ui->canvas->setPixmap(QPixmap::fromImage(*(currentFrame->getImage())));
-    ui->canvas->setStyleSheet("border: 2px solid black");
     updateCanvas();
 
     // Initialize current frames connections.
-    connect(ui->canvas, &SpriteCanvas::mouseClicked, this, &MainWindow::processMouseClick);
-    connect(currentFrame, &SpriteFrame::frameWasUpdated, this, &MainWindow::updateCanvas);
+    connect(currentFrame, &SpriteFrame::frameWasUpdated, this, &MainWindow::updateCanvas); // TODO maybe this isn't needed?
 }
 
 /// Resets the current frame.
@@ -245,19 +285,19 @@ void MainWindow::on_restFrameButton_clicked()
 /// Deletes the selected item in the list view.
 void MainWindow::on_deleteFrameButton_clicked()
 {
-    if(frames.getNumbFrames() > 1)
+    if(frames.count() > 1)
     {
         // Delete Sprite frame from the collection.
         frames.deleteFrame(ui->listView->currentIndex().row());
 
         // Delete the list view item from the model.
-        frameModel->removeRows(ui->listView->currentIndex().row(), 1);
+        frameModel.removeRows(ui->listView->currentIndex().row(), 1);
 
         // set the current frame to the first frame.
         currentFrame = frames.getFrame(0);
 
         // select the first list view item.
-        ui->listView->setCurrentIndex(frameModel->index(0, 0));
+        ui->listView->setCurrentIndex(frameModel.index(0, 0));
 
         // update the canvas to the new current frame.
         updateCanvas();

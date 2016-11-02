@@ -8,7 +8,6 @@
 #include <QMainWindow>
 #include <QTimer>
 #include "spriteframecollection.h"
-#include "gifexporter.h"
 #include <QStringListModel>
 
 namespace Ui {
@@ -35,6 +34,7 @@ public:
 
 public slots:
     void updateAnimation();
+    void setAnimationTimerInterval(int fps);
     void toolBrushClicked();
     void processMouseClick(QPoint pt);
     void updateCanvas();
@@ -48,25 +48,28 @@ public slots:
 
 private slots:
     void on_addFrameButton_clicked();
-
     void on_restFrameButton_clicked();
-
     void on_deleteFrameButton_clicked();
-
     void on_listView_clicked(const QModelIndex &index);
 
 private:
     Ui::MainWindow *ui;
+
     SpriteFrameCollection frames;
-    QTimer animationTimer;
     SpriteFrame *currentFrame;
+    int animationFrameIndex;
+
     ToolBrush brush;
     QColor currentColor;
-    GifExporter exporter;
-    QStringListModel *frameModel;
+
+    QStringListModel frameModel;
 
     int canvasWidth;
     int canvasHeight;
+
+    QTimer animationTimer;
+
+    QString currentFileName;
 };
 
 #endif // MAINWINDOW_H

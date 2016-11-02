@@ -17,17 +17,17 @@
    <property name="styleSheet">
     <string notr="true"/>
    </property>
-   <widget class="QGroupBox" name="groupBox">
+   <widget class="QGroupBox" name="toolsGroupBox">
     <property name="geometry">
      <rect>
-      <x>0</x>
-      <y>0</y>
+      <x>10</x>
+      <y>10</y>
       <width>241</width>
-      <height>661</height>
+      <height>451</height>
      </rect>
     </property>
     <property name="title">
-     <string>GroupBox</string>
+     <string>Tools</string>
     </property>
     <widget class="QWidget" name="gridLayoutWidget">
      <property name="geometry">
@@ -258,73 +258,34 @@
      </widget>
     </widget>
    </widget>
-   <widget class="QGroupBox" name="groupBox_2">
+   <widget class="QGroupBox" name="framesGroupBox">
     <property name="geometry">
      <rect>
-      <x>900</x>
-      <y>0</y>
-      <width>361</width>
-      <height>651</height>
+      <x>970</x>
+      <y>380</y>
+      <width>280</width>
+      <height>281</height>
      </rect>
     </property>
     <property name="title">
-     <string>GroupBox</string>
+     <string>Frames</string>
     </property>
     <widget class="QListView" name="listView">
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>20</y>
-       <width>341</width>
-       <height>321</height>
+       <y>30</y>
+       <width>261</width>
+       <height>191</height>
       </rect>
-     </property>
-    </widget>
-    <widget class="QSlider" name="horizontalSlider">
-     <property name="geometry">
-      <rect>
-       <x>9</x>
-       <y>391</y>
-       <width>211</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label">
-     <property name="geometry">
-      <rect>
-       <x>240</x>
-       <y>390</y>
-       <width>21</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>FPS</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_2">
-     <property name="geometry">
-      <rect>
-       <x>280</x>
-       <y>400</y>
-       <width>55</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>TextLabel</string>
      </property>
     </widget>
     <widget class="QWidget" name="horizontalLayoutWidget">
      <property name="geometry">
       <rect>
-       <x>9</x>
-       <y>350</y>
-       <width>341</width>
+       <x>10</x>
+       <y>230</y>
+       <width>261</width>
        <height>41</height>
       </rect>
      </property>
@@ -395,21 +356,133 @@
    <widget class="SpriteCanvas" name="canvas">
     <property name="geometry">
      <rect>
-      <x>270</x>
+      <x>300</x>
       <y>20</y>
       <width>600</width>
       <height>600</height>
      </rect>
     </property>
+    <property name="frameShape">
+     <enum>QFrame::Panel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Plain</enum>
+    </property>
     <property name="lineWidth">
      <number>1</number>
     </property>
     <property name="text">
-     <string>TextLabel</string>
+     <string>(canvas)</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
     </property>
+   </widget>
+   <widget class="QGroupBox" name="animationGroupBox">
+    <property name="geometry">
+     <rect>
+      <x>970</x>
+      <y>10</y>
+      <width>280</width>
+      <height>361</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Animation</string>
+    </property>
+    <widget class="QWidget" name="horizontalLayoutWidget_2">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>280</y>
+       <width>261</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <widget class="QSlider" name="animationFpsSlider">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimum">
+         <number>1</number>
+        </property>
+        <property name="maximum">
+         <number>60</number>
+        </property>
+        <property name="sliderPosition">
+         <number>12</number>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="animationFpsDisplayLabel">
+        <property name="text">
+         <string>(fps)</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="animationFpsLabel">
+        <property name="text">
+         <string>FPS</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+    <widget class="QWidget" name="horizontalLayoutWidget_3">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>320</y>
+       <width>171</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_3">
+      <item>
+       <widget class="QRadioButton" name="animationActualButton">
+        <property name="text">
+         <string>Actual Size</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="animationScaledButton">
+        <property name="text">
+         <string>Scaled Size</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+    <widget class="QLabel" name="animationDisplay">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>30</y>
+       <width>240</width>
+       <height>240</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>(animation)</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
@@ -438,7 +511,11 @@
     <property name="title">
      <string>Export</string>
     </property>
+<<<<<<< HEAD
     <addaction name="actionAs_Gif"/>
+=======
+    <addaction name="actionExport_GIF"/>
+>>>>>>> 86c9962b14bf24b55fa4af4113db1b99bcb1f2ea
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuExport"/>
@@ -473,6 +550,7 @@
     <string>Open</string>
    </property>
   </action>
+<<<<<<< HEAD
   <action name="actionAs_gif">
    <property name="text">
     <string>As .gif</string>
@@ -481,6 +559,11 @@
   <action name="actionAs_Gif">
    <property name="text">
     <string>As Gif</string>
+=======
+  <action name="actionExport_GIF">
+   <property name="text">
+    <string>Export GIF</string>
+>>>>>>> 86c9962b14bf24b55fa4af4113db1b99bcb1f2ea
    </property>
   </action>
  </widget>

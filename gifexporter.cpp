@@ -1,8 +1,9 @@
 #include "gifexporter.h"
 #include "gif-h/gif.h"
 
-void GifExporter::exportGif(std::string fileName, SpriteFrameCollection &frames)
+void GifExporter::exportGif(QString fileName, SpriteFrameCollection &frames)
 {
+<<<<<<< HEAD
     // From readme.md:
     //Usage:
     //-------------------
@@ -30,7 +31,21 @@ void GifExporter::exportGif(std::string fileName, SpriteFrameCollection &frames)
             image[(j*3)+2] = qBlue(pixel);
         }
         GifWriteFrame(gifwriter, image, frames.getWidth(), frames.getHeight(), 10);
+=======
+    // Create a GifWriter struct.
+    GifWriter gifwriter;
+
+    // Pass the struct to GifBegin() to initialize values and write the file header.
+    GifBegin(&gifwriter, fileName.toStdString().c_str(), frames.getWidth(), frames.getHeight(), 10);
+
+    // Pass frames of the animation to GifWriteFrame().
+    int numbFrames = frames.count();
+    for(int i = 0; i < numbFrames; i++)
+    {
+        //GifWriteFrame(&gifwriter, frames.getFrame(i)->getImage(), frames.getWidth(), frames.getHeight(), 10);
+>>>>>>> 86c9962b14bf24b55fa4af4113db1b99bcb1f2ea
     }
-    //Finally, call GifEnd() to close the file handle and free memory.
-    GifEnd(gifwriter);
+
+    // Finally, call GifEnd() to close the file handle and free memory.
+    GifEnd(&gifwriter);
 }

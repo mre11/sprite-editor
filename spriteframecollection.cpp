@@ -34,6 +34,7 @@ int SpriteFrameCollection::getHeight()
     return frameHeight;
 }
 
+<<<<<<< HEAD
 void SpriteFrameCollection::load()
 {
 
@@ -41,14 +42,17 @@ void SpriteFrameCollection::load()
 
 
 void SpriteFrameCollection::open(std::string filePath)
+=======
+void SpriteFrameCollection::open(QString filePath)
+>>>>>>> 86c9962b14bf24b55fa4af4113db1b99bcb1f2ea
 {
     // TODO: Implement
 }
 
-void SpriteFrameCollection::save(std::string filePath)
+void SpriteFrameCollection::save(QString filePath)
 {
     ofstream outFile;
-    outFile.open(filePath);
+    outFile.open(filePath.toStdString());
 
     outFile << frameHeight << " " << frameWidth << '\n';
     outFile << frames.size() << '\n';
@@ -62,7 +66,7 @@ SpriteFrame *SpriteFrameCollection::getFrame(int index)
     return frames.at(index).data();
 }
 
-int SpriteFrameCollection::getNumbFrames()
+int SpriteFrameCollection::count()
 {
     return frames.count();
 }
