@@ -28,8 +28,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     // Set up canvas
     canvasWidth = ui->canvas->width();
-    canvasHeight = ui->canvas->height();    
-    ui->canvas->setStyleSheet("border: 2px solid black");
+    canvasHeight = ui->canvas->height();
     updateCanvas();
 
     ui->primaryColorButton->setStyleSheet("background-color:" + currentColor.name() + ";");    
