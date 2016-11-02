@@ -357,9 +357,9 @@
     <property name="geometry">
      <rect>
       <x>300</x>
-      <y>15</y>
-      <width>625</width>
-      <height>625</height>
+      <y>20</y>
+      <width>600</width>
+      <height>600</height>
      </rect>
     </property>
     <property name="frameShape">
@@ -401,7 +401,13 @@
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <item>
-       <widget class="QSlider" name="fpsSlider">
+       <widget class="QSlider" name="animationFpsSlider">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="minimum">
          <number>1</number>
         </property>
@@ -437,7 +443,7 @@
       <rect>
        <x>10</x>
        <y>320</y>
-       <width>261</width>
+       <width>171</width>
        <height>31</height>
       </rect>
      </property>
@@ -446,6 +452,9 @@
        <widget class="QRadioButton" name="animationActualButton">
         <property name="text">
          <string>Actual Size</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
         </property>
        </widget>
       </item>

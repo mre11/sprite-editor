@@ -13,6 +13,8 @@
 #include <QFormLayout>
 #include <QStringListModel>
 
+#include "gifexporter.h"
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
       ui(new Ui::MainWindow),
@@ -20,7 +22,9 @@ MainWindow::MainWindow(QWidget *parent)
       brush(ToolBrush::Brush),
       currentColor(0, 0, 0),
       frameModel(this),
-      currentFileName("")
+      currentFileName(""),
+      animationTimer(this),
+      animationFrameIndex(0)
 {
     ui->setupUi(this);
 
@@ -39,11 +43,16 @@ MainWindow::MainWindow(QWidget *parent)
     frameModel.setStringList(stringList);
     ui->listView->setModel(&frameModel);
 
+    ui->animationFpsDisplayLabel->setNum(ui->animationFpsSlider->value());
+    ui->animationDisplay->setPixmap(QPixmap::fromImage(*(currentFrame->getImage())));
+    setAnimationTimerInterval(ui->animationFpsSlider->value());
+    animationTimer.start();
+
     connect(ui->canvas, &SpriteCanvas::mouseClicked, this, &MainWindow::processMouseClick);
     connect(currentFrame, &SpriteFrame::frameWasUpdated, this, &MainWindow::updateCanvas);
     connect(ui->primaryColorButton, &QPushButton::clicked, this, &MainWindow::primaryColorClicked);
 
-    // Connect brush tools.
+    // Tools connections
     connect(ui->brushButton, &QPushButton::clicked, this, &MainWindow::toolBrushClicked);
     connect(ui->lightenButton, &QPushButton::clicked, this, &MainWindow::toolBrushClicked);
     connect(ui->darkenButton, &QPushButton::clicked, this, &MainWindow::toolBrushClicked);
@@ -51,6 +60,11 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->eyeDropButton, &QPushButton::clicked, this, &MainWindow::toolBrushClicked);
     connect(ui->eraserButton, &QPushButton::clicked, this, &MainWindow::toolBrushClicked);
     connect(ui->fillButton, &QPushButton::clicked, this, &MainWindow::toolBrushClicked);
+
+    // Animation display connections
+    connect(ui->animationFpsSlider, SIGNAL(valueChanged(int)), ui->animationFpsDisplayLabel, SLOT(setNum(int)));
+    connect(ui->animationFpsSlider, &QSlider::valueChanged, this, &MainWindow::setAnimationTimerInterval);
+    connect(&animationTimer, &QTimer::timeout, this, &MainWindow::updateAnimation);
 
     // File Menu Item connections
     connect(ui->actionNew, &QAction::triggered, this, &MainWindow::fileMenuItemClicked);
@@ -83,7 +97,32 @@ void MainWindow::primaryColorClicked()
 
 void MainWindow::updateAnimation()
 {
+    if (frames.count() > 1)
+    {
+        if (++animationFrameIndex >= frames.count())
+            animationFrameIndex = 0;
 
+        SpriteFrame *frame = frames.getFrame(animationFrameIndex);
+        const QImage *actualImage = frame->getImage();
+        if (ui->animationScaledButton->isChecked())
+        {
+            int scaledWidth = ui->animationDisplay->width();
+            int scaledHeight = ui->animationDisplay->height();
+            QImage scaledImage = actualImage->scaled(scaledWidth, scaledHeight, Qt::KeepAspectRatio);
+            ui->animationDisplay->setPixmap(QPixmap::fromImage(scaledImage));
+        }
+        else
+        {
+            ui->animationDisplay->setPixmap(QPixmap::fromImage(*actualImage));
+        }
+
+        ui->animationDisplay->update();
+    }
+}
+
+void MainWindow::setAnimationTimerInterval(int fps)
+{
+    animationTimer.setInterval(1000 / fps); // convert fps to milliseconds
 }
 
 /// Handles updating the current sprite tool.
@@ -234,7 +273,7 @@ void MainWindow::on_addFrameButton_clicked()
     updateCanvas();
 
     // Initialize current frames connections.
-    connect(currentFrame, &SpriteFrame::frameWasUpdated, this, &MainWindow::updateCanvas);
+    connect(currentFrame, &SpriteFrame::frameWasUpdated, this, &MainWindow::updateCanvas); // TODO maybe this isn't needed?
 }
 
 /// Resets the current frame.
