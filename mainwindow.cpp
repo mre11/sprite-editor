@@ -153,7 +153,7 @@ void MainWindow::fileMenuItemClicked()
     if(fileMenuItem == "actionOpen")
     {
         fileName = QFileDialog::getOpenFileName(this, "Open File", QDir::homePath());
-        frames.open(fileName);
+        frames.open(fileName.toStdString());
     }
     else if(fileMenuItem == "actionNew")
     {
