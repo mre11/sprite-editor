@@ -54,15 +54,21 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+
     SpriteFrameCollection frames;
-    QTimer animationTimer;
     SpriteFrame *currentFrame;
+
     ToolBrush brush;
     QColor currentColor;
+
     QStringListModel frameModel;
 
     int canvasWidth;
     int canvasHeight;
+
+    QTimer animationTimer;
+
+    QString currentFileName;
 };
 
 #endif // MAINWINDOW_H

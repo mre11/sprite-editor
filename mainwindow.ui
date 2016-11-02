@@ -414,7 +414,7 @@
      <number>1</number>
     </property>
     <property name="text">
-     <string>TextLabel</string>
+     <string>(canvas)</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>

@@ -19,14 +19,16 @@ MainWindow::MainWindow(QWidget *parent)
       frames(20, 20, this),
       brush(ToolBrush::Brush),
       currentColor(0, 0, 0),
-      frameModel(this)
+      frameModel(this),
+      currentFileName("")
 {
     ui->setupUi(this);
 
-    canvasWidth = ui->canvas->width();
-    canvasHeight = ui->canvas->height();
-
     currentFrame = frames.getFrame(0);
+
+    // Set up canvas
+    canvasWidth = ui->canvas->width();
+    canvasHeight = ui->canvas->height();    
     ui->canvas->setStyleSheet("border: 2px solid black");
     updateCanvas();
 
@@ -145,13 +147,12 @@ void MainWindow::processMouseClick(QPoint pt)
 void MainWindow::fileMenuItemClicked()
 {
     QString fileMenuItem = sender()->objectName();
-    QString fileName;
 
     // TODO: Create QFileDialog first and apply all filters to the dialog before using.
     if(fileMenuItem == "actionOpen")
     {
-        fileName = QFileDialog::getOpenFileName(this, "Open File", QDir::homePath());
-        frames.open(fileName);
+        currentFileName = QFileDialog::getOpenFileName(this, "Open", QDir::homePath(), "Sprite Sheet Project (*.ssp)");
+        frames.open(currentFileName);
     }
     else if(fileMenuItem == "actionNew")
     {
@@ -167,13 +168,18 @@ void MainWindow::fileMenuItemClicked()
     }
     else if(fileMenuItem == "actionSave")
     {
-        // TODO: Call SpriteFrameCollect Save Method.
-        // TODO: Just have save_as? Or keep current location in spriteframecollection and save there.
+        // TODO get rid of code duplication between save and save as
+        if (currentFileName.isEmpty())
+        {
+            currentFileName = QFileDialog::getSaveFileName(this, "Save As", QDir::homePath(), "Sprite Sheet Project (*.ssp)");
+        }
+
+        frames.save(currentFileName);
     }
     else if(fileMenuItem == "actionSave_As")
     {
-        fileName = QFileDialog::getSaveFileName(this, "Save As", QDir::homePath(), "Sprite Sheet Project (*.ssp)");
-        frames.save(fileName);
+        currentFileName = QFileDialog::getSaveFileName(this, "Save As", QDir::homePath(), "Sprite Sheet Project (*.ssp)");
+        frames.save(currentFileName);
     }
     else if(fileMenuItem == "actionExit")
     {
