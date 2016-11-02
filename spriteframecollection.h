@@ -22,8 +22,8 @@ public:
     int getWidth();
     int getHeight();
     void load();
-    void open(QString filePath);
-    void save(QString filePath);
+    void open(std::string filePath);
+    void save(std::string filePath);
     SpriteFrame *getFrame(int index);
     int getNumbFrames();
 

@@ -175,7 +175,7 @@ void MainWindow::fileMenuItemClicked()
     else if(fileMenuItem == "actionSave_As")
     {
         fileName = QFileDialog::getSaveFileName(this, "Save As", QDir::homePath(), "Sprite Sheet Project (*.ssp)");
-        frames.save(fileName);
+        frames.save(fileName.toStdString());
     }
     else if(fileMenuItem == "actionExit")
     {
