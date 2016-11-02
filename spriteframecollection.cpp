@@ -39,19 +39,15 @@ void SpriteFrameCollection::load()
 
 }
 
-<<<<<<< HEAD
-void SpriteFrameCollection::open(string filePath)
+void SpriteFrameCollection::open(std::string filePath)
 {
     // TODO: Implement
 }
 
 void SpriteFrameCollection::save(std::string filePath)
-=======
-void SpriteFrameCollection::save(QString filePath)
->>>>>>> 34eb73a986840e629c051aa4f253555584b0ee41
 {
     ofstream outFile;
-    outFile.open(filePath.toStdString());
+    outFile.open(filePath);
 
     outFile << frameHeight << " " << frameWidth << '\n';
     outFile << frames.size() << '\n';
