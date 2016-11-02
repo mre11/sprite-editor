@@ -395,10 +395,10 @@
    <widget class="SpriteCanvas" name="canvas">
     <property name="geometry">
      <rect>
-      <x>249</x>
+      <x>270</x>
       <y>20</y>
-      <width>641</width>
-      <height>611</height>
+      <width>600</width>
+      <height>600</height>
      </rect>
     </property>
     <property name="lineWidth">
@@ -418,7 +418,7 @@
      <x>0</x>
      <y>0</y>
      <width>1268</width>
-     <height>22</height>
+     <height>20</height>
     </rect>
    </property>
    <property name="styleSheet">

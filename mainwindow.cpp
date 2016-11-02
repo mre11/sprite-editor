@@ -11,11 +11,12 @@
 #include <QFileDialog>
 #include <QInputDialog>
 #include <QFormLayout>
+#include <QStringListModel>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
       ui(new Ui::MainWindow),
-      frames(30, 25, this),
+      frames(20, 20, this),
       brush(ToolBrush::Brush),
       currentColor(0, 0, 0)
 {
@@ -25,12 +26,18 @@ MainWindow::MainWindow(QWidget *parent)
     canvasHeight = ui->canvas->height();
 
     currentFrame = frames.getFrame(0);
-    ui->canvas->setPixmap(QPixmap::fromImage(*(currentFrame->getImage())));
+    //ui->canvas->setPixmap(QPixmap::fromImage(*(currentFrame->getImage())));
     ui->canvas->setStyleSheet("border: 2px solid black");
 
     ui->primaryColorButton->setStyleSheet("background-color:" + currentColor.name() + ";");
     updateCanvas();
 
+    // Create first frame in the listview.
+    frameModel = new QStringListModel(this);
+    QStringList frameOne;
+    frameOne << "frame1";
+    frameModel->setStringList(frameOne);
+    ui->listView->setModel(frameModel);
 
     // Create connections
     connect(ui->canvas, &SpriteCanvas::mouseClicked, this, &MainWindow::processMouseClick);
@@ -62,10 +69,16 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+/// Changes the current color being used.
 void MainWindow::primaryColorClicked()
 {
-    QColor color = QColorDialog::getColor(Qt::white, this);
+    // Open the QColorDialog and display the current color.
+    QColor color = QColorDialog::getColor(currentColor, this);
+
+    // Update the button color to the selected color.
     ui->primaryColorButton->setStyleSheet("background-color:" + color.name() + ";");
+
+    // Set the current color to the new color.
     currentColor = color;
 }
 
@@ -74,6 +87,7 @@ void MainWindow::updateAnimation()
 
 }
 
+/// Handles updating the current sprite tool.
 void MainWindow::toolBrushClicked()
 {
     QString buttonName = sender()->objectName();
@@ -92,9 +106,13 @@ void MainWindow::toolBrushClicked()
         brush = ToolBrush::Eraser;
     else if (buttonName == "fillButton")
         brush = ToolBrush::Bucket;
-    // TODO need bucket button and hookups
+// Optional:
+//    QPushButton *tempButton = (QPushButton*)sender();
+//    tempButton->setStyleSheet("background-color:yellow");
 }
 
+
+/// Applys the current brush tool to the x,y location that was clicked.
 void MainWindow::processMouseClick(QPoint pt)
 {
     int x = pt.x() * frames.getWidth() / canvasWidth;
@@ -125,15 +143,17 @@ void MainWindow::processMouseClick(QPoint pt)
     }
 }
 
+/// Handles the filemenuitem events.
 void MainWindow::fileMenuItemClicked()
 {
     QString fileMenuItem = sender()->objectName();
     QString fileName;
+
     // TODO: Create QFileDialog first and apply all filters to the dialog before using.
     if(fileMenuItem == "actionOpen")
     {
         fileName = QFileDialog::getOpenFileName(this, "Open File", QDir::homePath());
-        //frames.open(fileName.toStdString()); // Not working for some reason
+        frames.open(fileName.toStdString());
     }
     else if(fileMenuItem == "actionNew")
     {
@@ -154,8 +174,13 @@ void MainWindow::fileMenuItemClicked()
     }
     else if(fileMenuItem == "actionSave_As")
     {
+<<<<<<< HEAD
         fileName = QFileDialog::getSaveFileName(this, "Save As", QDir::homePath());
-        //frames.save(fileName.toStdString());
+        frames.save(fileName.toStdString());
+=======
+        fileName = QFileDialog::getSaveFileName(this, "Save As", QDir::homePath(), "Sprite Sheet Project (*.ssp)");
+        frames.save(fileName);
+>>>>>>> 34eb73a986840e629c051aa4f253555584b0ee41
     }
     else if(fileMenuItem == "actionExit")
     {
@@ -170,21 +195,91 @@ void MainWindow::fileMenuItemClicked()
     }
 }
 
+/// Updates the canvas to display the new scaled image.
 void MainWindow::updateCanvas()
 {
     auto image = currentFrame->getImage();
     QImage scaledImage = image->scaled(canvasWidth, canvasHeight, Qt::KeepAspectRatio);
     ui->canvas->setPixmap(QPixmap::fromImage(scaledImage));
+    ui->canvas->setSpriteHeight(image->height());
+    ui->canvas->setSpriteWidth(image->width());
     ui->canvas->update();
 }
 
 void MainWindow::toggleGridDisplay()
 {
-
+    ui->canvas->toggleGridDisplay();
+    ui->canvas->update();
 }
 
 void MainWindow::exportMenuItemClicked()
 {
     QString fileName = QFileDialog::getSaveFileName(this, "Save As", QDir::homePath());
     exporter.exportGif(fileName.toStdString(), frames);
+}
+
+/// Adds a new frame to the list view and the sprite frame collection.
+void MainWindow::on_addFrameButton_clicked()
+{
+    // Add a new frame to the last row.
+    int lastRow = frameModel->rowCount();
+
+    //update ui and allow the user to edit the current frames name.
+    frameModel->insertRows(lastRow, 1);
+    ui->listView->setCurrentIndex(frameModel->index(lastRow));
+    ui->listView->edit(frameModel->index(lastRow));
+
+    // Add a new frame to the spriteframecollection and update the canvas.
+    frames.addFrame();
+    currentFrame = frames.getFrame(lastRow);
+    ui->canvas->setPixmap(QPixmap::fromImage(*(currentFrame->getImage())));
+    ui->canvas->setStyleSheet("border: 2px solid black");
+    updateCanvas();
+
+    // Initialize current frames connections.
+    connect(ui->canvas, &SpriteCanvas::mouseClicked, this, &MainWindow::processMouseClick);
+    connect(currentFrame, &SpriteFrame::frameWasUpdated, this, &MainWindow::updateCanvas);
+}
+
+/// Resets the current frame.
+void MainWindow::on_restFrameButton_clicked()
+{
+    currentFrame->resetFrame();
+}
+
+/// Deletes the selected item in the list view.
+void MainWindow::on_deleteFrameButton_clicked()
+{
+    if(frames.getNumbFrames() > 1)
+    {
+        // Delete Sprite frame from the collection.
+        frames.deleteFrame(ui->listView->currentIndex().row());
+
+        // Delete the list view item from the model.
+        frameModel->removeRows(ui->listView->currentIndex().row(), 1);
+
+        // set the current frame to the first frame.
+        currentFrame = frames.getFrame(0);
+
+        // select the first list view item.
+        ui->listView->setCurrentIndex(frameModel->index(0, 0));
+
+        // update the canvas to the new current frame.
+        updateCanvas();
+    }
+    else
+    {
+        QMessageBox message;
+        message.setText("Cannot delete last frame!");
+        message.exec();
+    }
+}
+
+/// Method is called when the selection on the list view changes.
+/// Updates the canvas to the current frame.
+void MainWindow::on_listView_clicked(const QModelIndex &index)
+{
+    int selectedRow = index.row();
+    currentFrame = frames.getFrame(selectedRow);
+    updateCanvas();
 }

@@ -9,6 +9,7 @@
 #include <QTimer>
 #include "spriteframecollection.h"
 #include "gifexporter.h"
+#include <QStringListModel>
 
 namespace Ui {
 class MainWindow;
@@ -45,6 +46,15 @@ public slots:
 
     void exportMenuItemClicked();
 
+private slots:
+    void on_addFrameButton_clicked();
+
+    void on_restFrameButton_clicked();
+
+    void on_deleteFrameButton_clicked();
+
+    void on_listView_clicked(const QModelIndex &index);
+
 private:
     Ui::MainWindow *ui;
     SpriteFrameCollection frames;
@@ -53,6 +63,7 @@ private:
     ToolBrush brush;
     QColor currentColor;
     GifExporter exporter;
+    QStringListModel *frameModel;
 
     int canvasWidth;
     int canvasHeight;
