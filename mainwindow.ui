@@ -438,6 +438,7 @@
     <property name="title">
      <string>Export</string>
     </property>
+    <addaction name="actionExport_GIF"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuExport"/>
@@ -470,6 +471,11 @@
   <action name="actionOpen">
    <property name="text">
     <string>Open</string>
+   </property>
+  </action>
+  <action name="actionExport_GIF">
+   <property name="text">
+    <string>Export GIF...</string>
    </property>
   </action>
  </widget>

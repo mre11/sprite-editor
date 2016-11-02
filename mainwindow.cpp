@@ -26,7 +26,6 @@ MainWindow::MainWindow(QWidget *parent)
     canvasHeight = ui->canvas->height();
 
     currentFrame = frames.getFrame(0);
-    //ui->canvas->setPixmap(QPixmap::fromImage(*(currentFrame->getImage())));
     ui->canvas->setStyleSheet("border: 2px solid black");
 
     ui->primaryColorButton->setStyleSheet("background-color:" + currentColor.name() + ";");
@@ -61,7 +60,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->actionSave_As, &QAction::triggered, this, &MainWindow::fileMenuItemClicked);
 
     // Export Menu Item Connections
-    connect(ui->menuExport, &QMenu::triggered, this, &MainWindow::exportMenuItemClicked);
+    connect(ui->actionExport_GIF, &QAction::triggered, this, &MainWindow::exportMenuItemClicked);
 }
 
 MainWindow::~MainWindow()
@@ -210,7 +209,7 @@ void MainWindow::toggleGridDisplay()
 void MainWindow::exportMenuItemClicked()
 {
     QString fileName = QFileDialog::getSaveFileName(this, "Save As", QDir::homePath());
-    exporter.exportGif(fileName.toStdString(), frames);
+    exporter.exportGif(fileName, frames);
 }
 
 /// Adds a new frame to the list view and the sprite frame collection.
