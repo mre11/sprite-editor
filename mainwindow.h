@@ -70,6 +70,8 @@ private:
     QTimer animationTimer;
 
     QString currentFileName;
+
+    void changeColor(QColor color);
 };
 
 #endif // MAINWINDOW_H
