@@ -25,14 +25,13 @@ MainWindow::MainWindow(QWidget *parent)
       currentFileName(""),
       animationTimer(this),
       animationFrameIndex(0),
-      brushSize(1)
+      brushSize(1),
+      isChanged(false)
 {
     ui->setupUi(this);
 
     canvasWidth = ui->canvas->width();
     canvasHeight = ui->canvas->height();
-    isChanged = false;
-
 
     currentFrame = frames.getFrame(0);
 
@@ -194,14 +193,12 @@ void MainWindow::processMouseClick(QPoint pt)
 /// Handles the filemenuitem events.
 void MainWindow::fileMenuItemClicked()
 {
-
     QString fileMenuItem = sender()->objectName();
 
     // TODO: Create QFileDialog first and apply all filters to the dialog before using.
     if(fileMenuItem == "actionOpen")
     {
-
-        if(isChanged)
+        if (isChanged)
         {
             //popup message
             QMessageBox::StandardButton reply;
@@ -215,14 +212,13 @@ void MainWindow::fileMenuItemClicked()
                 {
                     frames.open(fileName);
                 }
-
             }
         }
         else
         {
             QString fileName = QFileDialog::getOpenFileName(this, "Open File", QDir::homePath());
 
-            if(fileName != NULL)
+            if (fileName != NULL)
             {
                 frames.open(fileName);
             }
@@ -249,6 +245,7 @@ void MainWindow::fileMenuItemClicked()
         }
 
         frames.save(currentFileName);
+        isChanged = false;
     }
     else if(fileMenuItem == "actionSave_As")
     {
@@ -273,7 +270,6 @@ void MainWindow::fileMenuItemClicked()
 /// Updates the canvas to display the new scaled image.
 void MainWindow::updateCanvas()
 {
-    isChanged = true;
     auto image = currentFrame->getImage();
     QImage scaledImage = image->scaled(canvasWidth, canvasHeight, Qt::KeepAspectRatio);
     ui->canvas->setPixmap(QPixmap::fromImage(scaledImage));
@@ -371,6 +367,7 @@ void MainWindow::changeSelectedColor(QColor color)
 
 void MainWindow::toolBrushAction(int x, int y)
 {
+    isChanged = true;
     switch (brush)
     {
         case ToolBrush::Darken:
