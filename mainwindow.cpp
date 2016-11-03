@@ -64,7 +64,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->eyeDropButton, &QPushButton::clicked, this, &MainWindow::toolBrushClicked);
     connect(ui->eraserButton, &QPushButton::clicked, this, &MainWindow::toolBrushClicked);
     connect(ui->fillButton, &QPushButton::clicked, this, &MainWindow::toolBrushClicked);
-    connect(ui->brushSizeBox, SIGNAL(valueChanged(int)), this, SLOT(on_brushSize_changed(int)));
+    connect(ui->brushSizeBox, SIGNAL(valueChanged(int)), this, SLOT(brushSizeChanged(int)));
 
     // Animation display connections
     connect(ui->animationFpsSlider, SIGNAL(valueChanged(int)), ui->animationFpsDisplayLabel, SLOT(setNum(int)));
@@ -292,7 +292,7 @@ void MainWindow::exportMenuItemClicked()
 }
 
 /// Adds a new frame to the list view and the sprite frame collection.
-void MainWindow::on_addFrameButton_clicked()
+void MainWindow::addFrameClicked()
 {
     // Add a new frame to the last row.
     int lastRow = frameModel.rowCount();
@@ -309,13 +309,13 @@ void MainWindow::on_addFrameButton_clicked()
 }
 
 /// Resets the current frame.
-void MainWindow::on_restFrameButton_clicked()
+void MainWindow::resetFrameClicked()
 {
     currentFrame->resetFrame();
 }
 
 /// Deletes the selected item in the list view.
-void MainWindow::on_deleteFrameButton_clicked()
+void MainWindow::deleteFrameClicked()
 {
     if(frames.count() > 1)
     {
@@ -344,14 +344,14 @@ void MainWindow::on_deleteFrameButton_clicked()
 
 /// Method is called when the selection on the list view changes.
 /// Updates the canvas to the current frame.
-void MainWindow::on_listView_clicked(const QModelIndex &index)
+void MainWindow::frameListClicked(const QModelIndex &index)
 {
     int selectedRow = index.row();
     currentFrame = frames.getFrame(selectedRow);
     updateCanvas();
 }
 
-void MainWindow::on_brushSize_changed(int value)
+void MainWindow::brushSizeChanged(int value)
 {
     brushSize = value;
 }
@@ -371,36 +371,16 @@ void MainWindow::toolBrushAction(int x, int y)
     switch (brush)
     {
         case ToolBrush::Darken:
-            darken(x, y);
+            currentFrame->darken(x, y);
             return;
         case ToolBrush::Lighten:
-            lighten(x, y);
+            currentFrame->lighten(x, y);
             return;
         case ToolBrush::Brush:
-            changePixelColor(x, y);
+            currentFrame->changeColor(x, y, currentColor);
             return;
         case ToolBrush::Eraser:
-            erase(x, y);
+            currentFrame->erase(x, y);
             return;
     }
-}
-
-void MainWindow::changePixelColor(int x, int y)
-{
-    currentFrame->changeColor(x, y, currentColor);
-}
-
-void MainWindow::darken(int x, int y)
-{
-    currentFrame->darken(x, y);
-}
-
-void MainWindow::lighten(int x, int y)
-{
-    currentFrame->lighten(x, y);
-}
-
-void MainWindow::erase(int x, int y)
-{
-    currentFrame->erase(x, y);
 }

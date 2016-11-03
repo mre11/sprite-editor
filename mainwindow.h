@@ -7,8 +7,9 @@
 
 #include <QMainWindow>
 #include <QTimer>
-#include "spriteframecollection.h"
 #include <QStringListModel>
+
+#include "spriteframecollection.h"
 
 namespace Ui {
 class MainWindow;
@@ -33,6 +34,7 @@ public:
     };
 
 public slots:
+    // tools
     void updateAnimation();
     void setAnimationTimerInterval(int fps);
     void toolBrushClicked();
@@ -41,23 +43,23 @@ public slots:
     void toggleGridDisplay();
     void primaryColorClicked();
 
-    // Process when the user clicks new, open, save, or exit.
+    // menu items
     void fileMenuItemClicked();
-
     void exportMenuItemClicked();
 
 private slots:
-    void on_addFrameButton_clicked();
-    void on_restFrameButton_clicked();
-    void on_deleteFrameButton_clicked();
-    void on_listView_clicked(const QModelIndex &index);
-    void on_brushSize_changed(int value);
+    void addFrameClicked();
+    void resetFrameClicked();
+    void deleteFrameClicked();
+    void frameListClicked(const QModelIndex &index);
+    void brushSizeChanged(int value);
 
 private:
     Ui::MainWindow *ui;
 
     SpriteFrameCollection frames;
     SpriteFrame *currentFrame;
+
     int animationFrameIndex;
     QTimer animationTimer;
 
@@ -68,18 +70,13 @@ private:
     QStringListModel frameModel;
 
     int canvasWidth;
-    int canvasHeight;
-
-    bool isChanged;    
+    int canvasHeight;        
 
     QString currentFileName;
+    bool isChanged;
 
     void changeSelectedColor(QColor color);
     void toolBrushAction(int x, int y);
-    void changePixelColor(int x, int y);
-    void darken(int x, int y);
-    void lighten(int x, int y);
-    void erase(int x, int y);
 };
 
 #endif // MAINWINDOW_H
