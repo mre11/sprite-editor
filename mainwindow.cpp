@@ -55,7 +55,6 @@ MainWindow::MainWindow(QWidget *parent)
     animationTimer.start();
 
     connect(ui->canvas, &SpriteCanvas::mouseClicked, this, &MainWindow::processMouseClick);
-    connect(currentFrame, &SpriteFrame::frameWasUpdated, this, &MainWindow::updateCanvas);
     connect(ui->primaryColorButton, &QPushButton::clicked, this, &MainWindow::primaryColorClicked);
 
     // Tools connections
@@ -94,7 +93,7 @@ void MainWindow::primaryColorClicked()
 {
     // Open the QColorDialog and display the current color.
     QColor color = QColorDialog::getColor(currentColor, this); 
-    changeColor(color);
+    changeSelectedColor(color);
 }
 
 void MainWindow::updateAnimation()
@@ -158,29 +157,38 @@ void MainWindow::processMouseClick(QPoint pt)
     int x = pt.x() * frames.getWidth() / canvasWidth;
     int y = pt.y() * frames.getHeight() / canvasHeight;
 
-    switch (brush)
+    if (brush == ToolBrush::EyeDrop)
+        changeSelectedColor(currentFrame->eyeDrop(x, y));
+
+    else if (brush == ToolBrush::Bucket)
+        currentFrame->fillColor(x, y, currentColor);
+    else
     {
-        case ToolBrush::Darken:
-            currentFrame->darken(x, y, brushSize);
-            break;
-        case ToolBrush::Lighten:
-            currentFrame->lighten(x, y, brushSize);
-            break;
-        case ToolBrush::Brush:
-            currentFrame->changeColor(x, y, currentColor, brushSize);
-            break;
-        case ToolBrush::Eraser:
-            currentFrame->erase(x, y, brushSize);
-            break;
-        case ToolBrush::EyeDrop:
-            changeColor(currentFrame->eyeDrop(x, y));
-            break;
-        case ToolBrush::Bucket:
-            currentFrame->fillColor(x, y, currentColor);
-            break;
-        default:
-            currentFrame->changeColor(x, y, currentColor, brushSize);
+        switch (brushSize)
+        {
+            case 4:
+                toolBrushAction(x + 2, y - 1);
+                toolBrushAction(x + 2, y);
+                toolBrushAction(x + 2, y + 1);
+                toolBrushAction(x + 2, y + 2);
+                toolBrushAction(x + 1, y + 2);
+                toolBrushAction(x, y + 2);
+                toolBrushAction(x - 1, y + 2);
+            case 3:
+                toolBrushAction(x - 1, y + 1);
+                toolBrushAction(x - 1, y);
+                toolBrushAction(x - 1, y - 1);
+                toolBrushAction(x, y - 1);
+                toolBrushAction(x + 1, y - 1);
+            case 2:
+                toolBrushAction(x + 1, y);
+                toolBrushAction(x + 1, y + 1);
+                toolBrushAction(x, y + 1);
+            default:
+                toolBrushAction(x, y);
+        }
     }
+    updateCanvas();
 }
 
 /// Handles the filemenuitem events.
@@ -302,9 +310,6 @@ void MainWindow::on_addFrameButton_clicked()
     frames.addFrame();
     currentFrame = frames.getFrame(lastRow);
     updateCanvas();
-
-    // Initialize current frames connections.
-    connect(currentFrame, &SpriteFrame::frameWasUpdated, this, &MainWindow::updateCanvas); // TODO maybe this isn't needed?
 }
 
 /// Resets the current frame.
@@ -355,11 +360,50 @@ void MainWindow::on_brushSize_changed(int value)
     brushSize = value;
 }
 
-void MainWindow::changeColor(QColor color)
+void MainWindow::changeSelectedColor(QColor color)
 {
     // Update the button color to the selected color.
     ui->primaryColorButton->setStyleSheet("background-color:" + color.name() + ";");
 
     // Set the current color to the new color.
     currentColor = color;
+}
+
+void MainWindow::toolBrushAction(int x, int y)
+{
+    switch (brush)
+    {
+        case ToolBrush::Darken:
+            darken(x, y);
+            return;
+        case ToolBrush::Lighten:
+            lighten(x, y);
+            return;
+        case ToolBrush::Brush:
+            changePixelColor(x, y);
+            return;
+        case ToolBrush::Eraser:
+            erase(x, y);
+            return;
+    }
+}
+
+void MainWindow::changePixelColor(int x, int y)
+{
+    currentFrame->changeColor(x, y, currentColor);
+}
+
+void MainWindow::darken(int x, int y)
+{
+    currentFrame->darken(x, y);
+}
+
+void MainWindow::lighten(int x, int y)
+{
+    currentFrame->lighten(x, y);
+}
+
+void MainWindow::erase(int x, int y)
+{
+    currentFrame->erase(x, y);
 }

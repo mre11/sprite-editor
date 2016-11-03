@@ -74,7 +74,12 @@ private:
 
     QString currentFileName;
 
-    void changeColor(QColor color);
+    void changeSelectedColor(QColor color);
+    void toolBrushAction(int x, int y);
+    void changePixelColor(int x, int y);
+    void darken(int x, int y);
+    void lighten(int x, int y);
+    void erase(int x, int y);
 };
 
 #endif // MAINWINDOW_H

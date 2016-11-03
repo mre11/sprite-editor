@@ -13,55 +13,37 @@ SpriteFrame::SpriteFrame(int width, int height, QObject *parent)
     image.fill(QColor(0, 0, 0, 0));
 }
 
-void SpriteFrame::darken(int x, int y, int brushSize)
+void SpriteFrame::darken(int x, int y)
 {
     if (outOfRange(x, y)) return;
 
     auto color = image.pixelColor(x, y);
-    changeColor(x, y, color.darker(110), brushSize);
+    changeColor(x, y, color.darker(110));
 }
 
-void SpriteFrame::lighten(int x, int y, int brushSize)
+void SpriteFrame::lighten(int x, int y)
 {
     if (outOfRange(x, y)) return;
 
     auto color = image.pixelColor(x, y);
-    changeColor(x, y, color.lighter(110), brushSize);
-}
-
-void SpriteFrame::erase(int x, int y, int brushSize)
-{
-    changeColor(x, y, QColor(0,0,0,0), brushSize);
-}
-
-void SpriteFrame::changeColor(int x, int y, QColor color, int brushSize /*= 1*/)
-{
-    switch (brushSize)
+    if (color.red() + color.green() + color.blue() == 0) // black doesn't work with color.lighter()
+        changeColor(x, y, QColor(25, 25, 25, color.alpha()));
+    else
     {
-        case 4:
-            setPixelColor(x + 3, y, color);
-            setPixelColor(x + 3, y + 1, color);
-            setPixelColor(x + 3, y + 2, color);
-            setPixelColor(x + 3, y + 3, color);
-            setPixelColor(x + 2, y + 3, color);
-            setPixelColor(x + 1, y + 3, color);
-            setPixelColor(x, y + 3, color);
-        case 3:
-            setPixelColor(x + 2, y, color);
-            setPixelColor(x + 2, y + 1, color);
-            setPixelColor(x + 2, y + 2, color);
-            setPixelColor(x + 1, y + 2, color);
-            setPixelColor(x, y + 2, color);
-        case 2:
-            setPixelColor(x + 1, y, color);
-            setPixelColor(x + 1, y + 1, color);
-            setPixelColor(x, y + 1, color);
-        default:
-            setPixelColor(x, y, color);
-
+        changeColor(x, y, color.lighter(110));
     }
+}
 
-    emit frameWasUpdated(&image);
+void SpriteFrame::erase(int x, int y)
+{
+    changeColor(x, y, QColor(0,0,0,0));
+}
+
+void SpriteFrame::changeColor(int x, int y, QColor color)
+{
+    if (outOfRange(x, y)) return;
+
+    image.setPixelColor(x, y, color);
 }
 
 void SpriteFrame::fillColor(int x, int y, QColor replacementColor)
@@ -108,14 +90,11 @@ void SpriteFrame::fillColor(int x, int y, QColor replacementColor)
         if(south.y() >= 0 && south.y() < image.height() &&  image.pixelColor(south) == targetColor)
             queue->enqueue(south);
     }
-
-    emit frameWasUpdated(&image);
 }
 
 void SpriteFrame::resetFrame()
 {
     image.fill(QColor(0, 0, 0, 0));
-    emit frameWasUpdated(&image);
 }
 
 QColor SpriteFrame::eyeDrop(int x, int y)
@@ -150,11 +129,4 @@ void SpriteFrame::saveRow(int rowNum, ofstream &outputFile)
 bool SpriteFrame::outOfRange(int x, int y)
 {
     return x < 0 || y < 0 || x >= image.width() || y >= image.height();
-}
-
-void SpriteFrame::setPixelColor(int x, int y, QColor color)
-{
-    if (outOfRange(x, y)) return;
-
-    image.setPixelColor(x, y, color);
 }
