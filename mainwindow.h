@@ -77,6 +77,7 @@ private:
 
     void changeSelectedColor(QColor color);
     void toolBrushAction(int x, int y);
+    void updateListView(int);
 };
 
 #endif // MAINWINDOW_H
