@@ -86,13 +86,8 @@ MainWindow::~MainWindow()
 void MainWindow::primaryColorClicked()
 {
     // Open the QColorDialog and display the current color.
-    QColor color = QColorDialog::getColor(currentColor, this);
-
-    // Update the button color to the selected color.
-    ui->primaryColorButton->setStyleSheet("background-color:" + color.name() + ";");
-
-    // Set the current color to the new color.
-    currentColor = color;
+    QColor color = QColorDialog::getColor(currentColor, this); 
+    changeColor(color);
 }
 
 void MainWindow::updateAnimation()
@@ -171,7 +166,7 @@ void MainWindow::processMouseClick(QPoint pt)
             currentFrame->erase(x, y);
             break;
         case ToolBrush::EyeDrop:
-            currentFrame->eyeDrop(x, y);
+            changeColor(currentFrame->eyeDrop(x, y));
             break;
         case ToolBrush::Bucket:
             currentFrame->fillColor(x, y, currentColor);
@@ -318,4 +313,13 @@ void MainWindow::on_listView_clicked(const QModelIndex &index)
     int selectedRow = index.row();
     currentFrame = frames.getFrame(selectedRow);
     updateCanvas();
+}
+
+void MainWindow::changeColor(QColor color)
+{
+    // Update the button color to the selected color.
+    ui->primaryColorButton->setStyleSheet("background-color:" + color.name() + ";");
+
+    // Set the current color to the new color.
+    currentColor = color;
 }
