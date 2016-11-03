@@ -19,18 +19,14 @@ public:
     void lighten(int x, int y);
     void erase(int x, int y);
     void changeColor(int x, int y, QColor color);
-    void fillColor(int x, int y, QColor replacementColor);
-    void resetFrame();
+    void fillColor(int x, int y, QColor replacementColor);    
     QColor eyeDrop(int x, int y);
+    void resetFrame();
 
     const QImage *getImage();
 
     void save(std::ofstream &outputFile);
 
-signals:
-    void frameWasUpdated(const QImage *image);
-
-public slots:
 private:
     QImage image;
 

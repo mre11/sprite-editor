@@ -24,9 +24,14 @@ MainWindow::MainWindow(QWidget *parent)
       frameModel(this),
       currentFileName(""),
       animationTimer(this),
-      animationFrameIndex(0)
+      animationFrameIndex(0),
+      brushSize(1),
+      isChanged(false)
 {
     ui->setupUi(this);
+
+    canvasWidth = ui->canvas->width();
+    canvasHeight = ui->canvas->height();
 
     currentFrame = frames.getFrame(0);
 
@@ -35,13 +40,13 @@ MainWindow::MainWindow(QWidget *parent)
     canvasHeight = ui->canvas->height();
     updateCanvas();
 
-    ui->primaryColorButton->setStyleSheet("background-color:" + currentColor.name() + ";");    
+    ui->primaryColorButton->setStyleSheet("background-color:" + currentColor.name() + ";");
 
     // Create first frame in the listview.
     QStringList stringList;
     stringList << "frame1";
     frameModel.setStringList(stringList);
-    ui->listView->setModel(&frameModel);
+    ui->frameListView->setModel(&frameModel);
 
     ui->animationFpsDisplayLabel->setNum(ui->animationFpsSlider->value());
     ui->animationDisplay->setPixmap(QPixmap::fromImage(*(currentFrame->getImage())));
@@ -49,7 +54,6 @@ MainWindow::MainWindow(QWidget *parent)
     animationTimer.start();
 
     connect(ui->canvas, &SpriteCanvas::mouseClicked, this, &MainWindow::processMouseClick);
-    connect(currentFrame, &SpriteFrame::frameWasUpdated, this, &MainWindow::updateCanvas);
     connect(ui->primaryColorButton, &QPushButton::clicked, this, &MainWindow::primaryColorClicked);
 
     // Tools connections
@@ -60,11 +64,18 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->eyeDropButton, &QPushButton::clicked, this, &MainWindow::toolBrushClicked);
     connect(ui->eraserButton, &QPushButton::clicked, this, &MainWindow::toolBrushClicked);
     connect(ui->fillButton, &QPushButton::clicked, this, &MainWindow::toolBrushClicked);
+    connect(ui->brushSizeBox, SIGNAL(valueChanged(int)), this, SLOT(brushSizeChanged(int)));
 
     // Animation display connections
     connect(ui->animationFpsSlider, SIGNAL(valueChanged(int)), ui->animationFpsDisplayLabel, SLOT(setNum(int)));
     connect(ui->animationFpsSlider, &QSlider::valueChanged, this, &MainWindow::setAnimationTimerInterval);
     connect(&animationTimer, &QTimer::timeout, this, &MainWindow::updateAnimation);
+
+    // Frames list connections
+    connect(ui->addFrameButton, &QPushButton::clicked, this, &MainWindow::addFrameClicked);
+    connect(ui->resetFrameButton, &QPushButton::clicked, this, &MainWindow::resetFrameClicked);
+    connect(ui->deleteFrameButton, &QPushButton::clicked, this, &MainWindow::deleteFrameClicked);
+    connect(ui->frameListView, &QListView::clicked, this, &MainWindow::frameListClicked);
 
     // File Menu Item connections
     connect(ui->actionNew, &QAction::triggered, this, &MainWindow::fileMenuItemClicked);
@@ -87,7 +98,7 @@ void MainWindow::primaryColorClicked()
 {
     // Open the QColorDialog and display the current color.
     QColor color = QColorDialog::getColor(currentColor, this); 
-    changeColor(color);
+    changeSelectedColor(color);
 }
 
 void MainWindow::updateAnimation()
@@ -151,29 +162,38 @@ void MainWindow::processMouseClick(QPoint pt)
     int x = pt.x() * frames.getWidth() / canvasWidth;
     int y = pt.y() * frames.getHeight() / canvasHeight;
 
-    switch (brush)
+    if (brush == ToolBrush::EyeDrop)
+        changeSelectedColor(currentFrame->eyeDrop(x, y));
+
+    else if (brush == ToolBrush::Bucket)
+        currentFrame->fillColor(x, y, currentColor);
+    else
     {
-        case ToolBrush::Darken:
-            currentFrame->darken(x, y);
-            break;
-        case ToolBrush::Lighten:
-            currentFrame->lighten(x, y);
-            break;
-        case ToolBrush::Brush:
-            currentFrame->changeColor(x, y, currentColor);
-            break;
-        case ToolBrush::Eraser:
-            currentFrame->erase(x, y);
-            break;
-        case ToolBrush::EyeDrop:
-            changeColor(currentFrame->eyeDrop(x, y));
-            break;
-        case ToolBrush::Bucket:
-            currentFrame->fillColor(x, y, currentColor);
-            break;
-        default:
-            currentFrame->changeColor(x, y, currentColor);
+        switch (brushSize)
+        {
+            case 4:
+                toolBrushAction(x + 2, y - 1);
+                toolBrushAction(x + 2, y);
+                toolBrushAction(x + 2, y + 1);
+                toolBrushAction(x + 2, y + 2);
+                toolBrushAction(x + 1, y + 2);
+                toolBrushAction(x, y + 2);
+                toolBrushAction(x - 1, y + 2);
+            case 3:
+                toolBrushAction(x - 1, y + 1);
+                toolBrushAction(x - 1, y);
+                toolBrushAction(x - 1, y - 1);
+                toolBrushAction(x, y - 1);
+                toolBrushAction(x + 1, y - 1);
+            case 2:
+                toolBrushAction(x + 1, y);
+                toolBrushAction(x + 1, y + 1);
+                toolBrushAction(x, y + 1);
+            default:
+                toolBrushAction(x, y);
+        }
     }
+    updateCanvas();
 }
 
 /// Handles the filemenuitem events.
@@ -184,8 +204,31 @@ void MainWindow::fileMenuItemClicked()
     // TODO: Create QFileDialog first and apply all filters to the dialog before using.
     if(fileMenuItem == "actionOpen")
     {
-        currentFileName = QFileDialog::getOpenFileName(this, "Open", QDir::homePath(), "Sprite Sheet Project (*.ssp)");
-        frames.open(currentFileName);
+        if (isChanged)
+        {
+            //popup message
+            QMessageBox::StandardButton reply;
+            reply = QMessageBox::question(this, "Overwrite", "You have unsaved changes! Would you like to continue without saving?", QMessageBox::Yes|QMessageBox::No);
+
+            if(reply == QMessageBox::Yes)
+            {
+                QString fileName = QFileDialog::getOpenFileName(this, "Open File", QDir::homePath());
+
+                if(fileName != NULL)
+                {
+                    frames.open(fileName);
+                }
+            }
+        }
+        else
+        {
+            QString fileName = QFileDialog::getOpenFileName(this, "Open File", QDir::homePath());
+
+            if (fileName != NULL)
+            {
+                frames.open(fileName);
+            }
+        }
     }
     else if(fileMenuItem == "actionNew")
     {
@@ -208,11 +251,14 @@ void MainWindow::fileMenuItemClicked()
         }
 
         frames.save(currentFileName);
+        isChanged = false;
     }
     else if(fileMenuItem == "actionSave_As")
     {
+
         currentFileName = QFileDialog::getSaveFileName(this, "Save As", QDir::homePath(), "Sprite Sheet Project (*.ssp)");
         frames.save(currentFileName);
+        isChanged = false;
     }
     else if(fileMenuItem == "actionExit")
     {
@@ -253,47 +299,44 @@ void MainWindow::exportMenuItemClicked()
 }
 
 /// Adds a new frame to the list view and the sprite frame collection.
-void MainWindow::on_addFrameButton_clicked()
+void MainWindow::addFrameClicked()
 {
     // Add a new frame to the last row.
     int lastRow = frameModel.rowCount();
 
     //update ui and allow the user to edit the current frames name.
     frameModel.insertRows(lastRow, 1);
-    ui->listView->setCurrentIndex(frameModel.index(lastRow));
-    ui->listView->edit(frameModel.index(lastRow));
+    ui->frameListView->setCurrentIndex(frameModel.index(lastRow));
+    ui->frameListView->edit(frameModel.index(lastRow));
 
     // Add a new frame to the spriteframecollection and update the canvas.
     frames.addFrame();
     currentFrame = frames.getFrame(lastRow);
     updateCanvas();
-
-    // Initialize current frames connections.
-    connect(currentFrame, &SpriteFrame::frameWasUpdated, this, &MainWindow::updateCanvas); // TODO maybe this isn't needed?
 }
 
 /// Resets the current frame.
-void MainWindow::on_restFrameButton_clicked()
+void MainWindow::resetFrameClicked()
 {
     currentFrame->resetFrame();
 }
 
 /// Deletes the selected item in the list view.
-void MainWindow::on_deleteFrameButton_clicked()
+void MainWindow::deleteFrameClicked()
 {
     if(frames.count() > 1)
     {
         // Delete Sprite frame from the collection.
-        frames.deleteFrame(ui->listView->currentIndex().row());
+        frames.deleteFrame(ui->frameListView->currentIndex().row());
 
         // Delete the list view item from the model.
-        frameModel.removeRows(ui->listView->currentIndex().row(), 1);
+        frameModel.removeRows(ui->frameListView->currentIndex().row(), 1);
 
         // set the current frame to the first frame.
         currentFrame = frames.getFrame(0);
 
         // select the first list view item.
-        ui->listView->setCurrentIndex(frameModel.index(0, 0));
+        ui->frameListView->setCurrentIndex(frameModel.index(0, 0));
 
         // update the canvas to the new current frame.
         updateCanvas();
@@ -308,18 +351,43 @@ void MainWindow::on_deleteFrameButton_clicked()
 
 /// Method is called when the selection on the list view changes.
 /// Updates the canvas to the current frame.
-void MainWindow::on_listView_clicked(const QModelIndex &index)
+void MainWindow::frameListClicked(const QModelIndex &index)
 {
     int selectedRow = index.row();
     currentFrame = frames.getFrame(selectedRow);
     updateCanvas();
 }
 
-void MainWindow::changeColor(QColor color)
+void MainWindow::brushSizeChanged(int value)
+{
+    brushSize = value;
+}
+
+void MainWindow::changeSelectedColor(QColor color)
 {
     // Update the button color to the selected color.
     ui->primaryColorButton->setStyleSheet("background-color:" + color.name() + ";");
 
     // Set the current color to the new color.
     currentColor = color;
+}
+
+void MainWindow::toolBrushAction(int x, int y)
+{
+    isChanged = true;
+    switch (brush)
+    {
+        case ToolBrush::Darken:
+            currentFrame->darken(x, y);
+            return;
+        case ToolBrush::Lighten:
+            currentFrame->lighten(x, y);
+            return;
+        case ToolBrush::Brush:
+            currentFrame->changeColor(x, y, currentColor);
+            return;
+        case ToolBrush::Eraser:
+            currentFrame->erase(x, y);
+            return;
+    }
 }

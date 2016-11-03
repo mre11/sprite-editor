@@ -26,7 +26,12 @@ void SpriteFrame::lighten(int x, int y)
     if (outOfRange(x, y)) return;
 
     auto color = image.pixelColor(x, y);
-    changeColor(x, y, color.lighter(110));
+    if (color.red() + color.green() + color.blue() == 0) // black doesn't work with color.lighter()
+        changeColor(x, y, QColor(25, 25, 25, color.alpha()));
+    else
+    {
+        changeColor(x, y, color.lighter(110));
+    }
 }
 
 void SpriteFrame::erase(int x, int y)
@@ -39,7 +44,6 @@ void SpriteFrame::changeColor(int x, int y, QColor color)
     if (outOfRange(x, y)) return;
 
     image.setPixelColor(x, y, color);
-    emit frameWasUpdated(&image);
 }
 
 void SpriteFrame::fillColor(int x, int y, QColor replacementColor)
@@ -86,8 +90,11 @@ void SpriteFrame::fillColor(int x, int y, QColor replacementColor)
         if(south.y() >= 0 && south.y() < image.height() &&  image.pixelColor(south) == targetColor)
             queue->enqueue(south);
     }
+}
 
-    emit frameWasUpdated(&image);
+void SpriteFrame::resetFrame()
+{
+    image.fill(QColor(230, 230, 230, 0));
 }
 
 QColor SpriteFrame::eyeDrop(int x, int y)
@@ -102,7 +109,7 @@ const QImage *SpriteFrame::getImage()
 
 void SpriteFrame::save(ofstream &outputFile)
 {
-    for (int i = 0; i < image.height(); i++)
+    for(int i = 0; i < image.height(); i++)
     {
         saveRow(i, outputFile);
     }
@@ -122,10 +129,4 @@ void SpriteFrame::saveRow(int rowNum, ofstream &outputFile)
 bool SpriteFrame::outOfRange(int x, int y)
 {
     return x < 0 || y < 0 || x >= image.width() || y >= image.height();
-}
-
-void SpriteFrame::resetFrame()
-{
-    image.fill(QColor(230, 230, 230, 0));
-    emit frameWasUpdated(&image);
 }

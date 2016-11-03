@@ -32,6 +32,7 @@ public slots:
 private:
     int frameHeight;
     int frameWidth;
+
     QVector<QSharedPointer<SpriteFrame>> frames;
 };
 
