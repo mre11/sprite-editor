@@ -252,6 +252,7 @@ void MainWindow::toggleGridDisplay()
 void MainWindow::exportMenuItemClicked()
 {
     QString fileName = QFileDialog::getSaveFileName(this, "Export", QDir::homePath(), "Image (*.gif)");
+
     GifExporter exporter;
     exporter.exportGif(fileName, frames);
 }

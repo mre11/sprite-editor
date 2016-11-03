@@ -34,17 +34,7 @@ int SpriteFrameCollection::getHeight()
     return frameHeight;
 }
 
-<<<<<<< HEAD
-void SpriteFrameCollection::load()
-{
-
-}
-
-
-void SpriteFrameCollection::open(std::string filePath)
-=======
 void SpriteFrameCollection::open(QString filePath)
->>>>>>> 86c9962b14bf24b55fa4af4113db1b99bcb1f2ea
 {
     // TODO: Implement
 }

@@ -3,49 +3,41 @@
 
 void GifExporter::exportGif(QString fileName, SpriteFrameCollection &frames)
 {
-<<<<<<< HEAD
     // From readme.md:
     //Usage:
     //-------------------
     //Create a GifWriter struct.
     GifWriter* gifwriter;
     //Pass the struct to GifBegin() to initialize values and write the file header.
-    GifBegin(gifwriter, fileName.c_str(), frames.getWidth(), frames.getHeight(), 10);
+    GifBegin(gifwriter, fileName.toStdString().c_str(), frames.getWidth(), frames.getHeight(), 10);
     //Pass frames of the animation to GifWriteFrame().
-    int numbFrames = frames.getNumbFrames();
-
-    for(int i = 0; i < numbFrames; i++)
-    {
-        QImage formattedImage = frames.getFrame(i)->getImage()->convertToFormat(QImage::Format_RGB888);
-        QVector<QRgb> table = formattedImage.colorTable();
-//        QVector<QRgb> table = frames.getFrame(i)->getImage()->colorTable();
-
-
-        int tableSize = table.size();
-        uint8_t image[tableSize*3];
-        for(int j = 0; j < tableSize; j++)
-        {
-            QRgb pixel = table.at(j);
-            image[(j*3)+0] = qRed(pixel);
-            image[(j*3)+1] = qGreen(pixel);
-            image[(j*3)+2] = qBlue(pixel);
-        }
-        GifWriteFrame(gifwriter, image, frames.getWidth(), frames.getHeight(), 10);
-=======
-    // Create a GifWriter struct.
-    GifWriter gifwriter;
-
-    // Pass the struct to GifBegin() to initialize values and write the file header.
-    GifBegin(&gifwriter, fileName.toStdString().c_str(), frames.getWidth(), frames.getHeight(), 10);
-
-    // Pass frames of the animation to GifWriteFrame().
     int numbFrames = frames.count();
+
     for(int i = 0; i < numbFrames; i++)
     {
-        //GifWriteFrame(&gifwriter, frames.getFrame(i)->getImage(), frames.getWidth(), frames.getHeight(), 10);
->>>>>>> 86c9962b14bf24b55fa4af4113db1b99bcb1f2ea
+        QImage iFrame = *(frames.getFrame(i)->getImage());
+        int frameWidth = iFrame.width();
+        int frameHeight = iFrame.height();
+        int numbPixels = frameWidth * frameHeight;
+        uint8_t image[numbPixels*4];
+        int imageIndex = 0;
+        for(int j = 0; j < frameHeight; j++)
+        {
+             for(int k = 0; k < frameWidth; k++)\
+             {
+                 QColor color = iFrame.pixelColor(k, j);
+                 image[imageIndex] = (uint8_t)color.red();
+                 image[imageIndex + 1] = (uint8_t)color.green();
+                 image[imageIndex + 2] = (uint8_t)color.blue();
+                 image[imageIndex + 3] = (uint8_t)color.alpha();
+                 imageIndex += 4;
+             }
+        }
+
+        GifWriteFrame(gifwriter, image, frames.getWidth(), frames.getHeight(), 10);
+
     }
 
     // Finally, call GifEnd() to close the file handle and free memory.
-    GifEnd(&gifwriter);
+    GifEnd(gifwriter);
 }

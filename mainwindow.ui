@@ -511,11 +511,7 @@
     <property name="title">
      <string>Export</string>
     </property>
-<<<<<<< HEAD
-    <addaction name="actionAs_Gif"/>
-=======
-    <addaction name="actionExport_GIF"/>
->>>>>>> 86c9962b14bf24b55fa4af4113db1b99bcb1f2ea
+    <addaction name="actionExport_GIF"/>gi
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuExport"/>
@@ -550,20 +546,9 @@
     <string>Open</string>
    </property>
   </action>
-<<<<<<< HEAD
-  <action name="actionAs_gif">
-   <property name="text">
-    <string>As .gif</string>
-   </property>
-  </action>
-  <action name="actionAs_Gif">
-   <property name="text">
-    <string>As Gif</string>
-=======
   <action name="actionExport_GIF">
    <property name="text">
     <string>Export GIF</string>
->>>>>>> 86c9962b14bf24b55fa4af4113db1b99bcb1f2ea
    </property>
   </action>
  </widget>
