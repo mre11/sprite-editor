@@ -51,6 +51,7 @@ private slots:
     void on_restFrameButton_clicked();
     void on_deleteFrameButton_clicked();
     void on_listView_clicked(const QModelIndex &index);
+    void on_brushSize_changed(int value);
 
 private:
     Ui::MainWindow *ui;
@@ -58,8 +59,10 @@ private:
     SpriteFrameCollection frames;
     SpriteFrame *currentFrame;
     int animationFrameIndex;
+    QTimer animationTimer;
 
     ToolBrush brush;
+    int brushSize;
     QColor currentColor;
 
     QStringListModel frameModel;
@@ -67,15 +70,11 @@ private:
     int canvasWidth;
     int canvasHeight;
 
-    bool isChanged;
-
-
-    QTimer animationTimer;
+    bool isChanged;    
 
     QString currentFileName;
 
     void changeColor(QColor color);
-
 };
 
 #endif // MAINWINDOW_H

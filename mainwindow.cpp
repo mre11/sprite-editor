@@ -24,7 +24,8 @@ MainWindow::MainWindow(QWidget *parent)
       frameModel(this),
       currentFileName(""),
       animationTimer(this),
-      animationFrameIndex(0)
+      animationFrameIndex(0),
+      brushSize(1)
 {
     ui->setupUi(this);
 
@@ -40,7 +41,7 @@ MainWindow::MainWindow(QWidget *parent)
     canvasHeight = ui->canvas->height();
     updateCanvas();
 
-    ui->primaryColorButton->setStyleSheet("background-color:" + currentColor.name() + ";");    
+    ui->primaryColorButton->setStyleSheet("background-color:" + currentColor.name() + ";");
 
     // Create first frame in the listview.
     QStringList stringList;
@@ -65,6 +66,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->eyeDropButton, &QPushButton::clicked, this, &MainWindow::toolBrushClicked);
     connect(ui->eraserButton, &QPushButton::clicked, this, &MainWindow::toolBrushClicked);
     connect(ui->fillButton, &QPushButton::clicked, this, &MainWindow::toolBrushClicked);
+    connect(ui->brushSizeBox, SIGNAL(valueChanged(int)), this, SLOT(on_brushSize_changed(int)));
 
     // Animation display connections
     connect(ui->animationFpsSlider, SIGNAL(valueChanged(int)), ui->animationFpsDisplayLabel, SLOT(setNum(int)));
@@ -159,16 +161,16 @@ void MainWindow::processMouseClick(QPoint pt)
     switch (brush)
     {
         case ToolBrush::Darken:
-            currentFrame->darken(x, y);
+            currentFrame->darken(x, y, brushSize);
             break;
         case ToolBrush::Lighten:
-            currentFrame->lighten(x, y);
+            currentFrame->lighten(x, y, brushSize);
             break;
         case ToolBrush::Brush:
-            currentFrame->changeColor(x, y, currentColor);
+            currentFrame->changeColor(x, y, currentColor, brushSize);
             break;
         case ToolBrush::Eraser:
-            currentFrame->erase(x, y);
+            currentFrame->erase(x, y, brushSize);
             break;
         case ToolBrush::EyeDrop:
             changeColor(currentFrame->eyeDrop(x, y));
@@ -177,7 +179,7 @@ void MainWindow::processMouseClick(QPoint pt)
             currentFrame->fillColor(x, y, currentColor);
             break;
         default:
-            currentFrame->changeColor(x, y, currentColor);
+            currentFrame->changeColor(x, y, currentColor, brushSize);
     }
 }
 
@@ -346,6 +348,11 @@ void MainWindow::on_listView_clicked(const QModelIndex &index)
     int selectedRow = index.row();
     currentFrame = frames.getFrame(selectedRow);
     updateCanvas();
+}
+
+void MainWindow::on_brushSize_changed(int value)
+{
+    brushSize = value;
 }
 
 void MainWindow::changeColor(QColor color)

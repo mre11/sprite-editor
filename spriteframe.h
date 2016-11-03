@@ -15,10 +15,10 @@ class SpriteFrame : public QObject
 public:
     explicit SpriteFrame(int width, int height, QObject *parent = 0);
 
-    void darken(int x, int y);
-    void lighten(int x, int y);
-    void erase(int x, int y);
-    void changeColor(int x, int y, QColor color);
+    void darken(int x, int y, int brushSize);
+    void lighten(int x, int y, int brushSize);
+    void erase(int x, int y, int brushSize);
+    void changeColor(int x, int y, QColor color, int brushSize = 1);
     void fillColor(int x, int y, QColor replacementColor);
     void resetFrame();
     QColor eyeDrop(int x, int y);
@@ -36,6 +36,7 @@ private:
 
     void saveRow(int rowNum, std::ofstream &outputFile);
     bool outOfRange(int x, int y);
+    void setPixelColor(int x, int y, QColor color);
 };
 
 #endif // SPRITEFRAME_H
