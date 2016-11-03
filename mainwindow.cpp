@@ -30,8 +30,12 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    canvasWidth = ui->canvas->width();
-    canvasHeight = ui->canvas->height();
+    this->setStyleSheet("QMainWindow { background-color: lightgray }"
+                        "QPushButton { color: white; background-color: rgb(63, 63, 63) }"
+                        "QGroupBox { border: 1px solid rgb(63, 63, 63); font-size: 12px }"
+                        "QGroupBox::title { subcontrol-origin: margin; subcontrol-position: top left; padding: 0 3px; }"
+                        "SpriteCanvas { border: 1px solid rgb(63, 63, 63) }");
+
     currentFrame = frames.getFrame(0);
 
     // Set up canvas
@@ -331,7 +335,7 @@ void MainWindow::addFrameClicked()
 void MainWindow::resetFrameClicked()
 {
     currentFrame->resetFrame();
-     updateCanvas();
+    updateCanvas();
 }
 
 /// Deletes the selected item in the list view.
