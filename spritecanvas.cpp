@@ -27,26 +27,35 @@ void SpriteCanvas::setSpriteWidth(int width)
 
 void SpriteCanvas::paintEvent(QPaintEvent *event)
 {
+    // draw background pattern
+    QPainter painter(this);
+    QRect rect(event->rect());
+    painter.setBrush(QBrush(Qt::gray, Qt::Dense7Pattern));
+    painter.drawRect(rect);
+
+    // draw the actual sprite
     QLabel::paintEvent(event);
+
+    // draw grid on top
     if (gridOn)
     {
         int horizLineSpacing = height() / spriteHeight;
         int vertLineSpacing = width() / spriteWidth;
 
-        QPainter painter(this);
-        painter.setPen(QPen(Qt::black, 1));
+        QPainter gridPainter(this);
+        gridPainter.setPen(QPen(Qt::black, 1));
 
         int x = vertLineSpacing;
         int y = horizLineSpacing;
 
         while (x < width())
         {
-            painter.drawLine(x, 0, x, height());
+            gridPainter.drawLine(x, 0, x, height());
             x += vertLineSpacing;
         }
         while (y < height())
         {
-            painter.drawLine(0, y, width(), y);
+            gridPainter.drawLine(0, y, width(), y);
             y += horizLineSpacing;
         }
     }
