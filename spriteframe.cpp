@@ -15,12 +15,10 @@ SpriteFrame::SpriteFrame(int width, int height, QObject *parent)
 
 void SpriteFrame::darken(int x, int y)
 {
-    // TODO: Doesn't darken properly. Once alpha hits 100, the color doesn't get any darker.
     if (outOfRange(x, y)) return;
 
     auto color = image.pixelColor(x, y);
-    modifyAlpha(25, color);
-    changeColor(x, y, color);
+    changeColor(x, y, color.darker(110));
 }
 
 void SpriteFrame::lighten(int x, int y)
@@ -28,14 +26,12 @@ void SpriteFrame::lighten(int x, int y)
     if (outOfRange(x, y)) return;
 
     auto color = image.pixelColor(x, y);
-    modifyAlpha(-25, color);
-    changeColor(x, y, color);
+    changeColor(x, y, color.lighter(110));
 }
 
 void SpriteFrame::erase(int x, int y)
 {
     changeColor(x, y, QColor(0,0,0,0));
-
 }
 
 void SpriteFrame::changeColor(int x, int y, QColor color)
@@ -110,19 +106,6 @@ void SpriteFrame::save(ofstream &outputFile)
     {
         saveRow(i, outputFile);
     }
-}
-
-void SpriteFrame::modifyAlpha(int amount, QColor &color)
-{
-    int currentAlpha = color.alpha();
-    int newAlpha = currentAlpha + amount;
-
-    if (newAlpha < 0)
-        newAlpha = 0;
-    else if (newAlpha > 255)
-        newAlpha = 255;
-
-    color.setAlpha(newAlpha);
 }
 
 void SpriteFrame::saveRow(int rowNum, ofstream &outputFile)

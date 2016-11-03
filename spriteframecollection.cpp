@@ -36,19 +36,14 @@ int SpriteFrameCollection::getHeight()
     return frameHeight;
 }
 
-void SpriteFrameCollection::load()
-{
-
-}
-
-void SpriteFrameCollection::open(std::string filePath)
+void SpriteFrameCollection::open(QString filePath)
 {
     string line;
     int width, height, numberOfFrames;
-    ifstream inFile;
+    ifstream inFile(filePath.toStdString());
 
     //open the file with a input file stream object
-    inFile.open(filePath);
+    //inFile.open(filePath);
 
     //get the first line containing the heigth and width of the canvas
     std::getline(inFile, line);
@@ -86,10 +81,10 @@ void SpriteFrameCollection::open(std::string filePath)
     inFile.close();
 }
 
-void SpriteFrameCollection::save(std::string filePath)
+void SpriteFrameCollection::save(QString filePath)
 {
     ofstream outFile;
-    outFile.open(filePath);
+    outFile.open(filePath.toStdString());
 
     outFile << frameHeight << " " << frameWidth << '\n';
     outFile << frames.size() << '\n';
@@ -105,7 +100,7 @@ SpriteFrame *SpriteFrameCollection::getFrame(int index)
     return frames.at(index).data();
 }
 
-int SpriteFrameCollection::getNumbFrames()
+int SpriteFrameCollection::count()
 {
     return frames.count();
 }

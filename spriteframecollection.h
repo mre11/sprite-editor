@@ -21,11 +21,10 @@ public:
     void deleteFrame(int index);
     int getWidth();
     int getHeight();
-    void load();
-    void open(std::string filePath);
-    void save(std::string filePath);
+    void open(QString filePath);
+    void save(QString filePath);
     SpriteFrame *getFrame(int index);
-    int getNumbFrames();
+    int count();
 
 signals:
 
