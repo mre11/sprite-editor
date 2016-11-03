@@ -305,7 +305,7 @@
     <property name="title">
      <string>Frames</string>
     </property>
-    <widget class="QListView" name="listView">
+    <widget class="QListView" name="frameListView">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -348,7 +348,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="restFrameButton">
+       <widget class="QPushButton" name="resetFrameButton">
         <property name="sizePolicy">
          <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
           <horstretch>0</horstretch>

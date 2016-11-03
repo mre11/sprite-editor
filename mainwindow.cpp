@@ -46,7 +46,7 @@ MainWindow::MainWindow(QWidget *parent)
     QStringList stringList;
     stringList << "frame1";
     frameModel.setStringList(stringList);
-    ui->listView->setModel(&frameModel);
+    ui->frameListView->setModel(&frameModel);
 
     ui->animationFpsDisplayLabel->setNum(ui->animationFpsSlider->value());
     ui->animationDisplay->setPixmap(QPixmap::fromImage(*(currentFrame->getImage())));
@@ -70,6 +70,12 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->animationFpsSlider, SIGNAL(valueChanged(int)), ui->animationFpsDisplayLabel, SLOT(setNum(int)));
     connect(ui->animationFpsSlider, &QSlider::valueChanged, this, &MainWindow::setAnimationTimerInterval);
     connect(&animationTimer, &QTimer::timeout, this, &MainWindow::updateAnimation);
+
+    // Frames list connections
+    connect(ui->addFrameButton, &QPushButton::clicked, this, &MainWindow::addFrameClicked);
+    connect(ui->resetFrameButton, &QPushButton::clicked, this, &MainWindow::resetFrameClicked);
+    connect(ui->deleteFrameButton, &QPushButton::clicked, this, &MainWindow::deleteFrameClicked);
+    connect(ui->frameListView, &QListView::clicked, this, &MainWindow::frameListClicked);
 
     // File Menu Item connections
     connect(ui->actionNew, &QAction::triggered, this, &MainWindow::fileMenuItemClicked);
@@ -299,8 +305,8 @@ void MainWindow::addFrameClicked()
 
     //update ui and allow the user to edit the current frames name.
     frameModel.insertRows(lastRow, 1);
-    ui->listView->setCurrentIndex(frameModel.index(lastRow));
-    ui->listView->edit(frameModel.index(lastRow));
+    ui->frameListView->setCurrentIndex(frameModel.index(lastRow));
+    ui->frameListView->edit(frameModel.index(lastRow));
 
     // Add a new frame to the spriteframecollection and update the canvas.
     frames.addFrame();
@@ -320,16 +326,16 @@ void MainWindow::deleteFrameClicked()
     if(frames.count() > 1)
     {
         // Delete Sprite frame from the collection.
-        frames.deleteFrame(ui->listView->currentIndex().row());
+        frames.deleteFrame(ui->frameListView->currentIndex().row());
 
         // Delete the list view item from the model.
-        frameModel.removeRows(ui->listView->currentIndex().row(), 1);
+        frameModel.removeRows(ui->frameListView->currentIndex().row(), 1);
 
         // set the current frame to the first frame.
         currentFrame = frames.getFrame(0);
 
         // select the first list view item.
-        ui->listView->setCurrentIndex(frameModel.index(0, 0));
+        ui->frameListView->setCurrentIndex(frameModel.index(0, 0));
 
         // update the canvas to the new current frame.
         updateCanvas();
