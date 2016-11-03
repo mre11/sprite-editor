@@ -24,6 +24,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     canvasWidth = ui->canvas->width();
     canvasHeight = ui->canvas->height();
+    isChanged = false;
 
     currentFrame = frames.getFrame(0);
     //ui->canvas->setPixmap(QPixmap::fromImage(*(currentFrame->getImage())));
@@ -152,8 +153,35 @@ void MainWindow::fileMenuItemClicked()
     // TODO: Create QFileDialog first and apply all filters to the dialog before using.
     if(fileMenuItem == "actionOpen")
     {
-        fileName = QFileDialog::getOpenFileName(this, "Open File", QDir::homePath());
-        frames.open(fileName.toStdString());
+        if(isChanged)
+        {
+            //popup message
+            QMessageBox::StandardButton reply;
+            reply = QMessageBox::question(this, "Overwrite", "You have unsaved changes! Would you like to continue without saving?", QMessageBox::Yes|QMessageBox::No);
+
+            if(reply == QMessageBox::Yes)
+            {
+                fileName = QFileDialog::getOpenFileName(this, "Open File", QDir::homePath());
+
+                if(fileName != NULL)
+                {
+                    frames.open(fileName.toStdString());
+                }
+
+            }
+        }
+        else
+        {
+            fileName = QFileDialog::getOpenFileName(this, "Open File", QDir::homePath());
+
+            if(fileName != NULL)
+            {
+                frames.open(fileName.toStdString());
+            }
+        }
+
+
+
     }
     else if(fileMenuItem == "actionNew")
     {
@@ -176,6 +204,7 @@ void MainWindow::fileMenuItemClicked()
     {
         fileName = QFileDialog::getSaveFileName(this, "Save As", QDir::homePath(), "Sprite Sheet Project (*.ssp)");
         frames.save(fileName.toStdString());
+        isChanged = false;
     }
     else if(fileMenuItem == "actionExit")
     {
@@ -193,6 +222,7 @@ void MainWindow::fileMenuItemClicked()
 /// Updates the canvas to display the new scaled image.
 void MainWindow::updateCanvas()
 {
+    isChanged = true;
     auto image = currentFrame->getImage();
     QImage scaledImage = image->scaled(canvasWidth, canvasHeight, Qt::KeepAspectRatio);
     ui->canvas->setPixmap(QPixmap::fromImage(scaledImage));

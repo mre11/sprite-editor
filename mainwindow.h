@@ -67,6 +67,7 @@ private:
 
     int canvasWidth;
     int canvasHeight;
+    bool isChanged;
 };
 
 #endif // MAINWINDOW_H

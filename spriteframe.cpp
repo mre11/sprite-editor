@@ -106,7 +106,7 @@ const QImage *SpriteFrame::getImage()
 
 void SpriteFrame::save(ofstream &outputFile)
 {
-    for (int i = 0; i < image.height(); i++)
+    for(int i = 0; i < image.height(); i++)
     {
         saveRow(i, outputFile);
     }
