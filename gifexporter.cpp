@@ -3,23 +3,19 @@
 
 void GifExporter::exportGif(QString fileName, SpriteFrameCollection &frames)
 {
-    // From readme.md:
-    //Usage:
-    //-------------------
-    //Create a GifWriter struct.
-    GifWriter* gifwriter;
-    //Pass the struct to GifBegin() to initialize values and write the file header.
-    GifBegin(gifwriter, fileName.toStdString().c_str(), frames.getWidth(), frames.getHeight(), 10);
-    //Pass frames of the animation to GifWriteFrame().
-    int numbFrames = frames.count();
+    GifWriter *gifwriter;
 
-    for(int i = 0; i < numbFrames; i++)
+    GifBegin(gifwriter, fileName.toStdString().c_str(), frames.getWidth(), frames.getHeight(), 10);
+
+    // Pass frames of the animation to GifWriteFrame().
+    for(int i = 0; i < frames.count(); i++)
     {
         QImage iFrame = *(frames.getFrame(i)->getImage());
         int frameWidth = iFrame.width();
         int frameHeight = iFrame.height();
         int numbPixels = frameWidth * frameHeight;
-        uint8_t image[numbPixels*4];
+
+        uint8_t *image = new uint8_t[numbPixels*4];
         int imageIndex = 0;
         for(int j = 0; j < frameHeight; j++)
         {
@@ -35,9 +31,8 @@ void GifExporter::exportGif(QString fileName, SpriteFrameCollection &frames)
         }
 
         GifWriteFrame(gifwriter, image, frames.getWidth(), frames.getHeight(), 10);
-
+        delete[] image;
     }
 
-    // Finally, call GifEnd() to close the file handle and free memory.
     GifEnd(gifwriter);
 }
