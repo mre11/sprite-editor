@@ -199,7 +199,7 @@ void MainWindow::processMouseClick(QPoint pt)
 void MainWindow::fileMenuItemClicked()
 {
     QString fileMenuItem = sender()->objectName();
-
+    // TODO: Handle "Cancel" for all of these! Returns an empty string (right?)
     // TODO: Create QFileDialog first and apply all filters to the dialog before using.
     if(fileMenuItem == "actionOpen")
     {
@@ -253,11 +253,11 @@ void MainWindow::fileMenuItemClicked()
     }
     else if(fileMenuItem == "actionNew")
     {
-
+        // TODO: new dialog (let user pick a square size that divides evenly into 600x600, the canvas size)
     }
     else if(fileMenuItem == "actionSave")
     {
-        // TODO get rid of code duplication between save and save as
+        // TODO: get rid of code duplication between save and save as
         if (currentFileName.isEmpty())
         {
             currentFileName = QFileDialog::getSaveFileName(this, "Save As", QDir::homePath(), "Sprite Sheet Project (*.ssp)");
@@ -312,6 +312,7 @@ void MainWindow::exportMenuItemClicked()
 /// Updates the list view with new rows that are named according to their frame index.
 void MainWindow::updateListView(int frameNumber)
 {
+    // TODO: morgan got the index out of range crash, I'm wondering if something isn't right here. setStringList takes a reference, do we need the QStringList to be a member?
     QStringList frames = frameModel.stringList();
     QString t = "frame" + QString::number(frameNumber);
     frames.append(t);
