@@ -16,6 +16,7 @@ void GifExporter::exportGif(QString fileName, SpriteFrameCollection &frames)
     for(int i = 0; i < numbFrames; i++)
     {
         QImage iFrame = *(frames.getFrame(i)->getImage());
+        //iFrame = iFrame.scaled(240, 240, Qt::KeepAspectRatio);
         int frameWidth = iFrame.width();
         int frameHeight = iFrame.height();
         int numbPixels = frameWidth * frameHeight;
