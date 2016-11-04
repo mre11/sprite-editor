@@ -3,7 +3,7 @@
 
 void GifExporter::exportGif(QString fileName, SpriteFrameCollection &frames)
 {
-    GifWriter *gifwriter;
+    GifWriter *gifwriter; // gif.h wants this uninitialized
 
     GifBegin(gifwriter, fileName.toStdString().c_str(), frames.getWidth(), frames.getHeight(), 10);
 
