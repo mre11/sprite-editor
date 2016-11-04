@@ -6,12 +6,16 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1268</width>
+    <width>1184</width>
     <height>706</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Sprite Editor</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="resources.qrc">
+    <normaloff>:/Sprite/bucket.ico</normaloff>:/Sprite/bucket.ico</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
    <property name="styleSheet">
@@ -34,7 +38,7 @@
       <rect>
        <x>10</x>
        <y>20</y>
-       <width>228</width>
+       <width>221</width>
        <height>291</height>
       </rect>
      </property>
@@ -51,10 +55,7 @@
          </sizepolicy>
         </property>
         <property name="styleSheet">
-         <string notr="true">QPushButton {
-	color: rgb(225, 225, 225);
-	background-color: rgb(63, 63, 63)
-}</string>
+         <string notr="true"/>
         </property>
         <property name="text">
          <string>Grid</string>
@@ -73,18 +74,10 @@
          </sizepolicy>
         </property>
         <property name="styleSheet">
-         <string notr="true">QPushButton
-{
-	color: rgb(225, 225, 225);
-	background-color: rgb(63, 63, 63);
-}</string>
+         <string notr="true"/>
         </property>
         <property name="text">
          <string>Brush</string>
-        </property>
-        <property name="icon">
-         <iconset>
-          <normaloff>bucket.ico</normaloff>bucket.ico</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -103,10 +96,7 @@
          </sizepolicy>
         </property>
         <property name="styleSheet">
-         <string notr="true">QPushButton {
-	color: rgb(225, 225, 225);
-	background-color: rgb(63, 63, 63)
-}</string>
+         <string notr="true"/>
         </property>
         <property name="text">
          <string>Eraser</string>
@@ -122,10 +112,7 @@
          </sizepolicy>
         </property>
         <property name="styleSheet">
-         <string notr="true">QPushButton {
-	color: rgb(225, 225, 225);
-	background-color: rgb(63, 63, 63)
-}</string>
+         <string notr="true"/>
         </property>
         <property name="text">
          <string>Darken</string>
@@ -141,10 +128,7 @@
          </sizepolicy>
         </property>
         <property name="styleSheet">
-         <string notr="true">QPushButton {
-	color: rgb(225, 225, 225);
-	background-color: rgb(63, 63, 63)
-}</string>
+         <string notr="true"/>
         </property>
         <property name="text">
          <string>Lighten</string>
@@ -160,10 +144,7 @@
          </sizepolicy>
         </property>
         <property name="styleSheet">
-         <string notr="true">QPushButton {
-	color: rgb(225, 225, 225);
-	background-color: rgb(63, 63, 63)
-}</string>
+         <string notr="true"/>
         </property>
         <property name="text">
          <string>Eye Drop</string>
@@ -179,46 +160,19 @@
          </sizepolicy>
         </property>
         <property name="styleSheet">
-         <string notr="true">QPushButton {
-	color: rgb(225, 225, 225);
-	background-color: rgb(63, 63, 63)
-}</string>
+         <string notr="true"/>
         </property>
-        <property name="text">
-         <string>Bucket</string>
+        <property name="icon">
+         <iconset resource="resources.qrc">
+          <normaloff>:/Sprite/bucket.ico</normaloff>:/Sprite/bucket.ico</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>50</width>
+          <height>50</height>
+         </size>
         </property>
         <property name="autoExclusive">
-         <bool>false</bool>
-        </property>
-        <property name="flat">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="1">
-       <widget class="QPushButton" name="pushButton">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">QPushButton {
-	color: rgb(225, 225, 225);
-	background-color: rgb(63, 63, 63)
-}</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="checkable">
-         <bool>false</bool>
-        </property>
-        <property name="autoDefault">
-         <bool>false</bool>
-        </property>
-        <property name="default">
          <bool>false</bool>
         </property>
         <property name="flat">
@@ -296,7 +250,7 @@
    <widget class="QGroupBox" name="framesGroupBox">
     <property name="geometry">
      <rect>
-      <x>970</x>
+      <x>890</x>
       <y>380</y>
       <width>280</width>
       <height>281</height>
@@ -337,10 +291,7 @@
          </sizepolicy>
         </property>
         <property name="styleSheet">
-         <string notr="true">QPushButton {
-	color: rgb(225, 225, 225);
-	background-color: rgb(63, 63, 63)
-}</string>
+         <string notr="true"/>
         </property>
         <property name="text">
          <string>Add</string>
@@ -356,13 +307,10 @@
          </sizepolicy>
         </property>
         <property name="styleSheet">
-         <string notr="true">QPushButton {
-	color: rgb(225, 225, 225);
-	background-color: rgb(63, 63, 63)
-}</string>
+         <string notr="true"/>
         </property>
         <property name="text">
-         <string>Reset Current</string>
+         <string>Clear</string>
         </property>
        </widget>
       </item>
@@ -375,10 +323,7 @@
          </sizepolicy>
         </property>
         <property name="styleSheet">
-         <string notr="true">QPushButton {
-	color: rgb(225, 225, 225);
-	background-color: rgb(63, 63, 63)
-}</string>
+         <string notr="true"/>
         </property>
         <property name="text">
          <string>Delete</string>
@@ -391,20 +336,11 @@
    <widget class="SpriteCanvas" name="canvas">
     <property name="geometry">
      <rect>
-      <x>300</x>
-      <y>20</y>
+      <x>270</x>
+      <y>10</y>
       <width>600</width>
       <height>600</height>
      </rect>
-    </property>
-    <property name="frameShape">
-     <enum>QFrame::Panel</enum>
-    </property>
-    <property name="frameShadow">
-     <enum>QFrame::Plain</enum>
-    </property>
-    <property name="lineWidth">
-     <number>1</number>
     </property>
     <property name="text">
      <string>(canvas)</string>
@@ -416,7 +352,7 @@
    <widget class="QGroupBox" name="animationGroupBox">
     <property name="geometry">
      <rect>
-      <x>970</x>
+      <x>890</x>
       <y>10</y>
       <width>280</width>
       <height>361</height>
@@ -525,7 +461,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1268</width>
+     <width>1184</width>
      <height>20</height>
     </rect>
    </property>
@@ -595,6 +531,8 @@
    <header>spritecanvas.h</header>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

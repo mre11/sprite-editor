@@ -30,8 +30,11 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    canvasWidth = ui->canvas->width();
-    canvasHeight = ui->canvas->height();
+    this->setStyleSheet("QMainWindow { background-color: lightgray }"
+                        "QPushButton { color: white; background-color: rgb(63, 63, 63) }"
+                        "QGroupBox { border: 1px solid rgb(63, 63, 63); font-size: 12px }"
+                        "QGroupBox::title { subcontrol-origin: margin; subcontrol-position: top left; padding: 0 3px; }"
+                        "SpriteCanvas { border: 1px solid rgb(63, 63, 63) }");
 
     currentFrame = frames.getFrame(0);
 
@@ -41,12 +44,8 @@ MainWindow::MainWindow(QWidget *parent)
     updateCanvas();
 
     ui->primaryColorButton->setStyleSheet("background-color:" + currentColor.name() + ";");
-
-    // Create first frame in the listview.
-    QStringList stringList;
-    stringList << "frame1";
-    frameModel.setStringList(stringList);
     ui->frameListView->setModel(&frameModel);
+    updateListView(0);
 
     ui->animationFpsDisplayLabel->setNum(ui->animationFpsSlider->value());
     ui->animationDisplay->setPixmap(QPixmap::fromImage(*(currentFrame->getImage())));
@@ -217,6 +216,17 @@ void MainWindow::fileMenuItemClicked()
                 if(fileName != NULL)
                 {
                     frames.open(fileName);
+
+                    // Update the current frame.
+                    currentFrame = frames.getFrame(0);
+
+                    // set the file name.
+                    currentFileName = fileName;
+                    for(int i = 1; i < frames.count(); i++)
+                    {
+                        updateListView(i);
+                    }
+                    updateCanvas();
                 }
             }
         }
@@ -227,20 +237,23 @@ void MainWindow::fileMenuItemClicked()
             if (fileName != NULL)
             {
                 frames.open(fileName);
+
+                // Update the current frame.
+                currentFrame = frames.getFrame(0);
+
+                // set the file name.
+                currentFileName = fileName;
+                for(int i = 1; i < frames.count(); i++)
+                {
+                    updateListView(i);
+                }
+                updateCanvas();
             }
         }
     }
     else if(fileMenuItem == "actionNew")
     {
-//        QDialog newDialog(this);
-//        QFormLayout newForm(&newDialog);
 
-//        QLineEdit *w = new QLineEdit(&newDialog);
-//        inputDialog->ad
-//        inputDialog->setOptions(QInputDialog::NoButtons);
-//        bool ok;
-//        QString wh = inputDialog->getText(NULL, "New Canvas", "Width", QLineEdit::Normal, QDir::home().dirName(), &ok);
-        // TODO: Make New Dialog Form.
     }
     else if(fileMenuItem == "actionSave")
     {
@@ -262,7 +275,6 @@ void MainWindow::fileMenuItemClicked()
     }
     else if(fileMenuItem == "actionExit")
     {
-        // TODO: Ask if anything needs to be saved.
         QMessageBox::StandardButton response;
         response = QMessageBox::question(this, "Exit", "Are you sure you want to exit?", QMessageBox::Yes|QMessageBox::No);
 
@@ -297,20 +309,25 @@ void MainWindow::exportMenuItemClicked()
     exporter.exportGif(fileName, frames);
 }
 
+/// Updates the list view with new rows that are named according to their frame index.
+void MainWindow::updateListView(int frameNumber)
+{
+    QStringList frames = frameModel.stringList();
+    QString t = "frame" + QString::number(frameNumber);
+    frames.append(t);
+    frameModel.setStringList(frames);
+}
+
 /// Adds a new frame to the list view and the sprite frame collection.
 void MainWindow::addFrameClicked()
 {
-    // Add a new frame to the last row.
+    // Get the last rows index.
     int lastRow = frameModel.rowCount();
-
-    //update ui and allow the user to edit the current frames name.
-    frameModel.insertRows(lastRow, 1);
-    ui->frameListView->setCurrentIndex(frameModel.index(lastRow));
-    ui->frameListView->edit(frameModel.index(lastRow));
 
     // Add a new frame to the spriteframecollection and update the canvas.
     frames.addFrame();
     currentFrame = frames.getFrame(lastRow);
+    updateListView(lastRow);
     updateCanvas();
 }
 
@@ -318,12 +335,13 @@ void MainWindow::addFrameClicked()
 void MainWindow::resetFrameClicked()
 {
     currentFrame->resetFrame();
+    updateCanvas();
 }
 
 /// Deletes the selected item in the list view.
 void MainWindow::deleteFrameClicked()
 {
-    if(frames.count() > 1)
+    if(frames.count() > 1 && ui->frameListView->currentIndex().row() > -1)
     {
         // Delete Sprite frame from the collection.
         frames.deleteFrame(ui->frameListView->currentIndex().row());
