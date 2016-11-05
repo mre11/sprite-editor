@@ -1,5 +1,12 @@
 <RCC>
     <qresource prefix="/Sprite">
-        <file>bucket.ico</file>
+        <file>resource/bucket.ico</file>
+        <file>resource/Brush.ico</file>
+        <file>resource/Eraser.ico</file>
+        <file>resource/Eyedropper.ico</file>
+        <file>resource/Pixel Art.ico</file>
+        <file>resource/Ruler.ico</file>
+        <file>resource/Darken.ico</file>
+        <file>resource/Lighten.ico</file>
     </qresource>
 </RCC>
