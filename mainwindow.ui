@@ -15,7 +15,10 @@
   </property>
   <property name="windowIcon">
    <iconset resource="resources.qrc">
-    <normaloff>:/Sprite/bucket.ico</normaloff>:/Sprite/bucket.ico</iconset>
+    <normaloff>:/Sprite/resource/Pixel Art.ico</normaloff>:/Sprite/resource/Pixel Art.ico</iconset>
+  </property>
+  <property name="styleSheet">
+   <string notr="true"/>
   </property>
   <widget class="QWidget" name="centralWidget">
    <property name="styleSheet">
@@ -54,11 +57,24 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="toolTip">
+         <string>Grid</string>
+        </property>
         <property name="styleSheet">
          <string notr="true"/>
         </property>
         <property name="text">
-         <string>Grid</string>
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="resources.qrc">
+          <normaloff>:/Sprite/resource/Ruler.ico</normaloff>:/Sprite/resource/Ruler.ico</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>50</width>
+          <height>50</height>
+         </size>
         </property>
         <property name="autoDefault">
          <bool>false</bool>
@@ -73,11 +89,18 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="toolTip">
+         <string>Brush</string>
+        </property>
         <property name="styleSheet">
          <string notr="true"/>
         </property>
         <property name="text">
-         <string>Brush</string>
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="resources.qrc">
+          <normaloff>:/Sprite/resource/Brush.ico</normaloff>:/Sprite/resource/Brush.ico</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -95,11 +118,24 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="toolTip">
+         <string>Erase</string>
+        </property>
         <property name="styleSheet">
          <string notr="true"/>
         </property>
         <property name="text">
-         <string>Eraser</string>
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="resources.qrc">
+          <normaloff>:/Sprite/resource/Eraser.ico</normaloff>:/Sprite/resource/Eraser.ico</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>50</width>
+          <height>50</height>
+         </size>
         </property>
        </widget>
       </item>
@@ -111,11 +147,24 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="toolTip">
+         <string>Darken</string>
+        </property>
         <property name="styleSheet">
          <string notr="true"/>
         </property>
         <property name="text">
-         <string>Darken</string>
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="resources.qrc">
+          <normaloff>:/Sprite/resource/Darken.ico</normaloff>:/Sprite/resource/Darken.ico</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>50</width>
+          <height>50</height>
+         </size>
         </property>
        </widget>
       </item>
@@ -127,11 +176,24 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="toolTip">
+         <string>Lighten</string>
+        </property>
         <property name="styleSheet">
          <string notr="true"/>
         </property>
         <property name="text">
-         <string>Lighten</string>
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="resources.qrc">
+          <normaloff>:/Sprite/resource/Lighten.ico</normaloff>:/Sprite/resource/Lighten.ico</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>50</width>
+          <height>50</height>
+         </size>
         </property>
        </widget>
       </item>
@@ -143,11 +205,24 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="toolTip">
+         <string>Eye Drop</string>
+        </property>
         <property name="styleSheet">
          <string notr="true"/>
         </property>
         <property name="text">
-         <string>Eye Drop</string>
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="resources.qrc">
+          <normaloff>:/Sprite/resource/Eyedropper.ico</normaloff>:/Sprite/resource/Eyedropper.ico</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>50</width>
+          <height>50</height>
+         </size>
         </property>
        </widget>
       </item>
@@ -159,12 +234,15 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="toolTip">
+         <string>Fill</string>
+        </property>
         <property name="styleSheet">
          <string notr="true"/>
         </property>
         <property name="icon">
          <iconset resource="resources.qrc">
-          <normaloff>:/Sprite/bucket.ico</normaloff>:/Sprite/bucket.ico</iconset>
+          <normaloff>:/Sprite/resource/bucket.ico</normaloff>:/Sprite/resource/bucket.ico</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -216,7 +294,7 @@
       <rect>
        <x>9</x>
        <y>320</y>
-       <width>161</width>
+       <width>131</width>
        <height>31</height>
       </rect>
      </property>
@@ -414,7 +492,7 @@
       <rect>
        <x>10</x>
        <y>320</y>
-       <width>171</width>
+       <width>196</width>
        <height>31</height>
       </rect>
      </property>
@@ -462,7 +540,7 @@
      <x>0</x>
      <y>0</y>
      <width>1184</width>
-     <height>20</height>
+     <height>25</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -482,7 +560,7 @@
     <property name="title">
      <string>Export</string>
     </property>
-    <addaction name="actionExport_GIF"/>gi
+    <addaction name="actionExport_GIF"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuExport"/>

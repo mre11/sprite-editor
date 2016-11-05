@@ -16,6 +16,7 @@ public:
     explicit SpriteCanvas(QWidget *parent = 0);
 
     void toggleGridDisplay();
+    bool isGridOn();
     void setSpriteHeight(int height);
     void setSpriteWidth(int width);
 

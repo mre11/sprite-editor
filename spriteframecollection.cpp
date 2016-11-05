@@ -1,5 +1,5 @@
 // A7: Sprite Editor
-// CS 3505, University of Utah, Spring 2016
+// CS 3505, University of Utah, Fall 2016
 // Braden Klunker, Michael Swisher, Morgan Empey, Naoki Tominaga, Ryan Williams
 
 #include "spriteframecollection.h"
@@ -14,6 +14,14 @@ SpriteFrameCollection::SpriteFrameCollection(int width, int height, QObject *par
 {
      addFrame(); // start out with one frame
 
+}
+
+void SpriteFrameCollection::changeFrameSize(int width, int height)
+{
+    frames.clear();
+    frameWidth = width;
+    frameHeight = height;
+    addFrame();
 }
 
 void SpriteFrameCollection::addFrame()
@@ -40,6 +48,10 @@ void SpriteFrameCollection::open(QString filePath)
 {
     string line;
     int width, height, numberOfFrames;
+
+    if(frameHeight != height && frameWidth != width)
+        changeFrameSize(width, height);
+
     ifstream inFile(filePath.toStdString());
 
     //open the file with a input file stream object

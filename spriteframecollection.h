@@ -1,5 +1,5 @@
 // A7: Sprite Editor
-// CS 3505, University of Utah, Spring 2016
+// CS 3505, University of Utah, Fall 2016
 // Braden Klunker, Michael Swisher, Morgan Empey, Naoki Tominaga, Ryan Williams
 
 #ifndef SPRITEFRAMECOLLECTION_H
@@ -25,6 +25,7 @@ public:
     void save(QString filePath);
     SpriteFrame *getFrame(int index);
     int count();
+    void changeFrameSize(int width, int height);
 
 signals:
 
