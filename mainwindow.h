@@ -1,5 +1,5 @@
 // A7: Sprite Editor
-// CS 3505, University of Utah, Spring 2016
+// CS 3505, University of Utah, Fall 2016
 // Braden Klunker, Michael Swisher, Morgan Empey, Naoki Tominaga, Ryan Williams
 
 #ifndef MAINWINDOW_H
@@ -80,6 +80,7 @@ private:
     void toolBrushAction(int x, int y);
     void updateListView(int);
     NewSpriteDialog newDialog;
+    void currentButtonRemoveHighlight(ToolBrush currBrush);
 };
 
 #endif // MAINWINDOW_H
