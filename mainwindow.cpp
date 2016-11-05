@@ -30,11 +30,11 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    this->setStyleSheet("QMainWindow { background-color: lightgray }"
+    this->setStyleSheet("QMainWindow { background-color: rgb(150, 150, 150) }"
                         "QPushButton { color: white; background-color: rgb(63, 63, 63) }"
                         "QGroupBox { border: 1px solid black; font-size: 12px }"
                         "QGroupBox::title { subcontrol-origin: margin; subcontrol-position: top left; padding: 0 3px; }"
-                        "SpriteCanvas { border: 1px solid black }");
+                        "SpriteCanvas { background-color: lightgray; border: 1px solid black }");
 
     currentFrame = frames.getFrame(0);
 
