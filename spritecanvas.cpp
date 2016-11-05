@@ -15,6 +15,11 @@ void SpriteCanvas::toggleGridDisplay()
     gridOn = !gridOn;
 }
 
+bool SpriteCanvas::isGridOn()
+{
+    return gridOn;
+}
+
 void SpriteCanvas::setSpriteHeight(int height)
 {
     spriteHeight = height;

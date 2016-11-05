@@ -32,9 +32,9 @@ MainWindow::MainWindow(QWidget *parent)
 
     this->setStyleSheet("QMainWindow { background-color: lightgray }"
                         "QPushButton { color: white; background-color: rgb(63, 63, 63) }"
-                        "QGroupBox { border: 1px solid rgb(63, 63, 63); font-size: 12px }"
+                        "QGroupBox { border: 1px solid black; font-size: 12px }"
                         "QGroupBox::title { subcontrol-origin: margin; subcontrol-position: top left; padding: 0 3px; }"
-                        "SpriteCanvas { border: 1px solid rgb(63, 63, 63) }");
+                        "SpriteCanvas { border: 1px solid black }");
 
     currentFrame = frames.getFrame(0);
 
@@ -51,6 +51,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->animationDisplay->setPixmap(QPixmap::fromImage(*(currentFrame->getImage())));
     setAnimationTimerInterval(ui->animationFpsSlider->value());
     animationTimer.start();
+
+    ui->brushButton->setStyleSheet("background-color:green"); // brush is active to start
 
     connect(ui->canvas, &SpriteCanvas::mouseClicked, this, &MainWindow::processMouseClick);
     connect(ui->primaryColorButton, &QPushButton::clicked, this, &MainWindow::primaryColorClicked);
@@ -133,6 +135,7 @@ void MainWindow::setAnimationTimerInterval(int fps)
 /// Handles updating the current sprite tool.
 void MainWindow::toolBrushClicked()
 {
+    ToolBrush oldBrush = brush;
     QString buttonName = sender()->objectName();
 
     if (buttonName == "brushButton")
@@ -149,9 +152,13 @@ void MainWindow::toolBrushClicked()
         brush = ToolBrush::Eraser;
     else if (buttonName == "fillButton")
         brush = ToolBrush::Bucket;
-// Optional:
-//    QPushButton *tempButton = (QPushButton*)sender();
-//    tempButton->setStyleSheet("background-color:yellow");
+
+    if (buttonName != "gridButton")
+    {
+        currentButtonRemoveHighlight(oldBrush);
+        QPushButton *tempButton = static_cast<QPushButton *>(sender());
+        tempButton->setStyleSheet("background-color:green");
+    }
 }
 
 
@@ -298,6 +305,7 @@ void MainWindow::updateCanvas()
 
 void MainWindow::toggleGridDisplay()
 {
+    ui->canvas->isGridOn() ? ui->gridButton->setStyleSheet("") : ui->gridButton->setStyleSheet("background-color: green");
     ui->canvas->toggleGridDisplay();
     ui->canvas->update();
 }
@@ -407,5 +415,31 @@ void MainWindow::toolBrushAction(int x, int y)
         case ToolBrush::Eraser:
             currentFrame->erase(x, y);
             return;
+    }
+}
+
+void MainWindow::currentButtonRemoveHighlight(ToolBrush currBrush)
+{
+    QString styleSheet = "";
+    switch (currBrush)
+    {
+        case ToolBrush::Darken:
+            ui->darkenButton->setStyleSheet(styleSheet);
+            break;
+        case ToolBrush::Lighten:
+            ui->lightenButton->setStyleSheet(styleSheet);
+            break;
+        case ToolBrush::Brush:
+            ui->brushButton->setStyleSheet(styleSheet);
+            break;
+        case ToolBrush::Eraser:
+            ui->eraserButton->setStyleSheet(styleSheet);
+            break;
+        case ToolBrush::Bucket:
+            ui->fillButton->setStyleSheet(styleSheet);
+            break;
+        case ToolBrush::EyeDrop:
+            ui->eyeDropButton->setStyleSheet(styleSheet);
+            break;
     }
 }

@@ -78,6 +78,7 @@ private:
     void changeSelectedColor(QColor color);
     void toolBrushAction(int x, int y);
     void updateListView(int);
+    void currentButtonRemoveHighlight(ToolBrush currBrush);
 };
 
 #endif // MAINWINDOW_H
