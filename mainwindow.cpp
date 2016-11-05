@@ -4,6 +4,7 @@
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "newspritedialog.h"
 
 #include <QColorDialog>
 #include <QImage>
@@ -26,7 +27,8 @@ MainWindow::MainWindow(QWidget *parent)
       animationTimer(this),
       animationFrameIndex(0),
       brushSize(1),
-      isChanged(false)
+      isChanged(false),
+      newDialog(this)
 {
     ui->setupUi(this);
 
@@ -253,7 +255,32 @@ void MainWindow::fileMenuItemClicked()
     }
     else if(fileMenuItem == "actionNew")
     {
-        // TODO: new dialog (let user pick a square size that divides evenly into 600x600, the canvas size)
+
+        if(isChanged)
+        {
+            //popup message
+            QMessageBox::StandardButton reply;
+            reply = QMessageBox::question(this, "Overwrite", "You have unsaved changes! Would you like to continue without saving?", QMessageBox::Yes|QMessageBox::No);
+
+            if(reply == QMessageBox::Yes)
+            {
+                newDialog.exec();
+                int width, height;
+                newDialog.GetResults(width, height);
+                frames.changeFrameSize(width, height);
+                currentFrame = frames.getFrame(0);
+                updateCanvas();
+            }
+        }
+        else
+        {
+            newDialog.exec();
+            int width, height;
+            newDialog.GetResults(width, height);
+            frames.changeFrameSize(width, height);
+            currentFrame = frames.getFrame(0);
+            updateCanvas();
+        }
     }
     else if(fileMenuItem == "actionSave")
     {

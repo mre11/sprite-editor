@@ -17,6 +17,9 @@
    <iconset resource="resources.qrc">
     <normaloff>:/Sprite/bucket.ico</normaloff>:/Sprite/bucket.ico</iconset>
   </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
   <widget class="QWidget" name="centralWidget">
    <property name="styleSheet">
     <string notr="true"/>
@@ -414,7 +417,7 @@
       <rect>
        <x>10</x>
        <y>320</y>
-       <width>171</width>
+       <width>196</width>
        <height>31</height>
       </rect>
      </property>
@@ -462,7 +465,7 @@
      <x>0</x>
      <y>0</y>
      <width>1184</width>
-     <height>20</height>
+     <height>25</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -482,7 +485,7 @@
     <property name="title">
      <string>Export</string>
     </property>
-    <addaction name="actionExport_GIF"/>gi
+    <addaction name="actionExport_GIF"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuExport"/>
