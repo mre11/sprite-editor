@@ -1,3 +1,7 @@
+// A7: Sprite Editor
+// CS 3505, University of Utah, Fall 2016
+// Braden Klunker, Michael Swisher, Morgan Empey, Naoki Tominaga, Ryan Williams
+
 #include "gifexporter.h"
 #include "gif-h/gif.h"
 

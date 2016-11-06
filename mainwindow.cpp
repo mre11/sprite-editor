@@ -1,5 +1,5 @@
 // A7: Sprite Editor
-// CS 3505, University of Utah, Spring 2016
+// CS 3505, University of Utah, Fall 2016
 // Braden Klunker, Michael Swisher, Morgan Empey, Naoki Tominaga, Ryan Williams
 
 #include "mainwindow.h"
@@ -55,6 +55,8 @@ MainWindow::MainWindow(QWidget *parent)
     animationTimer.start();
 
     ui->brushButton->setStyleSheet("background-color:green"); // brush is active to start
+
+    initNewProject();
 
     connect(ui->canvas, &SpriteCanvas::mouseClicked, this, &MainWindow::processMouseClick);
     connect(ui->primaryColorButton, &QPushButton::clicked, this, &MainWindow::primaryColorClicked);
@@ -208,23 +210,23 @@ void MainWindow::processMouseClick(QPoint pt)
 void MainWindow::fileMenuItemClicked()
 {
     QString fileMenuItem = sender()->objectName();
-    // TODO: Handle "Cancel" for all of these! Returns an empty string (right?)
-    // TODO: Create QFileDialog first and apply all filters to the dialog before using.
-    if(fileMenuItem == "actionOpen")
+
+    if (fileMenuItem == "actionOpen") // TODO size isn't updated properly somewhere... open smaller sprite when you have bigger sprite active
     {
         if (isChanged)
         {
-            //popup message
             QMessageBox::StandardButton reply;
             reply = QMessageBox::question(this, "Overwrite", "You have unsaved changes! Would you like to continue without saving?", QMessageBox::Yes|QMessageBox::No);
 
-            if(reply == QMessageBox::Yes)
+            if (reply == QMessageBox::Yes)
             {
                 QString fileName = QFileDialog::getOpenFileName(this, "Open File", QDir::homePath());
 
-                if(fileName != NULL)
+                if (fileName != NULL)
                 {
                     frames.open(fileName);
+
+                    //frameModel.removeRows(0, frameModel.rowCount());
 
                     // Update the current frame.
                     currentFrame = frames.getFrame(0);
@@ -260,59 +262,42 @@ void MainWindow::fileMenuItemClicked()
             }
         }
     }
-    else if(fileMenuItem == "actionNew")
+    else if (fileMenuItem == "actionNew")
     {
 
-        if(isChanged)
+        if (isChanged)
         {
-            //popup message
             QMessageBox::StandardButton reply;
             reply = QMessageBox::question(this, "Overwrite", "You have unsaved changes! Would you like to continue without saving?", QMessageBox::Yes|QMessageBox::No);
 
-            if(reply == QMessageBox::Yes)
+            if (reply == QMessageBox::Yes)
             {
-                newDialog.exec();
-                int width, height;
-                newDialog.GetResults(width, height);
-                frames.changeFrameSize(width, height);
-                currentFrame = frames.getFrame(0);
-                updateCanvas();
+                initNewProject();
             }
         }
         else
         {
-            newDialog.exec();
-            int width, height;
-            newDialog.GetResults(width, height);
-            frames.changeFrameSize(width, height);
-            currentFrame = frames.getFrame(0);
-            updateCanvas();
+            initNewProject();
         }
     }
-    else if(fileMenuItem == "actionSave")
+    else if (fileMenuItem == "actionSave_As" || fileMenuItem == "actionSave")
     {
-        // TODO: get rid of code duplication between save and save as
-        if (currentFileName.isEmpty())
+        if (currentFileName.isEmpty() || fileMenuItem == "actionSave_As")
         {
             currentFileName = QFileDialog::getSaveFileName(this, "Save As", QDir::homePath(), "Sprite Sheet Project (*.ssp)");
         }
-
-        frames.save(currentFileName);
-        isChanged = false;
+        if (!currentFileName.isEmpty())
+        {
+            frames.save(currentFileName);
+            isChanged = false;
+        }
     }
-    else if(fileMenuItem == "actionSave_As")
-    {
-
-        currentFileName = QFileDialog::getSaveFileName(this, "Save As", QDir::homePath(), "Sprite Sheet Project (*.ssp)");
-        frames.save(currentFileName);
-        isChanged = false;
-    }
-    else if(fileMenuItem == "actionExit")
+    else if (fileMenuItem == "actionExit")
     {
         QMessageBox::StandardButton response;
         response = QMessageBox::question(this, "Exit", "Are you sure you want to exit?", QMessageBox::Yes|QMessageBox::No);
 
-        if(response == QMessageBox::Yes)
+        if (response == QMessageBox::Yes)
         {
             close();
         }
@@ -377,7 +362,7 @@ void MainWindow::resetFrameClicked()
 /// Deletes the selected item in the list view.
 void MainWindow::deleteFrameClicked()
 {
-    if(frames.count() > 1 && ui->frameListView->currentIndex().row() > -1)
+    if (frames.count() > 1 && ui->frameListView->currentIndex().row() > -1)
     {
         // Delete Sprite frame from the collection.
         frames.deleteFrame(ui->frameListView->currentIndex().row());
@@ -469,4 +454,17 @@ void MainWindow::currentButtonRemoveHighlight(ToolBrush currBrush)
             ui->eyeDropButton->setStyleSheet(styleSheet);
             break;
     }
+}
+
+/// Asks the user for height and width and sets up a new project
+void MainWindow::initNewProject()
+{
+    frameModel.removeRows(0, frameModel.rowCount());
+    updateListView(0);
+    newDialog.exec();
+    int width, height;
+    newDialog.GetResults(width, height);
+    frames.changeFrameSize(width, height);
+    currentFrame = frames.getFrame(0);
+    updateCanvas();
 }

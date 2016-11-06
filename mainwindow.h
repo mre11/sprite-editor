@@ -81,6 +81,7 @@ private:
     void updateListView(int);
     NewSpriteDialog newDialog;
     void currentButtonRemoveHighlight(ToolBrush currBrush);
+    void initNewProject();
 };
 
 #endif // MAINWINDOW_H
