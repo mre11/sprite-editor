@@ -254,7 +254,7 @@ void MainWindow::fileMenuItemClicked()
                 frameModel.removeRows(0, frameModel.rowCount());
                 // set the file name.
                 currentFileName = fileName;
-                for (int i = 1; i < frames.count(); i++)
+                for (int i = 0; i < frames.count(); i++)
                 {
                     updateListView(i);
                 }
