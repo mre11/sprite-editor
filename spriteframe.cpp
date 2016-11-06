@@ -10,7 +10,7 @@ using namespace std;
 SpriteFrame::SpriteFrame(int width, int height, QObject *parent)
     : QObject(parent), image(width, height, QImage::Format_ARGB32)
 {
-    image.fill(QColor(230, 230, 230, 0));
+    image.fill(QColor(255, 255, 255, 0));
 }
 
 void SpriteFrame::darken(int x, int y)
