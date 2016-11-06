@@ -226,7 +226,7 @@ void MainWindow::fileMenuItemClicked()
                 {
                     frames.open(fileName);
 
-                    //frameModel.removeRows(0, frameModel.rowCount());
+                    frameModel.removeRows(0, frameModel.rowCount());
 
                     // Update the current frame.
                     currentFrame = frames.getFrame(0);
