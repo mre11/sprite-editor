@@ -226,7 +226,7 @@ void MainWindow::fileMenuItemClicked()
                 {
                     frames.open(fileName);
 
-                    //frameModel.removeRows(0, frameModel.rowCount());
+                    frameModel.removeRows(0, frameModel.rowCount());
 
                     // Update the current frame.
                     currentFrame = frames.getFrame(0);
@@ -251,7 +251,7 @@ void MainWindow::fileMenuItemClicked()
 
                 // Update the current frame.
                 currentFrame = frames.getFrame(0);
-
+                frameModel.removeRows(0, frameModel.rowCount());
                 // set the file name.
                 currentFileName = fileName;
                 for (int i = 1; i < frames.count(); i++)
