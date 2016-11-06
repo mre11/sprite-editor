@@ -211,7 +211,7 @@ void MainWindow::fileMenuItemClicked()
 {
     QString fileMenuItem = sender()->objectName();
 
-    if (fileMenuItem == "actionOpen")
+    if (fileMenuItem == "actionOpen") // TODO size isn't updated properly somewhere... open smaller sprite when you have bigger sprite active
     {
         if (isChanged)
         {
