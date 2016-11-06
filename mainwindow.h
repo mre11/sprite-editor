@@ -9,7 +9,6 @@
 #include <QTimer>
 #include <QStringListModel>
 #include "newspritedialog.h"
-
 #include "spriteframecollection.h"
 
 namespace Ui {
@@ -24,6 +23,7 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+    // Enum for distinguishing which tool is being used.
     enum ToolBrush
     {
         Darken,
@@ -37,22 +37,46 @@ public:
 public slots:
     // tools
     void updateAnimation();
+
+    // Sets the frames per second for the animation interval.
     void setAnimationTimerInterval(int fps);
+
+    // Sets the current tool brush.
     void toolBrushClicked();
+
+    // Collects the QPoint at which the user clicked.
     void processMouseClick(QPoint pt);
+
+    // Updates the canvas by redrawing
     void updateCanvas();
+
+    // Sets the toggle grid display on or off.
     void toggleGridDisplay();
+
+    // Displays a color picker dialog for changing colors.
     void primaryColorClicked();
 
-    // menu items
+    // Handles file menu click events
     void fileMenuItemClicked();
+
+    // Handles export menu click
     void exportMenuItemClicked();
 
 private slots:
+
+    // Adds frames to the frame list view
     void addFrameClicked();
+
+    // Resets the current frame
     void resetFrameClicked();
+
+    // Deletes the current selected frame
     void deleteFrameClicked();
+
+    // Displays the current frame on the canvas.
     void frameListClicked(const QModelIndex &index);
+
+    // Updates the brush size to the new value.
     void brushSizeChanged(int value);
 
 private:
