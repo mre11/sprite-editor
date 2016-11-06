@@ -332,7 +332,6 @@ void MainWindow::exportMenuItemClicked()
 /// Updates the list view with new rows that are named according to their frame index.
 void MainWindow::updateListView(int frameNumber)
 {
-    // TODO: morgan got the index out of range crash, I'm wondering if something isn't right here. setStringList takes a reference, do we need the QStringList to be a member?
     QStringList frames = frameModel.stringList();
     QString t = "frame" + QString::number(frameNumber);
     frames.append(t);
