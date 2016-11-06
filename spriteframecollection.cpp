@@ -49,8 +49,8 @@ void SpriteFrameCollection::open(QString filePath)
     string line;
     int width, height, numberOfFrames;
 
-    if(frameHeight != height && frameWidth != width)
-        changeFrameSize(width, height);
+//    if(frameHeight != height && frameWidth != width)
+//        changeFrameSize(width, height);
 
     ifstream inFile(filePath.toStdString());
 

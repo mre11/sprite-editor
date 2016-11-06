@@ -226,6 +226,8 @@ void MainWindow::fileMenuItemClicked()
                 {
                     frames.open(fileName);
 
+                    //frameModel.removeRows(0, frameModel.rowCount());
+
                     // Update the current frame.
                     currentFrame = frames.getFrame(0);
 
@@ -271,6 +273,8 @@ void MainWindow::fileMenuItemClicked()
 
             if(reply == QMessageBox::Yes)
             {
+                frameModel.removeRows(0, frameModel.rowCount());
+                updateListView(0);
                 newDialog.exec();
                 int width, height;
                 newDialog.GetResults(width, height);
@@ -281,6 +285,8 @@ void MainWindow::fileMenuItemClicked()
         }
         else
         {
+            frameModel.removeRows(0, frameModel.rowCount());
+            updateListView(0);
             newDialog.exec();
             int width, height;
             newDialog.GetResults(width, height);
@@ -289,21 +295,12 @@ void MainWindow::fileMenuItemClicked()
             updateCanvas();
         }
     }
-    else if(fileMenuItem == "actionSave")
+    else if(fileMenuItem == "actionSave_As" || fileMenuItem == "actionSave")
     {
-        // TODO: get rid of code duplication between save and save as
-        if (currentFileName.isEmpty())
+        if(currentFileName.isEmpty() || fileMenuItem == "actionSave_As")
         {
             currentFileName = QFileDialog::getSaveFileName(this, "Save As", QDir::homePath(), "Sprite Sheet Project (*.ssp)");
         }
-
-        frames.save(currentFileName);
-        isChanged = false;
-    }
-    else if(fileMenuItem == "actionSave_As")
-    {
-
-        currentFileName = QFileDialog::getSaveFileName(this, "Save As", QDir::homePath(), "Sprite Sheet Project (*.ssp)");
         frames.save(currentFileName);
         isChanged = false;
     }

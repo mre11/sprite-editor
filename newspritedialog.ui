@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>New Sprite</string>
   </property>
   <widget class="QDialogButtonBox" name="buttonBox">
    <property name="geometry">
@@ -48,6 +48,21 @@
     </item>
     <item>
      <widget class="QComboBox" name="comboBox">
+      <item>
+       <property name="text">
+        <string>20x20</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>40x40</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>60x60</string>
+       </property>
+      </item>
       <item>
        <property name="text">
         <string>100x100</string>
