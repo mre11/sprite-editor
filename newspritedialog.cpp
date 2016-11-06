@@ -17,7 +17,7 @@ NewSpriteDialog::~NewSpriteDialog()
     delete ui;
 }
 
-void NewSpriteDialog::GetResults(int &width, int &height)
+void NewSpriteDialog::getResults(int &width, int &height)
 {
     QString selection = ui->comboBox->currentText();
     QStringList list;

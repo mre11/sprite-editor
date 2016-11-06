@@ -463,7 +463,7 @@ void MainWindow::initNewProject()
     updateListView(0);
     newDialog.exec();
     int width, height;
-    newDialog.GetResults(width, height);
+    newDialog.getResults(width, height);
     frames.changeFrameSize(width, height);
     currentFrame = frames.getFrame(0);
     updateCanvas();

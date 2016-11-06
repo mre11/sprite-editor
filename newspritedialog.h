@@ -21,7 +21,7 @@ public:
     ~NewSpriteDialog();
 
     // Gets the users width and height selection.
-    void GetResults(int &width, int &height);
+    void getResults(int &width, int &height);
 
 private:
     Ui::NewSpriteDialog *ui;
