@@ -210,8 +210,7 @@ void MainWindow::processMouseClick(QPoint pt)
 void MainWindow::fileMenuItemClicked()
 {
     QString fileMenuItem = sender()->objectName();
-    // TODO: Handle "Cancel" for all of these! Returns an empty string (right?)
-    // TODO: Create QFileDialog first and apply all filters to the dialog before using.
+
     if (fileMenuItem == "actionOpen")
     {
         if (isChanged)
@@ -287,8 +286,11 @@ void MainWindow::fileMenuItemClicked()
         {
             currentFileName = QFileDialog::getSaveFileName(this, "Save As", QDir::homePath(), "Sprite Sheet Project (*.ssp)");
         }
-        frames.save(currentFileName);
-        isChanged = false;
+        if (!currentFileName.isEmpty())
+        {
+            frames.save(currentFileName);
+            isChanged = false;
+        }
     }
     else if (fileMenuItem == "actionExit")
     {
