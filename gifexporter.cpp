@@ -5,13 +5,13 @@ void GifExporter::exportGif(QString fileName, SpriteFrameCollection &frames)
 {
     GifWriter *gifwriter; // gif.h wants this uninitialized
 
-    GifBegin(gifwriter, fileName.toStdString().c_str(), frames.getWidth(), frames.getHeight(), 10);
+    GifBegin(gifwriter, fileName.toStdString().c_str(), 240, 240, 10);
 
     // Pass frames of the animation to GifWriteFrame().
     for(int i = 0; i < frames.count(); i++)
     {
         QImage iFrame = *(frames.getFrame(i)->getImage());
-        //iFrame = iFrame.scaled(240, 240, Qt::KeepAspectRatio);
+        iFrame = iFrame.scaled(240, 240, Qt::KeepAspectRatio);
         int frameWidth = iFrame.width();
         int frameHeight = iFrame.height();
         int numbPixels = frameWidth * frameHeight;
@@ -31,7 +31,7 @@ void GifExporter::exportGif(QString fileName, SpriteFrameCollection &frames)
              }
         }
 
-        GifWriteFrame(gifwriter, image, frames.getWidth(), frames.getHeight(), 10);
+        GifWriteFrame(gifwriter, image, 240, 240, 10);
         delete[] image;
     }
 
