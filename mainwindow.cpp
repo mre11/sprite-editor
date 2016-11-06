@@ -20,15 +20,15 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
       ui(new Ui::MainWindow),
       frames(20, 20, this),
+      animationFrameIndex(0),
+      animationTimer(this),
       brush(ToolBrush::Brush),
+      brushSize(1),
       currentColor(0, 0, 0),
       frameModel(this),
+      newDialog(this),
       currentFileName(""),
-      animationTimer(this),
-      animationFrameIndex(0),
-      brushSize(1),
-      isChanged(false),
-      newDialog(this)
+      isChanged(false)
 {
     ui->setupUi(this);
 
@@ -222,7 +222,7 @@ void MainWindow::fileMenuItemClicked()
             {
                 QString fileName = QFileDialog::getOpenFileName(this, "Open File", QDir::homePath());
 
-                if (fileName != NULL)
+                if (!fileName.isEmpty())
                 {
                     frames.open(fileName);
 
@@ -245,7 +245,7 @@ void MainWindow::fileMenuItemClicked()
         {
             QString fileName = QFileDialog::getOpenFileName(this, "Open File", QDir::homePath());
 
-            if (fileName != NULL)
+            if (!fileName.isEmpty())
             {
                 frames.open(fileName);
 
