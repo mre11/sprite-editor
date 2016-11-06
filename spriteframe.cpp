@@ -101,6 +101,9 @@ void SpriteFrame::resetFrame()
 
 QColor SpriteFrame::eyeDrop(int x, int y)
 {
+    if (image.pixelColor(x, y).alpha() < 255)
+        return Qt::white;
+
     return image.pixelColor(x, y);
 }
 
