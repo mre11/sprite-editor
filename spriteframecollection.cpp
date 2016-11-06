@@ -16,6 +16,14 @@ SpriteFrameCollection::SpriteFrameCollection(int width, int height, QObject *par
 
 }
 
+void SpriteFrameCollection::changeFrameSize(int width, int height)
+{
+    frames.clear();
+    frameWidth = width;
+    frameHeight = height;
+    addFrame();
+}
+
 void SpriteFrameCollection::addFrame()
 {
     frames.append(QSharedPointer<SpriteFrame>(new SpriteFrame(frameWidth, frameHeight, this)));
@@ -40,6 +48,10 @@ void SpriteFrameCollection::open(QString filePath)
 {
     string line;
     int width, height, numberOfFrames;
+
+//    if(frameHeight != height && frameWidth != width)
+//        changeFrameSize(width, height);
+
     ifstream inFile(filePath.toStdString());
 
     //open the file with a input file stream object

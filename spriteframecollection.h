@@ -25,6 +25,7 @@ public:
     void save(QString filePath);
     SpriteFrame *getFrame(int index);
     int count();
+    void changeFrameSize(int width, int height);
 
 signals:
 

@@ -17,15 +17,18 @@ SOURCES += main.cpp\
     spriteframe.cpp \
     spriteframecollection.cpp \
     spritecanvas.cpp \
-    gifexporter.cpp
+    gifexporter.cpp \
+    newspritedialog.cpp
 
 HEADERS  += mainwindow.h \
     spriteframe.h \
     spriteframecollection.h \
     spritecanvas.h \
-    gifexporter.h
+    gifexporter.h \
+    newspritedialog.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    newspritedialog.ui
 
 RESOURCES += \
     resources.qrc

@@ -8,6 +8,7 @@
 #include <QMainWindow>
 #include <QTimer>
 #include <QStringListModel>
+#include "newspritedialog.h"
 
 #include "spriteframecollection.h"
 
@@ -78,6 +79,7 @@ private:
     void changeSelectedColor(QColor color);
     void toolBrushAction(int x, int y);
     void updateListView(int);
+    NewSpriteDialog newDialog;
     void currentButtonRemoveHighlight(ToolBrush currBrush);
 };
 
