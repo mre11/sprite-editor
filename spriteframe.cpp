@@ -51,7 +51,7 @@ void SpriteFrame::fillColor(int x, int y, QColor replacementColor)
     QPoint first(x, y);
     QColor targetColor = image.pixelColor(first);
 
-    if(targetColor == replacementColor)
+    if (targetColor == replacementColor)
         return;
 
     QQueue<QPoint> *queue = new QQueue<QPoint>();
@@ -64,7 +64,7 @@ void SpriteFrame::fillColor(int x, int y, QColor replacementColor)
         QPoint n = queue->dequeue();
         QColor nColor = this->image.pixelColor(n);
 
-        if(nColor != targetColor)
+        if (nColor != targetColor)
             continue;
 
         image.setPixelColor(n, replacementColor);
@@ -75,19 +75,19 @@ void SpriteFrame::fillColor(int x, int y, QColor replacementColor)
         QPoint south(n.x(), n.y() + 1);
 
         // Grab qpoint west if it is the same as the target color.
-        if(west.x() >= 0 && west.x() < image.width() && image.pixelColor(west) == targetColor)
+        if (west.x() >= 0 && west.x() < image.width() && image.pixelColor(west) == targetColor)
             queue->enqueue(west);
 
         // Grab qpoint east if it is the same as the target color.
-        if(east.x() >= 0 && east.x() < image.width() && image.pixelColor(east) == targetColor)
+        if (east.x() >= 0 && east.x() < image.width() && image.pixelColor(east) == targetColor)
             queue->enqueue(east);
 
         // Grab qpoint north if it is the same as the target color.
-        if(north.y() >= 0  && north.y() < image.height() && image.pixelColor(north) == targetColor)
+        if (north.y() >= 0  && north.y() < image.height() && image.pixelColor(north) == targetColor)
             queue->enqueue(north);
 
         // Grab qpoint south if it is the same as the target color.
-        if(south.y() >= 0 && south.y() < image.height() &&  image.pixelColor(south) == targetColor)
+        if (south.y() >= 0 && south.y() < image.height() &&  image.pixelColor(south) == targetColor)
             queue->enqueue(south);
     }
 }
