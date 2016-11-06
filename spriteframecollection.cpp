@@ -62,6 +62,9 @@ void SpriteFrameCollection::open(QString filePath)
     stringstream ss(line);
     ss >> width >> height;
 
+    frameWidth = width;
+    frameHeight = height;
+
     //get the number of sprite frames that were saved to the file
     std::getline(inFile, line);
     stringstream ss2(line);
