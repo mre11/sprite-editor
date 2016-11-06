@@ -73,13 +73,13 @@ private:
     int canvasWidth;
     int canvasHeight;        
 
+    NewSpriteDialog newDialog;
     QString currentFileName;
     bool isChanged;
 
     void changeSelectedColor(QColor color);
     void toolBrushAction(int x, int y);
     void updateListView(int);
-    NewSpriteDialog newDialog;
     void currentButtonRemoveHighlight(ToolBrush currBrush);
     void initNewProject();
 };

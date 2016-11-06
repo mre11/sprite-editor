@@ -26,8 +26,8 @@ signals:
 
 protected:
     virtual void paintEvent(QPaintEvent *event) override;
-    virtual void mousePressEvent(QMouseEvent *event);
-    virtual void mouseMoveEvent(QMouseEvent *event);
+    virtual void mousePressEvent(QMouseEvent *event) override;
+    virtual void mouseMoveEvent(QMouseEvent *event) override;
 
     bool gridOn;
     int spriteHeight;

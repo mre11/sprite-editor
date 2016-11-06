@@ -20,15 +20,15 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
       ui(new Ui::MainWindow),
       frames(20, 20, this),
+      animationFrameIndex(0),
+      animationTimer(this),
       brush(ToolBrush::Brush),
+      brushSize(1),
       currentColor(0, 0, 0),
       frameModel(this),
+      newDialog(this),
       currentFileName(""),
-      animationTimer(this),
-      animationFrameIndex(0),
-      brushSize(1),
-      isChanged(false),
-      newDialog(this)
+      isChanged(false)
 {
     ui->setupUi(this);
 
@@ -211,7 +211,7 @@ void MainWindow::fileMenuItemClicked()
 {
     QString fileMenuItem = sender()->objectName();
 
-    if (fileMenuItem == "actionOpen") // TODO size isn't updated properly somewhere... open smaller sprite when you have bigger sprite active
+    if (fileMenuItem == "actionOpen")
     {
         if (isChanged)
         {
@@ -222,7 +222,7 @@ void MainWindow::fileMenuItemClicked()
             {
                 QString fileName = QFileDialog::getOpenFileName(this, "Open File", QDir::homePath());
 
-                if (fileName != NULL)
+                if (!fileName.isEmpty())
                 {
                     frames.open(fileName);
 
@@ -233,7 +233,7 @@ void MainWindow::fileMenuItemClicked()
 
                     // set the file name.
                     currentFileName = fileName;
-                    for(int i = 0; i < frames.count(); i++)
+                    for (int i = 0; i < frames.count() + 1; i++)
                     {
                         updateListView(i);
                     }
@@ -245,7 +245,7 @@ void MainWindow::fileMenuItemClicked()
         {
             QString fileName = QFileDialog::getOpenFileName(this, "Open File", QDir::homePath());
 
-            if (fileName != NULL)
+            if (!fileName.isEmpty())
             {
                 frames.open(fileName);
 
@@ -254,7 +254,7 @@ void MainWindow::fileMenuItemClicked()
                 frameModel.removeRows(0, frameModel.rowCount());
                 // set the file name.
                 currentFileName = fileName;
-                for(int i = 1; i < frames.count(); i++)
+                for (int i = 1; i < frames.count(); i++)
                 {
                     updateListView(i);
                 }
@@ -426,6 +426,7 @@ void MainWindow::toolBrushAction(int x, int y)
         case ToolBrush::Eraser:
             currentFrame->erase(x, y);
             return;
+        default: return;
     }
 }
 

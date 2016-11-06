@@ -12,7 +12,7 @@ void GifExporter::exportGif(QString fileName, SpriteFrameCollection &frames)
     GifBegin(gifwriter, fileName.toStdString().c_str(), frames.getWidth(), frames.getHeight(), 10);
 
     // Pass frames of the animation to GifWriteFrame().
-    for(int i = 0; i < frames.count(); i++)
+    for (int i = 0; i < frames.count(); i++)
     {
         QImage iFrame = *(frames.getFrame(i)->getImage());
         int frameWidth = iFrame.width();
@@ -21,9 +21,9 @@ void GifExporter::exportGif(QString fileName, SpriteFrameCollection &frames)
 
         uint8_t *image = new uint8_t[numbPixels*4];
         int imageIndex = 0;
-        for(int j = 0; j < frameHeight; j++)
+        for (int j = 0; j < frameHeight; j++)
         {
-             for(int k = 0; k < frameWidth; k++)\
+             for (int k = 0; k < frameWidth; k++)\
              {
                  QColor color = iFrame.pixelColor(k, j);
                  image[imageIndex] = (uint8_t)color.red();
