@@ -38,7 +38,7 @@ void SpriteFrame::lighten(int x, int y)
 
 void SpriteFrame::erase(int x, int y)
 {
-    changeColor(x, y, QColor(230, 230, 230, 0));
+    changeColor(x, y, QColor(255, 255, 255, 0));
 }
 
 void SpriteFrame::changeColor(int x, int y, QColor color)
@@ -96,7 +96,7 @@ void SpriteFrame::fillColor(int x, int y, QColor replacementColor)
 
 void SpriteFrame::resetFrame()
 {
-    image.fill(QColor(230, 230, 230, 0));
+    image.fill(QColor(255, 255, 255, 0));
 }
 
 QColor SpriteFrame::eyeDrop(int x, int y)

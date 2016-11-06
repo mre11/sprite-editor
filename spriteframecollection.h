@@ -17,18 +17,34 @@ class SpriteFrameCollection : public QObject
 public:
     explicit SpriteFrameCollection(int width, int height, QObject *parent = 0);
 
+    // Adds a frame to the sprite frame collection.
     void addFrame();
+
+    // Deletes the frame at index.
     void deleteFrame(int index);
+
+    // returns the width of the sprite frames
     int getWidth();
+
+    // returns the height of the sprite frames
     int getHeight();
+
+    // Opens a .ssp file at the specified file path
     void open(QString filePath);
+
+    // Saves the .ssp file to the specified file path
     void save(QString filePath);
+
+    // returns a reference to the frame at index
     SpriteFrame *getFrame(int index);
+
+    // returns the count of frames
     int count();
+
+    // changes the frame size
     void changeFrameSize(int width, int height);
 
 signals:
-
 public slots:
 private:
     int frameHeight;

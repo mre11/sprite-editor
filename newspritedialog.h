@@ -19,6 +19,8 @@ class NewSpriteDialog : public QDialog
 public:
     explicit NewSpriteDialog(QWidget *parent = 0);
     ~NewSpriteDialog();
+
+    // Gets the users width and height selection.
     void GetResults(int &width, int &height);
 
 private:

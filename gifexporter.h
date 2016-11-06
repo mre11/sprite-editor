@@ -11,6 +11,7 @@
 class GifExporter
 {
 public:
+    /// Exports the current sprite frame collection to an animated gif.
     void exportGif(QString fileName, SpriteFrameCollection &frames);
 };
 
