@@ -49,38 +49,34 @@ void SpriteFrameCollection::open(QString filePath)
     string line;
     int width, height, numberOfFrames;
 
-//    if(frameHeight != height && frameWidth != width)
-//        changeFrameSize(width, height);
-
     ifstream inFile(filePath.toStdString());
 
-    //open the file with a input file stream object
-    //inFile.open(filePath);
-
-    //get the first line containing the heigth and width of the canvas
+    // get the first line containing the height and width of the canvas
     std::getline(inFile, line);
     stringstream ss(line);
     ss >> width >> height;
+    frameWidth = width;
+    frameHeight = height;
 
-    //get the number of sprite frames that were saved to the file
+    // get the number of sprite frames that were saved to the file
     std::getline(inFile, line);
     stringstream ss2(line);
     ss2 >> numberOfFrames;
 
     frames.resize(0);
 
-    for(int i = 0; i < numberOfFrames; i++)
+    for (int i = 0; i < numberOfFrames; i++)
     {
         addFrame();
         SpriteFrame *sf = getFrame((i));
 
-        for(int j = 0; j < height; j++)
+        for (int j = 0; j < height; j++)
         {
             int r,g,b,a;
             std::getline(inFile, line);
             stringstream ss(line);
 
-            for(int k = 0; k < width; k++)
+            for (int k = 0; k < width; k++)
             {
                 ss >> r >> g >> b >> a;
                 QColor qc(r,g,b,a);
@@ -103,8 +99,6 @@ void SpriteFrameCollection::save(QString filePath)
 
     for (auto frame : frames)
         frame->save(outFile);
-
-
 }
 
 SpriteFrame *SpriteFrameCollection::getFrame(int index)

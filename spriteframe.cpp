@@ -27,7 +27,9 @@ void SpriteFrame::lighten(int x, int y)
 
     auto color = image.pixelColor(x, y);
     if (color.red() + color.green() + color.blue() == 0) // black doesn't work with color.lighter()
+    {
         changeColor(x, y, QColor(25, 25, 25, color.alpha()));
+    }
     else
     {
         changeColor(x, y, color.lighter(110));
@@ -99,6 +101,9 @@ void SpriteFrame::resetFrame()
 
 QColor SpriteFrame::eyeDrop(int x, int y)
 {
+    if (image.pixelColor(x, y).alpha() < 255)
+        return Qt::white;
+
     return image.pixelColor(x, y);
 }
 
@@ -109,7 +114,7 @@ const QImage *SpriteFrame::getImage()
 
 void SpriteFrame::save(ofstream &outputFile)
 {
-    for(int i = 0; i < image.height(); i++)
+    for (int i = 0; i < image.height(); i++)
     {
         saveRow(i, outputFile);
     }

@@ -20,15 +20,15 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
       ui(new Ui::MainWindow),
       frames(20, 20, this),
+      animationFrameIndex(0),
+      animationTimer(this),
       brush(ToolBrush::Brush),
+      brushSize(1),
       currentColor(0, 0, 0),
       frameModel(this),
+      newDialog(this),
       currentFileName(""),
-      animationTimer(this),
-      animationFrameIndex(0),
-      brushSize(1),
-      isChanged(false),
-      newDialog(this)
+      isChanged(false)
 {
     ui->setupUi(this);
 
@@ -211,7 +211,7 @@ void MainWindow::fileMenuItemClicked()
 {
     QString fileMenuItem = sender()->objectName();
 
-    if (fileMenuItem == "actionOpen") // TODO size isn't updated properly somewhere... open smaller sprite when you have bigger sprite active
+    if (fileMenuItem == "actionOpen")
     {
         if (isChanged)
         {
@@ -222,18 +222,18 @@ void MainWindow::fileMenuItemClicked()
             {
                 QString fileName = QFileDialog::getOpenFileName(this, "Open File", QDir::homePath());
 
-                if (fileName != NULL)
+                if (!fileName.isEmpty())
                 {
                     frames.open(fileName);
 
-                    //frameModel.removeRows(0, frameModel.rowCount());
+                    frameModel.removeRows(0, frameModel.rowCount());
 
                     // Update the current frame.
                     currentFrame = frames.getFrame(0);
 
                     // set the file name.
                     currentFileName = fileName;
-                    for(int i = 1; i < frames.count(); i++)
+                    for (int i = 1; i < frames.count(); i++)
                     {
                         updateListView(i);
                     }
@@ -245,16 +245,16 @@ void MainWindow::fileMenuItemClicked()
         {
             QString fileName = QFileDialog::getOpenFileName(this, "Open File", QDir::homePath());
 
-            if (fileName != NULL)
+            if (!fileName.isEmpty())
             {
                 frames.open(fileName);
 
                 // Update the current frame.
                 currentFrame = frames.getFrame(0);
-
+                frameModel.removeRows(0, frameModel.rowCount());
                 // set the file name.
                 currentFileName = fileName;
-                for(int i = 1; i < frames.count(); i++)
+                for (int i = 1; i < frames.count(); i++)
                 {
                     updateListView(i);
                 }
@@ -332,7 +332,6 @@ void MainWindow::exportMenuItemClicked()
 /// Updates the list view with new rows that are named according to their frame index.
 void MainWindow::updateListView(int frameNumber)
 {
-    // TODO: morgan got the index out of range crash, I'm wondering if something isn't right here. setStringList takes a reference, do we need the QStringList to be a member?
     QStringList frames = frameModel.stringList();
     QString t = "frame" + QString::number(frameNumber);
     frames.append(t);
@@ -427,6 +426,7 @@ void MainWindow::toolBrushAction(int x, int y)
         case ToolBrush::Eraser:
             currentFrame->erase(x, y);
             return;
+        default: return;
     }
 }
 
