@@ -234,7 +234,7 @@ void MainWindow::fileMenuItemClicked()
 
                     // set the file name.
                     currentFileName = fileName;
-                    for (int i = 0; i < frames.count() + 1; i++)
+                    for (int i = 0; i < frames.count(); i++)
                     {
                         updateListView(i);
                     }
