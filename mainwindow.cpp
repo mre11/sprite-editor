@@ -475,4 +475,6 @@ void MainWindow::initNewProject()
         ui->animationDisplay->clear();
         newClicked = false;
     }
+    if(!currentFileName.isEmpty())
+        currentFileName = "";
 }
