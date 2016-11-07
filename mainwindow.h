@@ -100,6 +100,7 @@ private:
     NewSpriteDialog newDialog;
     QString currentFileName;
     bool isChanged;
+    bool newClicked;
 
     void changeSelectedColor(QColor color);
     void toolBrushAction(int x, int y);

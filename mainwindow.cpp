@@ -28,7 +28,8 @@ MainWindow::MainWindow(QWidget *parent)
       frameModel(this),
       newDialog(this),
       currentFileName(""),
-      isChanged(false)
+      isChanged(false),
+      newClicked(false)
 {
     ui->setupUi(this);
 
@@ -272,11 +273,13 @@ void MainWindow::fileMenuItemClicked()
 
             if (reply == QMessageBox::Yes)
             {
+                newClicked = true;
                 initNewProject();
             }
         }
         else
         {
+            newClicked = true;
             initNewProject();
         }
     }
@@ -467,4 +470,9 @@ void MainWindow::initNewProject()
     frames.changeFrameSize(width, height);
     currentFrame = frames.getFrame(0);
     updateCanvas();
+    if(newClicked)
+    {
+        ui->animationDisplay->clear();
+        newClicked = false;
+    }
 }
