@@ -15,7 +15,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="resources.qrc">
-    <normaloff>:/Sprite/resource/Pixel Art.ico</normaloff>:/Sprite/resource/Pixel Art.ico</iconset>
+    <normaloff>:/Sprite/res/Pixel Art.ico</normaloff>:/Sprite/res/Pixel Art.ico</iconset>
   </property>
   <property name="styleSheet">
    <string notr="true"/>
@@ -68,7 +68,7 @@
         </property>
         <property name="icon">
          <iconset resource="resources.qrc">
-          <normaloff>:/Sprite/resource/Ruler.ico</normaloff>:/Sprite/resource/Ruler.ico</iconset>
+          <normaloff>:/Sprite/res/Ruler.ico</normaloff>:/Sprite/res/Ruler.ico</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -100,7 +100,7 @@
         </property>
         <property name="icon">
          <iconset resource="resources.qrc">
-          <normaloff>:/Sprite/resource/Brush.ico</normaloff>:/Sprite/resource/Brush.ico</iconset>
+          <normaloff>:/Sprite/res/Brush.ico</normaloff>:/Sprite/res/Brush.ico</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -129,7 +129,7 @@
         </property>
         <property name="icon">
          <iconset resource="resources.qrc">
-          <normaloff>:/Sprite/resource/Eraser.ico</normaloff>:/Sprite/resource/Eraser.ico</iconset>
+          <normaloff>:/Sprite/res/Eraser.ico</normaloff>:/Sprite/res/Eraser.ico</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -158,7 +158,7 @@
         </property>
         <property name="icon">
          <iconset resource="resources.qrc">
-          <normaloff>:/Sprite/resource/Darken.ico</normaloff>:/Sprite/resource/Darken.ico</iconset>
+          <normaloff>:/Sprite/res/Darken.ico</normaloff>:/Sprite/res/Darken.ico</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -187,7 +187,7 @@
         </property>
         <property name="icon">
          <iconset resource="resources.qrc">
-          <normaloff>:/Sprite/resource/Lighten.ico</normaloff>:/Sprite/resource/Lighten.ico</iconset>
+          <normaloff>:/Sprite/res/Lighten.ico</normaloff>:/Sprite/res/Lighten.ico</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -216,7 +216,7 @@
         </property>
         <property name="icon">
          <iconset resource="resources.qrc">
-          <normaloff>:/Sprite/resource/Eyedropper.ico</normaloff>:/Sprite/resource/Eyedropper.ico</iconset>
+          <normaloff>:/Sprite/res/Eyedropper.ico</normaloff>:/Sprite/res/Eyedropper.ico</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -242,7 +242,7 @@
         </property>
         <property name="icon">
          <iconset resource="resources.qrc">
-          <normaloff>:/Sprite/resource/bucket.ico</normaloff>:/Sprite/resource/bucket.ico</iconset>
+          <normaloff>:/Sprite/res/bucket.ico</normaloff>:/Sprite/res/bucket.ico</iconset>
         </property>
         <property name="iconSize">
          <size>
