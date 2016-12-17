@@ -32,3 +32,5 @@ FORMS    += mainwindow.ui \
 
 RESOURCES += \
     resources.qrc
+
+INCLUDEPATH += ..\3rdparty\gif-h

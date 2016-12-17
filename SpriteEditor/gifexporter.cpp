@@ -3,7 +3,7 @@
 // Braden Klunker, Michael Swisher, Morgan Empey, Naoki Tominaga, Ryan Williams
 
 #include "gifexporter.h"
-#include "gif-h/gif.h"
+#include "gif.h"
 
 void GifExporter::exportGif(QString fileName, SpriteFrameCollection &frames)
 {
